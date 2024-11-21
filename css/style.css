@@ -1,0 +1,123 @@
+body {
+    padding: 25px; /*設定元素內容與邊框之間的距離。 */
+    background-color: black;
+    color: white;
+    font-size: 25px;
+    text-align: right;
+}
+
+body.dark-mode {
+  background-color: #6c757d !important;
+  color: white;
+}
+
+
+/* Change Color */
+.change-theme{
+  position: fixed;
+  top: 0;
+  right: 20px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.github{
+  position: fixed;
+  bottom: 0;
+  left: 20px;
+}
+
+.bordershadow {
+  text-align:left;
+  border-radius: 3px;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.2);
+  }
+  .bordershadow:hover {
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5), 0 0 10px rgba(255, 255, 0, 1);
+    filter: invert(1); /* 將圖片顏色反轉 */
+  }
+
+  .footer {
+    position: fixed;
+    bottom: 0;
+    /* right: 43%; */
+    margin: 0 auto;  
+    font-size: 16px;
+    color: orange;
+    text-align: center;
+  }
+  .footer:hover {
+    color: red;
+    background-color: transparent;
+    text-decoration: underline;
+  }
+
+
+/* Horizontal Navigation Bar */
+
+body {
+  margin: 0; /* 移除預設外邊距 */
+  padding: 0; /* 可選：移除預設內邊距 */
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
+li {
+  float: left;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+/* dropdown content */
+.dropbtn {
+  background-color: pink;
+  color: black;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+.dropdown {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+.navbar-brand {
+  display: inline-block;
+  padding-top: 0.3125rem;
+  padding-bottom: 0.3125rem;
+  margin-right: 1rem;
+  font-size: 1.25rem;
+  line-height: inherit;
+  white-space: nowrap;
+}
+
+.navbar-brand:hover, .navbar-brand:focus {
+  text-decoration: none;
+}

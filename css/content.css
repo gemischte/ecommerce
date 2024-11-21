@@ -1,0 +1,46 @@
+/* Transparent marked codeblocks */
+.md-typeset mark code {
+    background-color: transparent;
+}
+
+/* Fonts and paragraphs */
+.md-typeset p, .md-typeset ul, .md-typeset ol, .md-typeset dl, .md-typeset blockquote {
+    margin-bottom: 1.25em;
+}
+
+/* Display long lists in two columns */
+.md-typeset .tx-columns ul {
+    columns: 2;
+}
+
+/* Wider content on PC viewport */
+.md-grid {
+    max-width: 1920px;
+}
+
+/* No italic keys */
+.md-typeset em span.keys {
+    font-style: normal;
+}
+
+/* Greyed tags */
+.md-typeset .tags, .md-typeset .tags a:not(:hover){
+    color: var(--md-default-fg-color--light);
+    font-size: .700rem;
+}
+[dir=ltr] .md-typeset :is(.admonition-title,summary) {
+    padding-right: 1.25rem;
+}
+
+/* Hide H4 items from ToC */
+nav ul li nav ul li nav {
+    display: none;
+}
+
+/* Table cell wrapping */
+td code {
+    white-space: nowrap;
+}
+.md-typeset h4 code {
+    font-size: .7rem;
+}
