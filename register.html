@@ -40,7 +40,7 @@
 	<!-- Styles -->
   <link rel="stylesheet" href="https://cdn.2take1.menu/css/LoDyn.css?" />
 	<link rel="stylesheet" href="https://cdn.2take1.menu/css/fonts.css?" />
-  <!-- <link rel="stylesheet" href="https://cdn.2take1.menu/css/bootstrap/bootstrap.css?" /> -->
+  <link rel="stylesheet" href="css/bootstrap.min.css" />
   <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"> -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <!-- <link rel="stylesheet" href="https://cdn.2take1.menu/css/bootstrap/bootstrap-grid.css?" /> -->
@@ -141,12 +141,19 @@
 
             </div>
 
+            <!-- Right Side Of Navbar -->
+             <div class="">
+                <div class="col-sm-12">
+                    <a class="btn btn-secondary" href="login.html">Login</a>
+                </div>
+             </div>
+             
         </nav>
 
         <main class="py-4">
 
             <!-- Authentication Links -->
-	<form class="form-horizontal" method="POST" action="account.php" enctype="multipart/form-data">
+	<form class="form-horizontal" method="POST" action="register.php" enctype="multipart/form-data">
 
 		<input type="hidden" name="_token" value="lMDmmfDC392gxtRiN2iOf4szMfxKT74ZahARLBWV">
 		<div class="row justify-content-center">
@@ -160,7 +167,7 @@
 						<div class="form-group">
 							<label for="username" class="col-sm-10 col-form-label">Username</label>
 							<div class="offset-sm-1 col-sm-10">
-								<input placeholder=""
+								<input placeholder="e.g.Trevor_313"
                                        title="A-Z a-z 0-9 and _"
 									   class="form-control-sm text-center"
 									   type="text"
@@ -191,14 +198,14 @@
 						<div class="form-group">
                             <label for="password" class="col-sm-10 col-form-label">Password</label>
                             <div class="offset-sm-1 col-sm-10">
-                                <input placeholder=""
-                                title="Password must be at least 6 characters long, including uppercase & lowercase letters (A-Z), and numbers (0-9)."
+                                <input placeholder="e.g.Password123"
+                                title="Password must be 6-16 characters long, with uppercase letters, lowercase letters, and numbers."
                                 class="form-control-sm text-center"
                                 type="password"
                                 name="password"
                                 id="password"
                                 required
-                                pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}"
+                                pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,16}"
                                 value=""/>
                             </div>
                         </div>
@@ -224,12 +231,6 @@
 								<button type="submit" class="btn btn-secondary">Submit</button>
 							</div>
 						</div>
-
-                        <div class="">
-                            <div class="col-sm-12">
-                                <a class="btn btn-secondary" href="">Login</a>
-                            </div>
-                        </div>
 
 					</div>
 				</div>
