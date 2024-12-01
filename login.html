@@ -1,140 +1,166 @@
 <!DOCTYPE html>
 <html lang="en">
 
-    <head>
-        <meta charset="utf-8">
-        <title>Login Account</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0">
-        <link rel="icon" href="image/favicon.ico">
+<head>
+    <meta charset="utf-8">
+    <title>Login Account</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0">
+    <link rel="icon" href="image/favicon.ico">
 
-        <!-- Styles -->
-        <link rel="stylesheet" href="https://cdn.2take1.menu/css/LoDyn.css?" />
-        <link rel="stylesheet" href="https://cdn.2take1.menu/css/_style.css?" />
-        <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> -->
-        <link rel="stylesheet" href="css/bootstrap.min.css">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-        <link rel="stylesheet" href="https://cdn.2take1.menu/css/fonts.css?" />
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/LoDyn.css" />
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.2take1.menu/css/fonts.css?" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
 
-        <!-- Scripts -->
-        <script src="https://cdn.2take1.menu/js/app.js" defer></script>
-    </head>
+    <!-- Scripts -->
+    <script src="js/Function.js"></script>
+</head>
 
-    <!-- Background -->
-    <body class="bg-secondary">
 
-        <div class="app">
-            <nav id="navbar" class="navbar navbar-expand-md navbar-dark bg-dark shadow-sm">
+<!--Body Background -->
+<body class="bg-primary">
+    
+    <noscript>
+        <div class="no_js">
+            <span>This site requires JavaScript.</span>
+        </div>
+    </noscript>
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <a class="navbar-brand" href="register.html">
-            <img src="image/Hyperlink.gif" height="50px" style="margin-top: -5px; margin-bottom: -5px;" alt=""/>
-            Login
-        </a>
+    <div id="app">
+        <nav id="navbar" class="navbar navbar-expand-md navbar-dark bg-dark shadow-sm">
 
-        <!-- Left Side Of Navbar -->
-         <ul class="navbar-nav mr-auto">
-        <!-- Dropdown -->
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle clickable" role="button" data-toggle="dropdown">
-                Download 
-             <span class="caret"></span>
-            </a>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <a class="navbar-brand" href="">
+                    <img src="image/Hyperlink.gif" height="50px" style="margin-top: -5px; margin-bottom: -5px;"
+                        alt="" />
+                    Login
+                </a>
 
-            <div class="dropdown-menu dropdown-menu-right">
-                <a class="dropdown-item" href="https://drive.google.com/">Ha</a>
+                <!-- Left Side Of Navbar -->
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item "><a class="nav-link" href="index.html">Home</a></li>
+
+                    <!-- Dropdown -->
+                    <li class="nav-item dropdown">
+                        <button class="nav-link dropdown-toggle dropbtn" type="button" id="dropdownMenuButton" onclick="Dropdown()">
+                            Download
+                        </button>
+                        <ul class="dropdown-menu dropdown-content" id="dropdown-list">
+                            <li><a class="dropdown-item" href="https://drive.google.com/drive/mobile/folders/0B9kzP7SHVJadfmxXRUhGU1E1UU5KaDhCQ1BPUmduakltcU10NXJjaHpZdlJoYjFhYm5XbTg?resourcekey=0-bu0QASvk-qWLPt3xfdrARg">SpongeBob SquarePants</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                </ul>
             </div>
-        </li>
-    </ul>
-    </div>
 
-    <!-- Right Side Of Navbar -->
-     <ul class="navbar-nav mr-auto">
-        <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="register.html">Register</a>
-            </li>
-        </ul>
-     </ul>
-     
-</nav>
-        
+            <!-- Right Side Of Navbar -->
+            <div class="">
+                <div class="col-sm-12">
+                    <a class="btn btn-info" href="register.html">Register</a>
+                </div>
+            </div>
+
+
+            <!-- Change bg color -->
+            <ul>
+                <a class="">
+                    <i id="toggleDark" onclick="Change_bg_color()" class="bi-brightness-high-fill"></i>
+                </a>
+            </ul>
+
+        </nav>
+
         <main class="py-4">
 
             <form method="POST" action="login.php">
 
-            <div class="row justify-content-center">
-                <div class="col-md-6">
-                    <div class="card text-white bg-dark">
-                        
-                        <div class="card-header">
-                            Login
-                        </div>
+                <div class="row justify-content-center">
+                    <div class="col-md-6">
+                        <div class="card text-white bg-info">
 
-                        <!-- username label -->
-                        <div class="card-body">
-                            <div class="form-group">
-                                <label for="username" class="col-sm-10 col-form-label">Username</label>
-                                <div class="offset-sm-1 col-sm-10">
-                                    <input class="form-control-sm text-center"
-                                    placeholder="Enter your username"
-                                    title="Type your username"
-                                    type="text"
-                                    name="username"
-                                    id="username"
-                                    required
-                                    pattern="[A-Za-z0-9_]{4,32}"
-                                    />
-                                </div>
+                            <div class="card-header">
+                                Login
                             </div>
 
-                             <!-- password label -->
+                            <!-- username label -->
                             <div class="card-body">
                                 <div class="form-group">
-                                    <label for="password" class="col-sm-10 col-form-label">Password</label>
+                                    <label for="username" class="col-sm-10 col-form-label">Username</label>
                                     <div class="offset-sm-1 col-sm-10">
                                         <input class="form-control-sm text-center"
-                                        placeholder="Enter your password"
-                                        title=""
-                                        type="password"
-                                        name="password"
-                                        id="password"
-                                        required
-                                        pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}"
-                                        />
+                                            placeholder="Enter your username or email"
+                                            title="Type your username or email" 
+                                            type="text" 
+                                            name="username_email"
+                                            id="username_email" 
+                                            required 
+                                            autofocus
+                                            />
                                     </div>
                                 </div>
 
-                                <!-- login button -->
-                                 <div class="form-group justify-content-center">
-                                    <div class="col-sm-12">
-                                        <button type="login" class="btn btn-secondary">Login</button>
+                                <!-- password label -->
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <label for="password" class="col-sm-10 col-form-label">Password</label>
+                                        <div class="offset-sm-1 col-sm-10">
+                                            <input 
+                                            class="form-control-sm text-center" 
+                                            placeholder="Enter your password"
+                                            title="" 
+                                            type="password" 
+                                            name="password" 
+                                            id="password" 
+                                            required
+                                            pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,16}"
+                                            />
+                                        </div>
                                     </div>
-                                 </div>
 
-                                 <!-- Remember Account -->
-                                  <div class="form-check mb-4">
-                                    <input class="form-check-input"
-                                    type="checkbox"
-                                    value="Y"
-                                    id="remember">
-                                    <label class="form-check-label" for="remember">
-                                        <i class="material-icons"></i>
-                                        Remember
-                                    </label>
-                                  </div>
-                                 
+                                    <!-- login button -->
+                                    <div class="form-group justify-content-center">
+                                        <div class="col-sm-12">
+                                            <button type="login" class="btn btn-success">Login</button>
+                                        </div>
+                                    </div>
+
+                                    <!-- Remember checkbox -->
+                                    <div class="form-check mb-4">
+                                        <input 
+                                        class="form-check-input" 
+                                        type="checkbox" 
+                                        value="Y" 
+                                        id="remember"
+                                        >
+                                        <label class="form-check-label" for="remember">
+                                            <i class="material-icons"></i>
+                                            Remember
+                                        </label>
+                                    </div>
+
+                                </div>
+
                             </div>
 
                         </div>
-                        
                     </div>
-                </div>
 
-            </div>
-        </form>
+                </div>
+            </form>
         </main>
     </div>
 
-    </body>
-    
+    <!-- Footer -->
+    <footer class="bg-dark">
+        <div class="copyright">
+            © Copyright 2024. Developed by Trevor0313. All rights reserved.
+        </div>
+    </footer>
+
+</body>
+
 </html>

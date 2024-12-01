@@ -1,11 +1,5 @@
 <?php
-// Database connection
-$conn = new mysqli("localhost", "root", "123456", "test");
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+require_once 'conn.php';
 
 // Prepare statement
 $sql = "INSERT INTO register (username, email, password) VALUES (?, ?, ?)";
@@ -22,10 +16,19 @@ $password = password_hash($_POST['password'], PASSWORD_DEFAULT); // Hash passwor
 // $password = $_POST['password']; //Storing the password in plain text is risky and insecure
 $stmt->bind_param("sss", $username, $email, $password);
 
+//Check username or email is already registered
+$query = "SELECT * FROM register WHERE username = '$username' OR email = '$email'";
+$check_result = $conn->query($query);
+if ($check_result->num_rows > 0){
+    echo "<script>alert('This username or email has been register!'); location.href = 'register.html';</script>";
+    exit();
+}
+
 // Execute the statement
 if ($stmt->execute()) {
-    echo "User registered successfully!";
-} else {
+    echo "<script>alert('User registered successfully!'); location.href = 'login.html';</script>";
+} 
+else {
     echo "Error: " . $stmt->error;
 }
 

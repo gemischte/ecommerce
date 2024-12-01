@@ -1,0 +1,368 @@
+html
+{
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	height: 100%;
+}
+
+body
+{
+	box-sizing: border-box;
+	background: #f4f4f4;
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	height: 100%;
+	overflow-x: hidden;
+}
+
+body > div#container
+{
+	box-sizing: border-box;
+	width: 100%;
+	height: 100%;
+	padding: 8px;
+}
+
+body:not(.loading) .clickable
+{
+	cursor: pointer;
+}
+
+.loading
+{
+	cursor: wait !important;
+}
+
+.flip-x
+{
+	transform: scale(-1, 1);
+}
+
+.flip-y
+{
+	transform: scale(1, -1);
+}
+
+.flip-xy
+{
+	transform: scale(-1, -1);
+}
+
+ul.ul-reverse {
+	transform: rotate(180deg);
+}
+ul.ul-reverse > li {
+	transform: rotate(-180deg);
+}
+
+label
+{
+	transform: translateX(6px);
+}
+
+input
+{
+	border: 1px solid #989898;
+	border-radius: 5px;
+	width: calc(100% - 10px);
+	height: 30px;
+	margin: 0 5px;
+	padding: 5px 5px;
+	transition: border-color .1s ease-in-out, box-shadow .1s ease-in-out;
+
+}
+
+input[type=checkbox]
+{
+	display: none;
+}
+
+input[type=checkbox] + label i:after
+{
+	position: relative;
+	top: 6px;
+	content: "";
+}
+
+input[type=checkbox]:not(:checked) + label i:after
+{
+	cursor: pointer;
+	content: "check_box_outline_blank";
+}
+
+input[type=checkbox]:checked + label i:after
+{
+	cursor: pointer;
+	content: "check_box";
+}
+
+.form-check
+{
+	margin-left: 0px;
+	padding-left: 10px;
+}
+
+input.valid,
+textarea.valid
+{
+	border-color: #48d848;
+}
+
+input.invalid,
+textarea.invalid
+{
+	border-color: #d84848;
+}
+
+input:focus,
+textarea:focus
+{
+	border-color: #2499d8;
+	box-shadow: 0 0 0 4px rgba(56, 170, 216, .66);
+}
+
+input.valid:focus,
+textarea.valid:focus
+{
+	border-color: #48d848;
+	box-shadow: 0 0 0 4px rgba(72, 216, 72, .66);
+}
+
+input.invalid:focus,
+textarea.invalid:focus
+{
+	border-color: #d84848;
+	box-shadow: 0 0 0 4px rgba(216, 72, 72, .66);
+}
+
+@keyframes fadein
+{
+	from
+	{
+		opacity:0;
+	}
+	to
+	{
+
+	}
+}
+
+@keyframes fadeout
+{
+	from
+	{
+
+	}
+	to
+	{
+		opacity:0;
+	}
+}
+
+.lodyn-raw
+{
+	overflow: hidden;
+}
+
+.fade-new
+{
+	animation: fadein .5s ease-in-out;
+}
+
+.fade-out
+{
+	animation: fadeout .5s ease-in-out;
+}
+
+.fade-out-s
+{
+	animation: fadeout .2s ease-in-out;
+}
+
+.reflow,
+.reflow-exp,
+.reflow-col
+{
+	transition: all .5s ease-in-out;
+}
+
+.reflow-s
+{
+	transition: all .2s ease-in-out;
+}
+
+.reflow-hidden
+{
+	display: none !important;
+}
+
+.reflow-exp
+{
+	position: relative;
+	overflow: hidden;
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+
+.lodyn-overlay
+{
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	min-height: 100vh;
+	margin: 0;
+	padding: 5px;
+	box-sizing: border-box;
+	background-color: rgba(0, 0, 0, .5);
+	overflow: hidden;
+	z-index: 999;
+}
+
+.lodyn-overlay-container
+{
+	width: 100%;
+	height: 100%;
+	padding: 0;
+	overflow-x: hidden;
+	overflow-y: auto;
+	position: absolute;
+}
+
+.lodyn-overlay.lodyn-overlay-slide-r,
+.lodyn-overlay.lodyn-overlay-slide-l
+{
+	width: 15%;
+}
+
+.lodyn-overlay.lodyn-overlay-slide-l
+{
+	left: auto;
+	right: 0;
+}
+
+.lodyn-overlay.lodyn-overlay-slide-t,
+.lodyn-overlay.lodyn-overlay-slide-b
+{
+	min-height: auto;
+	height: 15%;
+}
+
+.lodyn-overlay.lodyn-overlay-slide-t
+{
+	top: auto;
+	bottom: 0;
+}
+
+.lodyn-overlay.lodyn-overlay-slide-r,
+.lodyn-overlay.lodyn-overlay-slide-l
+{
+	transition: width 2s 1s ease-out;
+}
+
+.lodyn-overlay.lodyn-overlay-slide-t,
+.lodyn-overlay.lodyn-overlay-slide-b
+{
+	transition: height 2s 1s ease-out;
+}
+
+.lodyn-overlay.lodyn-overlay-slide-r:hover,
+.lodyn-overlay.lodyn-overlay-slide-l:hover
+{
+	transition: width 1s ease-in-out;
+}
+
+.lodyn-overlay.lodyn-overlay-slide-t:hover,
+.lodyn-overlay.lodyn-overlay-slide-b:hover
+{
+	transition: height 1s ease-in-out;
+}
+
+.lodyn-overlay.lodyn-overlay-slide-r:hover,
+.lodyn-overlay.lodyn-overlay-slide-l:hover
+{
+	width: 100%;
+}
+
+.lodyn-overlay.lodyn-overlay-slide-t:hover,
+.lodyn-overlay.lodyn-overlay-slide-b:hover
+{
+	height: 100%;
+}
+
+.lodyn-overlay > .lodyn-overlay-container > div.lodyn-overlay-content
+{
+	position: absolute;
+	left: 50%;
+	top: calc(50% - 5px);
+	width: auto;
+	height: auto;
+	max-height: calc(100vh - 10px);
+	max-width: calc(100vw);
+	transform: translateY(-50%) translateX(-50%);
+	cursor: auto;
+	overflow: auto;
+}
+
+@media only screen and (max-width: 768px) {
+	.lodyn-overlay > .lodyn-overlay-container > div.lodyn-overlay-content
+	{
+		width: calc(100vw - 30px);
+	}
+}
+
+.lodyn-overlay > .lodyn-overlay-container > div.lodyn-overlay-background
+{
+	border: 1px solid #333333;
+	border-radius: 5px;
+	background: #f4f4f4;
+	padding: 5px;
+}
+
+.lodyn-overlay > div.lodyn-overlay-close
+{
+	position: absolute;
+	right: 10px;
+	top: 10px;
+	background-color: rgba(0, 0, 0, .5);
+	color: rgba(255, 255, 255, .5);
+	font-family: 'Helvetica', 'Arial', sans-serif;
+	font-size: 24px;
+	font-weight: bold;
+	text-align: center;
+	width: 28px;
+	height: 28px;
+	border-radius: 5px;
+	cursor: pointer;
+	z-index: 1000;
+}
+
+.lodyn-overlay > div.lodyn-overlay-close > span
+{
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	margin: 0;
+	padding: 0;
+	transform: translateY(-50%) translateX(-50%);
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+}
+
+.modal
+{
+	background-color: rgba(1, 1, 1, .25)
+}
+
+tr.strike {
+	text-decoration: line-through;
+}

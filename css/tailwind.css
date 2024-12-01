@@ -399,9 +399,9 @@ dialog {
     background-color: rgb(126 34 206/var(--tw-bg-opacity))
 }
 
-.bg-purple-800 {
+.bg-green-800 {
     --tw-bg-opacity: 1;
-    background-color: rgb(107 33 168/var(--tw-bg-opacity))
+    background-color: rgb(6 199 87/var(--tw-bg-opacity))
 }
 
 .bg-transparent {
@@ -424,7 +424,7 @@ dialog {
 }
 
 .from-violet-900 {
-    --tw-gradient-from: #4c1d95 var(--tw-gradient-from-position);
+    --tw-gradient-from: #ac10e0 var(--tw-gradient-from-position);
     --tw-gradient-to: #4c1d9500 var(--tw-gradient-to-position);
     --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to)
 }
@@ -1363,7 +1363,7 @@ video {
 .icon-background {
     height: 4rem;
     width: 4rem;
-    background-color: #a020f033;
+    /* background-color: #a020f033; */
     display: flex;
     align-items: center;
     justify-content: center;
