@@ -394,6 +394,10 @@ dialog {
     background-color: rgb(243 244 246/var(--tw-bg-opacity))
 }
 
+.bg-red-200{
+    background-color: rgb(254 202 202);
+}
+
 .bg-purple-700 {
     --tw-bg-opacity: 1;
     background-color: rgb(126 34 206/var(--tw-bg-opacity))
@@ -408,9 +412,13 @@ dialog {
     background-color: initial
 }
 
-.bg-white {
+.bg-stone-100 {
+    background-color: rgb(245 245 244);
+}
+
+.bg-red-400{
     --tw-bg-opacity: 1;
-    background-color: rgb(255 255 255/var(--tw-bg-opacity))
+    background-color: rgb(248 113 113/var(--tw-bg-opacity));
 }
 
 .bg-gradient-to-r {

@@ -38,10 +38,25 @@ function Change_bg_color() {
   }
 }
 
+//Change Index background color
+function Index_Change_bg_color() {
+  const body = document.querySelector('.min-h-screen');
+  const toggle = document.getElementById('toggleColor');
 
+  if (body.classList.contains('bg-red-400')) {
+    body.classList.remove('bg-red-400');
+    body.classList.add('bg-stone-100');
+    toggle.classList.remove('bi-brightness-high-fill');
 
-
-
+    toggle.classList.add('bi-moon-fill');
+  } 
+  else {
+    body.classList.remove('bg-stone-100');
+    body.classList.add('bg-red-400');
+    toggle.classList.remove('bi-moon-fill');
+    toggle.classList.add('bi-brightness-high-fill');
+  }
+}
 
 //Typed
 //Source https://github.com/mattboldt/typed.js

@@ -20,17 +20,25 @@ $stmt->bind_param("sss", $username, $email, $password);
 $query = "SELECT * FROM register WHERE username = '$username' OR email = '$email'";
 $check_result = $conn->query($query);
 if ($check_result->num_rows > 0){
-    echo "<script>alert('This username or email has been register!'); location.href = 'register.html';</script>";
+    alert("This username or email has been register!");
+    echo "<script>  location.href = 'register.html';</script>";
     exit();
 }
 
 // Execute the statement
 if ($stmt->execute()) {
-    echo "<script>alert('User registered successfully!'); location.href = 'login.html';</script>";
+    alert("User registered successfully!");
+    echo "<script>location.href = 'login.html';</script>";
 } 
 else {
     echo "Error: " . $stmt->error;
 }
+
+
+function alert($message){
+    // Display the alert box 
+    echo "<script>alert('$message');</script>";
+};
 
 // Close statement and connection
 $stmt->close();

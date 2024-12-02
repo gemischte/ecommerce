@@ -35,22 +35,20 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                     //Delete Account
                     echo '<form method="POST" action="delete.php">';
-                    echo '<input type="hidden" name="username" value="' . htmlspecialchars($username_email) . '">'; // 傳遞 username
+                    echo '<input type="hidden" name="username" value="' . htmlspecialchars($username_email) . '">';
                     echo '<button type="submit">Delete Account</button>';
                     echo '</form>';
 
 
                     echo '<img src="image/programmer_meme.jpg" title="This meme describes a programmer’s daily struggle with errors...">';
                 } else {
-                    // echo '<script>alert("Incorrect password!")</script>';
-                    echo "<script>alert('Incorrect password!'); location.href = 'login.html';</script>";
-
+                    alert('Incorrect password!');
+                    echo "<script> location.href = 'login.html';</script>";
                     exit();
                 }
             } else {
-                // echo '<script>alert("User not found!")</script>';
-                echo "<script>alert('User not found!'); location.href = 'login.html';</script>";
-
+                alert('User not found!');
+                echo "<script> location.href = 'login.html';</script>";
                 exit();                    
             }
 
@@ -63,8 +61,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         echo "Please enter a username and password!";
     }
 }
+
+function alert($message){
+    // Display the alert box 
+    echo "<script>alert('$message');</script>";
+}
+
 // Close the database connection
 $conn->close();
-// include 'logout.php';
-// include 'delete.php';
 ?>
