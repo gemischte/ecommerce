@@ -60,31 +60,31 @@ function Index_Change_bg_color() {
 
 //Typed
 //Source https://github.com/mattboldt/typed.js
-window.onload = function (){
-    new Typed('#login_Section_Title', {
-    strings: ['<i>Hello </i>', 'Welcome.'],
+document.addEventListener('DOMContentLoaded', function () {
+  new Typed('#Register_Section_Title', {
+      strings: ['Hello', 'Welcome.'],
+      typeSpeed: 50,
+      backSpeed: 50,
+      backDelay: 500,
+      cursorChar: '_',
+      fadeOut: true,
+      loop: true
+  });
+});
+
+document.addEventListener('DOMContentLoaded',function(){
+  new Typed('#Index_Section_Title',{
+    strings: ['<i>History of Programming Languages </i>'],
     typeSpeed: 50,
     backSpeed:50,
     backDelay:500,
-    cursorChar: '_',
-    fadeOut: true,
+    cursorChar: '~',
+    // fadeOut: true,
     loop:true
   });
-}
-
-window.onload = function (){
-  new Typed('#Index_Section_Title', {
-  strings: ['<i>History of Programming Languages </i>'],
-  typeSpeed: 50,
-  backSpeed:50,
-  backDelay:500,
-  cursorChar: '~',
-  // fadeOut: true,
-  loop:true
 });
-}
 
-//showpassword
+//Showpassword
 let PasswordVisible = false;
 
 function showpassword() {
@@ -104,6 +104,26 @@ function showpassword() {
     }
 }
 
+//Show confirm password
+let ConfirmVisible = false;
+function confirm_show_password() {
+  const passwordLabel = document.getElementById("confirmPassword");
+  const confirm_password_eye_icon = document.getElementById("confirm_password_eye_icon");
+
+  if (ConfirmVisible) {
+    confirm_password_eye_icon.classList.remove('fa-eye-slash');
+    confirm_password_eye_icon.classList.add('fa-eye');
+    passwordLabel.type = 'password';
+    ConfirmVisible = false;
+  }
+  else{
+    confirm_password_eye_icon.classList.remove('fa-eye');
+    confirm_password_eye_icon.classList.add('fa-eye-slash');
+    passwordLabel.type = 'text';
+    ConfirmVisible = true;
+  }
+}
+
 //Input validation
 document.addEventListener('DOMContentLoaded',function(){
   document.querySelectorAll('input','text').forEach(function (element) {
@@ -119,3 +139,29 @@ document.addEventListener('DOMContentLoaded',function(){
     })
   })
 });
+
+//Confirm password
+window.onload = function() {
+  document.querySelector('form').addEventListener('submit', function (event) {
+      var password = document.querySelector('#password').value;
+      var confirmpassword = document.querySelector('#confirmPassword').value;
+
+      if (password !== confirmpassword) {
+          event.preventDefault(); // Prevent form submission
+          Swal.fire({
+            icon: 'error',
+            title: 'Password Error',
+            text: 'Passwords do not match.',
+        })
+      }
+  });
+};
+
+//Get new year
+// window.onload = function(){
+//   document.getElementById('year').textContent = new Date().getFullYear();
+// };
+
+window.addEventListener('load',function(){
+  document.getElementById('year').textContent = new Date().getFullYear();
+})
