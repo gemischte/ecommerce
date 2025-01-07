@@ -82,7 +82,11 @@ if (isset($_GET['id'])) {
                         <div class="product-card">
                             <div class="card-body">
                                 <h1 class="card-title"><?php echo htmlspecialchars($row['name']); ?></h1>
-                                <p class="text-primary h5">$<?php echo htmlspecialchars($row['price']); ?></p>
+
+                                <span class="text-muted text-decoration-line-through">
+                                    <p class="text-primary h5">$<?php echo htmlspecialchars($row['original_price']); ?></p>
+                                </span>
+                                <?php echo htmlspecialchars($row['price']); ?>
 
                                 <div class="mb-3">
                                     <strong>Description:</strong>
@@ -91,9 +95,18 @@ if (isset($_GET['id'])) {
                                     </p>
                                 </div>
 
-                                <a href="view_product.php?id=<?php echo htmlspecialchars($row['product_id']); ?>" class="btn btn-primary btn-sm w-100">
-                                    Add to Cart
-                                </a>
+                                <!-- Add to Cart Form -->
+                                <form action="cart.php" method="post">
+                                    <input type="hidden" name="product_id" value="<?php echo htmlspecialchars($row['product_id']); ?>">
+                                    <input 
+                                    type="number" 
+                                    name="quantity" 
+                                    value="1" min="1" 
+                                    class="form-control mb-2">
+                                    <button 
+                                    type="submit" name="add_to_cart" class="btn btn-primary btn-sm w-100">Add to Cart</button>
+                                </form>
+
                             </div>
                         </div>
                     </div>

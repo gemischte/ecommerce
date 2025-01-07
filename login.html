@@ -29,7 +29,7 @@
     </noscript>
 
     <div>
-        <nav id="navbar" class="navbar navbar-expand-md navbar-dark bg-dark shadow-sm">
+        <nav id="navbar" class="px-4  navbar navbar-expand-md navbar-dark bg-dark shadow-sm">
 
             <!-- Collapse plugin for small screens -->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -46,29 +46,15 @@
 
                 <!-- Left Side Of Navbar -->
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item "><a class="nav-link" href="index.php">Home</a></li>
-
-                    <!-- Dropdown -->
-                    <li class="nav-item dropdown">
-                        <button class="nav-link dropdown-toggle dropbtn" type="button" id="dropdownMenuButton"
-                            onclick="Dropdown()">
-                            Download
-                        </button>
-                        <ul class="dropdown-menu dropdown-content" id="dropdown-list">
-                            <li><a class="dropdown-item"
-                                    href="https://drive.google.com/drive/mobile/folders/0B9kzP7SHVJadfmxXRUhGU1E1UU5KaDhCQ1BPUmduakltcU10NXJjaHpZdlJoYjFhYm5XbTg?resourcekey=0-bu0QASvk-qWLPt3xfdrARg">SpongeBob
-                                    SquarePants</a>
-                            </li>
-                        </ul>
-                    </li>
-
+                    <li class="nav-item "><a class="nav-link" href="http://localhost/Database/index.php">Home</a></li>
+                    
                 </ul>
             </div>
 
             <!-- Change bg color -->
             <ul>
-                <a class="">
-                    <i id="toggleDark" onclick="Change_bg_color()" class="bi-brightness-high-fill"></i>
+                <a>
+                    <i style="color: gray;" id="toggleDark" onclick="Change_bg_color()" class="bi-brightness-high-fill"></i>
                 </a>
             </ul>
         </nav>
@@ -87,9 +73,17 @@
                                     <label for="username" class="form-label">Username</label>
                                     <div class="input-group input-group-sm">
                                         <span class="input-group-text"><i class="fa fa-user"></i></span>
-                                        <input placeholder="Enter your username or email" title="" type="text"
-                                            name="username_email" id="username_email" class="form-control" required
-                                            pattern="[A-Za-z0-9_@.]{4,32}" autofocus />
+                                        <input 
+                                        placeholder="Enter your username or email" 
+                                        title="" 
+                                        type="text"
+                                            name="username_email" 
+                                            id="username_email" 
+                                            class="form-control"
+                                            required
+                                            pattern="[A-Za-z0-9_@.]{4,32}" 
+                                            autofocus 
+                                            />
                                         <div class="valid-feedback">Valid username or email.</div>
                                         <div class="invalid-feedback">Please enter a valid username or email.</div>
                                     </div>
@@ -106,9 +100,16 @@
 
                                     <div class="input-group input-group-sm">
                                         <span class="input-group-text"><i class="fa fa-key"></i></span>
-                                        <input class="form-control" placeholder="Enter your password" title=""
-                                            type="password" name="password" id="password" required
-                                            pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,16}" />
+                                        <input 
+                                        class="form-control" 
+                                        placeholder="Enter your password" 
+                                        title=""
+                                            type="password" 
+                                            name="password" 
+                                            id="password" 
+                                            required
+                                            pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,16}" 
+                                            />
                                         <button type="button" class="btn btn-light" onclick="showpassword()">
                                             <i id="eyeIcon" class="fa fa-eye"></i>
                                         </button>
@@ -125,8 +126,13 @@
                                 <!-- Remember checkbox -->
                                 <div class="d-flex align-items-center">
                                     <div class="form-check">
-                                        <input class="for-check-input" type="checkbox" id="remember" name="remember"
-                                            value="Y">
+                                        <input 
+                                        class="for-check-input" 
+                                        type="checkbox" 
+                                        id="remember" 
+                                        name="remember"
+                                            value="Y"
+                                            >
                                         <label for="remember" class="for-check-label text-white">Remember Me</label>
                                     </div>
                                 </div>

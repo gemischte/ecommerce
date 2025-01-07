@@ -35,7 +35,7 @@
     </noscript>
 
     <div>
-        <nav id="navbar" class="navbar navbar-expand-md navbar-dark bg-dark shadow-sm">
+        <nav id="navbar" class="px-4 navbar navbar-expand-md navbar-dark bg-dark shadow-sm">
 
             <!-- Collapse plugin for small screens -->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -52,21 +52,7 @@
 
                 <!-- Left Side Of Navbar -->
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item "><a class="nav-link" href="index.php">Home</a></li>
-
-                    <!-- Dropdown -->
-                    <li class="nav-item dropdown">
-                        <button class="nav-link dropdown-toggle dropbtn" type="button" id="dropdownMenuButton"
-                            onclick="Dropdown()">
-                            Download
-                        </button>
-                        <ul class="dropdown-menu dropdown-content" id="dropdown-list">
-                            <li><a class="dropdown-item"
-                                    href="https://drive.google.com/drive/mobile/folders/0B9kzP7SHVJadfmxXRUhGU1E1UU5KaDhCQ1BPUmduakltcU10NXJjaHpZdlJoYjFhYm5XbTg?resourcekey=0-bu0QASvk-qWLPt3xfdrARg">SpongeBob
-                                    SquarePants</a>
-                            </li>
-                        </ul>
-                    </li>
+                    <li class="nav-item "><a class="nav-link" href="http://localhost/Database/index.php">Home</a></li>
 
                 </ul>
             </div>
@@ -74,7 +60,7 @@
             <!-- Change bg color -->
             <ul>
                 <a class="">
-                    <i id="toggleDark" onclick="Change_bg_color()" class="bi-brightness-high-fill"></i>
+                    <i  style="color: gray;" id="toggleDark" onclick="Change_bg_color()" class="bi-brightness-high-fill"></i>
                 </a>
             </ul>
         </nav>
@@ -100,10 +86,17 @@
                                     <label for="username" class="form-label">Username</label>
                                     <div class="input-group input-group-sm">
                                         <span class="input-group-text"><i class="fa fa-user"></i></span>
-                                        <input class="form-control" placeholder="e.g.Trevor_313"
+                                        <input 
+                                        class="form-control" 
+                                        placeholder="e.g.Trevor_313"
                                             title="4-32 characters, allows letters, numbers, and special characters."
-                                            type="text" name="username" id="username" required
-                                            pattern="[A-Za-z0-9_@.]{4,32}" autofocus value="" />
+                                            type="text" 
+                                            name="username" 
+                                            id="username" 
+                                            required
+                                            pattern="[A-Za-z0-9_@.]{4,32}" 
+                                            autofocus 
+                                            value="" />
                                         <div class="valid-feedback">Valid username.</div>
                                         <div class="invalid-feedback">Enter a valid username.</div>
                                     </div>
@@ -115,8 +108,13 @@
                                     <div class="input-group input-group-sm">
                                         <span class="input-group-text"><i class="fa fa-envelope"></i></span>
                                         <input class="form-control" placeholder="mail@example.com"
-                                            title="Enter a valid email address." type="text" name="email" id="email"
-                                            required pattern="\S+@\S+\.\S+" value="" />
+                                            title="Enter a valid email address." 
+                                            type="text" 
+                                            name="email" 
+                                            id="email"
+                                            required 
+                                            pattern="\S+@\S+\.\S+" 
+                                            value="" />
                                         <div class="valid-feedback">Valid email address.</div>
                                         <div class="invalid-feedback">Enter a valid email address.</div>
                                     </div>
@@ -127,10 +125,16 @@
                                     <label for="password" class="form-label">Password</label>
                                     <div class="input-group input-group-sm">
                                         <span class="input-group-text"><i class="fa fa-key"></i></span>
-                                        <input class="form-control" placeholder="e.g.Password123"
+                                        <input 
+                                        class="form-control" 
+                                        placeholder="e.g.Password123"
                                             title="Password must be 6-16 characters long, with uppercase letters, lowercase letters, and numbers."
-                                            type="password" name="password" id="password" required
-                                            pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,16}" value="" />
+                                            type="password" 
+                                            name="password" 
+                                            id="password" 
+                                            required
+                                            pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,16}" 
+                                            value="" />
                                         <button type="button" class="btn btn-light" onclick="showpassword()">
                                             <i id="eyeIcon" class="fa fa-eye"></i>
                                         </button>
@@ -143,9 +147,16 @@
                                 <label for="confirmPassword" class="form-label">Confirm Password</label>
                                 <div class="input-group input-group-sm">
                                     <span class="input-group-text"><i class="fa fa-key"></i></span>
-                                    <input placeholder="e.g.Password123" title="Enter Confirm Password" type="password"
-                                        name="confirmPassword" id="confirmPassword" class="form-control" required
-                                        pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,16}" autofocus />
+                                    <input 
+                                    placeholder="e.g.Password123" 
+                                    title="Enter Confirm Password" 
+                                    type="password"
+                                        name="confirmPassword" 
+                                        id="confirmPassword" 
+                                        class="form-control" 
+                                        required
+                                        pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,16}" 
+                                        autofocus />
                                     <button type="button" class="btn btn-light" onclick="confirm_show_password()">
                                         <i id="confirm_password_eye_icon" class="fa fa-eye"></i>
                                     </button>
@@ -160,7 +171,11 @@
 
                                 <!-- Register Account -->
                                 <div class="form-check mb-3">
-                                    <input class="for-check-input" type="checkbox" id="tos_agree" required value="Y"
+                                    <input 
+                                    class="for-check-input" 
+                                    type="checkbox" 
+                                    id="tos_agree" 
+                                    required value="Y"
                                         name="tos_agree" />
                                     I agree to the
                                     <a href="tos.html" class="clickable"><u>Terms of Service</u></a>.

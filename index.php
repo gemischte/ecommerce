@@ -2,7 +2,7 @@
 include 'includes/conn.php';
 session_start();
 
-$sql = 'SELECT product_id, name, description,price, product_star,image_path FROM products';
+$sql = 'SELECT product_id, name, original_price,description,price, product_star,image_path FROM products';
 $result = $conn->query($sql);
 
 if (!$result) {
@@ -51,24 +51,28 @@ if (!$result) {
           <path id="primary" d="M17.92,21H6.08a1,1,0,0,1-1-1.08l.85-11a1,1,0,0,1,1-.92H17.07a1,1,0,0,1,1,.92l.85,11A1,1,0,0,1,17.92,21Z" style="fill: none; stroke: rgb(0, 0, 0); stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></path>
           <path id="secondary" d="M9,11V6a3,3,0,0,1,3-3h0a3,3,0,0,1,3,3v5" style="fill: none; stroke: rgb(44, 169, 188); stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></path>
         </svg>
-        Start Bootstrap</a>
+        Start Bootstrap
+      </a>
 
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-          <li class="nav-item"><a class="nav-link active" aria-current="page" href="#!">Home</a></li>
+          <li class="nav-item"><a class="nav-link active" aria-current="page" href="http://localhost/Database/index.php">Home</a></li>
           <li class="nav-item"><a class="nav-link" href="#!">About</a></li>
+
+          <!-- Dropdown -->
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li><a class="dropdown-item" href="#!">All Products</a></li>
-              <li>
-                <hr class="dropdown-divider" />
+            <button class="nav-link dropdown-toggle dropbtn" type="button" id="dropdownMenuButton"
+              onclick="Dropdown()">
+              Brand
+            </button>
+            <ul class="dropdown-menu dropdown-content" id="dropdown-list">
+              <li><a class="dropdown-item"
+                  href="#">Apple</a>
               </li>
-              <li><a class="dropdown-item" href="#!">Popular Items</a></li>
-              <li><a class="dropdown-item" href="#!">New Arrivals</a></li>
             </ul>
           </li>
+
         </ul>
         <form class="d-flex">
           <button class="btn btn-outline-dark" type="submit">
@@ -98,8 +102,8 @@ if (!$result) {
         <div class="carousel-item">
           <img src="https://www.apple.com/v/iphone-16-pro/d/images/meta/iphone-16-pro_overview__ejy873nl8yi6_og.png?202412122331" class="d-block w-100" alt="...">
           <div class="carousel-caption d-none d-md-block">
-            <h5>Second slide label</h5>
-            <p>Some representative placeholder content for the second slide.</p>
+            <h5>First Camera Controls</h5>
+            <p>Apple Intelligence.</p>
           </div>
         </div>
 
@@ -127,7 +131,10 @@ if (!$result) {
                       <div class="bi-star-fill"><?php echo htmlspecialchars($row['product_star']); ?></div>
                     </div>
                     <!-- Product price-->
+                    <span class="text-muted text-decoration-line-through">
+                      $<?php echo htmlspecialchars($row['original_price']); ?></span>
                     $<?php echo htmlspecialchars($row['price']); ?>
+
                   </div>
                 </div>
                 <!-- Product actions-->

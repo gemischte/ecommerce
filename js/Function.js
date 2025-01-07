@@ -38,26 +38,6 @@ function Change_bg_color() {
   }
 }
 
-//Change Index background color
-function Index_Change_bg_color() {
-  const body = document.querySelector('.min-h-screen');
-  const toggle = document.getElementById('toggleColor');
-
-  if (body.classList.contains('bg-red-400')) {
-    body.classList.remove('bg-red-400');
-    body.classList.add('bg-stone-100');
-    toggle.classList.remove('bi-brightness-high-fill');
-
-    toggle.classList.add('bi-moon-fill');
-  } 
-  else {
-    body.classList.remove('bg-stone-100');
-    body.classList.add('bg-red-400');
-    toggle.classList.remove('bi-moon-fill');
-    toggle.classList.add('bi-brightness-high-fill');
-  }
-}
-
 //Typed
 //Source https://github.com/mattboldt/typed.js
 document.addEventListener('DOMContentLoaded', function () {
@@ -69,18 +49,6 @@ document.addEventListener('DOMContentLoaded', function () {
       cursorChar: '_',
       fadeOut: true,
       loop: true
-  });
-});
-
-document.addEventListener('DOMContentLoaded',function(){
-  new Typed('#Index_Section_Title',{
-    strings: ['<i>History of Programming Languages </i>'],
-    typeSpeed: 50,
-    backSpeed:50,
-    backDelay:500,
-    cursorChar: '~',
-    // fadeOut: true,
-    loop:true
   });
 });
 
@@ -158,10 +126,6 @@ window.onload = function() {
 };
 
 //Get new year
-// window.onload = function(){
-//   document.getElementById('year').textContent = new Date().getFullYear();
-// };
-
 window.addEventListener('load',function(){
   document.getElementById('year').textContent = new Date().getFullYear();
 })

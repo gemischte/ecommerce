@@ -26,6 +26,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                 // Verify the password
                 if (password_verify($password, $row['password'])) {
+                    
+                    // Start a new session
+                    header("Location: index.php");
                     echo "Login successful! Welcome, " . htmlspecialchars($username_email) . ".</p>";
 
                     // Update last login time
