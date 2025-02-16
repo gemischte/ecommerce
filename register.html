@@ -60,7 +60,8 @@
             <!-- Change bg color -->
             <ul>
                 <a class="">
-                    <i  style="color: gray;" id="toggleDark" onclick="Change_bg_color()" class="bi-brightness-high-fill"></i>
+                    <i style="color: gray;" id="toggleDark" onclick="Change_bg_color()"
+                        class="bi-brightness-high-fill"></i>
                 </a>
             </ul>
         </nav>
@@ -102,12 +103,48 @@
                                     </div>
                                 </div>
 
+                                <!-- list name -->
+                                <div class=" mb-3">
+                                    <label for="last_name" class="form-label">Last name</label>
+                                    <div class="input-group input-group-sm">
+                                    <span class="input-group-text"><i class="fa-regular fa-id-card"></i></span>
+                                    <input 
+                                    type="text" 
+                                    class="form-control" 
+                                    id="last_name" 
+                                    name="last_name"
+                                        placeholder="Enter list name" 
+                                        required>
+                                    <div class="valid-feedback">Valid last name.</div>
+                                    <div class="invalid-feedback">Enter a valid last name.</div>
+                                </div>
+                            </div>
+                                
+                                <!-- First name -->
+                                <div class="mb-3">
+                                    <label for="first_name" class="form-label">First name</label>
+                                    <div class="input-group input-group-sm">
+                                    <span class="input-group-text"><i class="fa-regular fa-id-card"></i></span>
+                                    <input 
+                                    type="text" 
+                                    class="form-control" 
+                                    id="first_name" 
+                                    name="first_name"
+                                        placeholder="Enter First name"
+                                        required>
+                                    <div class="valid-feedback">Valid first name.</div>
+                                    <div class="invalid-feedback">Enter a valid first name.</div>
+                                </div>
+                            </div>
+
                                 <!-- Email label -->
                                 <div class="mb-3">
                                     <label for="email" class="form-label">Email</label>
                                     <div class="input-group input-group-sm">
                                         <span class="input-group-text"><i class="fa fa-envelope"></i></span>
-                                        <input class="form-control" placeholder="mail@example.com"
+                                        <input 
+                                        class="form-control" 
+                                        placeholder="mail@example.com"
                                             title="Enter a valid email address." 
                                             type="text" 
                                             name="email" 
@@ -156,7 +193,7 @@
                                         class="form-control" 
                                         required
                                         pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,16}" 
-                                        autofocus />
+                                         />
                                     <button type="button" class="btn btn-light" onclick="confirm_show_password()">
                                         <i id="confirm_password_eye_icon" class="fa fa-eye"></i>
                                     </button>
@@ -171,11 +208,7 @@
 
                                 <!-- Register Account -->
                                 <div class="form-check mb-3">
-                                    <input 
-                                    class="for-check-input" 
-                                    type="checkbox" 
-                                    id="tos_agree" 
-                                    required value="Y"
+                                    <input class="for-check-input" type="checkbox" id="tos_agree" required value="Y"
                                         name="tos_agree" />
                                     I agree to the
                                     <a href="tos.html" class="clickable"><u>Terms of Service</u></a>.

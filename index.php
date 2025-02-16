@@ -94,18 +94,7 @@ if (!$result) {
   </nav>
   <!-- Header-->
   <header class="bg-dark py-5">
-    <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
-      <div class="carousel-inner">
-        <div class="carousel-item active">
-          <img src="https://www.apple.com/v/airpods-pro/m/images/meta/og__eui2mpgzwyaa_overview.png" class="d-block w-100" alt="...">
-        </div>
-        <div class="carousel-item">
-          <img src="https://www.apple.com/v/iphone-16-pro/d/images/meta/iphone-16-pro_overview__ejy873nl8yi6_og.png?202412122331" class="d-block w-100" alt="...">
-          <div class="carousel-caption d-none d-md-block">
-            <h5>First Camera Controls</h5>
-            <p>Apple Intelligence.</p>
-          </div>
-        </div>
+    
 
       </div>
     </div>

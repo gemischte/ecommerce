@@ -45,7 +45,7 @@ if (isset($_POST['remove_from_cart'])) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 </head>
 
-<body class="card-header">
+<body class="bg-white">
 
 
     <!-- Navigation Bar -->
@@ -111,10 +111,10 @@ if (isset($_POST['remove_from_cart'])) {
 
                                 echo "<tr>
                                         <td>$product_id</td>
-                                        <td>$name <img src='$image_path' alt='$name' class='img-thumbnail' width='100'></td>
+                                        <td>$name <img src='$image_path' alt='$name' class='rounded' width='100'></td>
                                         <td>$$price</td>
                                         <td>
-                                            <input type='number' class='form-control' value='$quantity' min='1' readonly>
+                                            <input type='number' class='form-control' value='$quantity' min='1' >
                                         </td>
                                         <td>$$total_price</td>
                                         <td>
@@ -135,7 +135,7 @@ if (isset($_POST['remove_from_cart'])) {
                 </tbody>
             </table>
         </div>
-
+            
         <!-- Cart Summary -->
         <?php if (!empty($_SESSION['cart'])) : ?>
             <div class="row mt-4">

@@ -81,9 +81,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <body class="bg-light was-validated">
     <div class="container py-5">
         <div class="card shadow-lg">
-            <div class="text-dark">
-                <h2 class="mb-0">Product Management</h2>
+            <div class="card-header bg-primary text-white text-center">
+                <h2 class="mb-0"><i class="fas fa-box"></i>Product Management</h2>
             </div>
+            
             <div class="card-body">
                 <form method="POST" action="products.php" enctype="multipart/form-data">
                     <div class="mb-3">
