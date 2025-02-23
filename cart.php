@@ -168,7 +168,11 @@ if (isset($_POST['remove_from_cart'])) {
                                 <span>Total</span>
                                 <span>$<?php echo number_format($total, 2); ?></span>
                             </div>
+
+                            <form action="checkout.php" method="post">
                             <button class="btn btn-primary w-100 mt-3">Proceed to Checkout</button>
+                            </form>
+
                         </div>
                     </div>
                 </div>

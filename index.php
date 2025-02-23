@@ -128,7 +128,7 @@ if (!$result) {
                 </div>
                 <!-- Product actions-->
                 <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                  <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="view_product.php?id=<?php echo htmlspecialchars($row['product_id']); ?>">View options</a></div>
+                  <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="view_product.php?id=<?php echo htmlspecialchars($row['product_id']); ?>">View products</a></div>
                 </div>
               </div>
             </div>

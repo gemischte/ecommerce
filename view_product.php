@@ -58,7 +58,7 @@ if (isset($_GET['id'])) {
                                 <a class="nav-link active" aria-current="page" href="index.php">Home</a>
                             </li>
                         </ul>
-                        <form class="d-flex">
+                        <form class="d-flex" action="cart.php" method="post">
                             <button class="btn btn-outline-dark" type="submit">
                                 <i class="bi-cart-fill me-1"></i>
                                 Cart
@@ -96,15 +96,21 @@ if (isset($_GET['id'])) {
                                 </div>
 
                                 <!-- Add to Cart Form -->
-                                <form action="cart.php" method="post">
-                                    <input type="hidden" name="product_id" value="<?php echo htmlspecialchars($row['product_id']); ?>">
-                                    <input 
-                                    type="number" 
-                                    name="quantity" 
-                                    value="1" min="1" 
-                                    class="form-control mb-2">
+                                    <form action="cart.php" method="post">
+                                        <input type="hidden" name="product_id" value="<?php echo htmlspecialchars($row['product_id'])?>" >
+                                        <select name="quantity" id="quantity">
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                        </select>
+                                    
                                     <button 
-                                    type="submit" name="add_to_cart" class="btn btn-primary btn-sm w-100">Add to Cart</button>
+                                    type="submit" 
+                                    name="add_to_cart" 
+                                    class="btn btn-primary btn-sm w-100">Add to Cart</button>
+                                
                                 </form>
 
                             </div>
