@@ -133,7 +133,7 @@ if (isset($_POST['checkout'])) {
             
             else{
               echo "
-              <span class='badge bg-primary rounded-pill'>$count</span>
+              <span class='badge bg-primary rounded-pill'>0</span>
               ";
             }                    
             ?>
@@ -143,7 +143,7 @@ if (isset($_POST['checkout'])) {
 
 <?php
 if (!empty($_SESSION['cart'])) {
-  # code...
+
   $product_ids = implode(',', array_keys($_SESSION['cart']));
   $sql = "SELECT product_id, products_image,products_name,price FROM products WHERE product_id IN ($product_ids)";
   $result = $conn->query($sql);
@@ -396,7 +396,7 @@ else {
     </main>
 
     <footer class="my-5 pt-5 text-body-secondary text-center text-small">
-      <p class="mb-1">&copy; 2025–<span id="year"></span> Developed by gem1schte. All rights reserved.</p>
+      <p class="mb-1">&copy; 2024~<span id="year"></span> Developed by gem1schte. All rights reserved.</p>
     </footer>
     
   </div>

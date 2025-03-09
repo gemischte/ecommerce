@@ -71,7 +71,7 @@ if (isset($_GET['id'])) {
                                     echo "<span class='badge bg-dark text-white ms-1 rounded-pill'>$count</span>";
                                 } else{
                                 echo"
-                                <span class='badge bg-dark text-white ms-1 rounded-pill'>$count</span>
+                                <span class='badge bg-dark text-white ms-1 rounded-pill'>0</span>
                                 ";
                             }
                                 ?>

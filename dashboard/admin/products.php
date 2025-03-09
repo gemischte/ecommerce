@@ -60,123 +60,130 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 ?>
 
 
-<!DOCTYPE html>
-<html lang="en">
+<?php
+include('includes/header.php');
+?>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Products Manage</title>
-    <link rel="icon" href="/Database/image/favicon.ico">
-
-    <!-- Styles -->
-    <link rel="stylesheet" href="/Database/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/Database/css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
-
-    <!-- Scripts -->
-    <script src="/Database/js/Function.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
-</head>
-
-<body class="bg-light was-validated">
-    <div class="container py-5">
-        <div class="card shadow-lg">
-            <div class="card-header bg-primary text-white text-center">
-                <h2 class="mb-0"><i class="fas fa-box"></i>Product Management</h2>
-            </div>
-
-            <div class="card-body">
-                <form method="POST" action="products.php" enctype="multipart/form-data">
-                    <div class="mb-3">
-                        <label for="name" class="form-label">Product Name</label>
-                        <input
-                            type="text"
-                            class="form-control"
-                            id="name"
-                            name="products_name"
-                            placeholder="Enter product name"
-                            required>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="description" class="form-label">Product Description</label>
-                        <textarea
-                            class="form-control"
-                            id="description"
-                            name="description"
-                            rows="4"
-                            placeholder="Enter product description"
-                            required></textarea>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="price" class="form-label">Product Price ($)</label>
-                            <input
-                                type="number"
-                                class="form-control"
-                                id="price"
-                                name="price"
-                                placeholder="Enter product price"
-                                required>
-                        </div>
-
-                        <div class="col-md-6 mb-3">
-                            <label for="original_price" class="form-label">Original Price ($)</label>
-                            <input
-                                type="number"
-                                class="form-control"
-                                id="original_price"
-                                name="original_price"
-                                placeholder="Enter product original price">
-                        </div>
-
-
-                        <div class="col-md-6 mb-3">
-                            <label for="stock_quantity" class="form-label">Stock Quantity</label>
-                            <input
-                                type="number"
-                                class="form-control"
-                                id="stock_quantity"
-                                name="stock_quantity"
-                                placeholder="Enter available quantity"
-                                required>
-                        </div>
-
-                        <div class="col-md-6 mb-3">
-                            <label for="brand" class="form-label">Brand</label>
-                            <input
-                                type="text"
-                                class="form-control"
-                                id="brand"
-                                name="brand"
-                                placeholder="Enter available quantity"
-                                required>
-                        </div>
-
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="products_image" class="form-label">Image Path</label>
-                        <input
-                            type="text"
-                            class="form-control"
-                            id="products_image"
-                            name="products_image"
-                            placeholder="Enter image path or URL"
-                            required>
-                    </div>
-
-                    <div class="text-end">
-                        <button type="submit" class="btn btn-success">Submit <i class="fas fa-check"></i></button>
-                    </div>
-                </form>
-            </div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            
+            <a href="index.php">
+            <i class="material-symbols-rounded opacity-5">Dashboard</a>
+            /New Products</i>
+            
         </div>
     </div>
+</div>
 
-    <?php require_once '../../includes/footer.php'; ?>
-</body>
 
-</html>
+<div class="container py-5">
+    <div class="card shadow-lg">
+        <div class="card-header bg-primary text-white text-center">
+            <h2 class="mb-0">New products on shelves</h2>
+        </div>
+
+
+        <div class="card-body">
+            <form method="POST" action="products.php" enctype="multipart/form-data">
+
+                <div class="mb-3">
+                    <label for="name" class="form-label">Product Name</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="name"
+                        name="products_name"
+                        placeholder="Enter product name"
+                        required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="description" class="form-label">Product Description</label>
+                    <textarea
+                        class="form-control"
+                        id="description"
+                        name="description"
+                        rows="4"
+                        placeholder="Enter product description"
+                        required></textarea>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="price" class="form-label">Product Price ($)</label>
+                        <input
+                            type="number"
+                            class="form-control"
+                            id="price"
+                            name="price"
+                            placeholder="Enter product price"
+                            required>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label for="original_price" class="form-label">Original Price ($)</label>
+                        <input
+                            type="number"
+                            class="form-control"
+                            id="original_price"
+                            name="original_price"
+                            placeholder="Enter product original price">
+                    </div>
+
+
+                    <div class="col-md-6 mb-3">
+                        <label for="stock_quantity" class="form-label">Stock Quantity</label>
+                        <input
+                            type="number"
+                            class="form-control"
+                            id="stock_quantity"
+                            name="stock_quantity"
+                            placeholder="Enter available quantity"
+                            required>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label for="brand" class="form-label">Brand</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="brand"
+                            name="brand"
+                            placeholder="Enter available quantity">
+                    </div>
+
+                </div>
+
+                <div class="mb-3">
+                    <label for="products_image" class="form-label">Image Path</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="products_image"
+                        name="products_image"
+                        placeholder="Enter image path or URL"
+                        required>
+                </div>
+
+
+                <div class="text-end">
+                    <button type="submit" class="btn btn-success">Submit </button>
+                </div>
+
+        </div>
+
+
+
+
+
+        </form>
+    </div>
+
+</div>
+
+
+
+<?php
+include('includes/footer.php');
+?>
