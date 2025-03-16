@@ -1,7 +1,7 @@
 <?php
-require_once 'includes/conn.php';
-include_once 'includes/assets.php';
-include_once 'includes/mail/mailer.php';
+require_once 'views/includes/conn.php';
+include_once 'views/includes/assets.php';
+include_once 'views/mail/mailer.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -86,10 +86,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>Forget password</title>
     <link rel="icon" href="image/favicon.ico">
     <!-- Styles -->
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="views/assets/css/style.css">
+    <link rel="stylesheet" href="views/assets/css/bootstrap.min.css">
     <!-- Scripts -->
-    <script src="js/Function.js"></script>
+    <script src="views/assets/js/Function.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 </head>
 
@@ -137,7 +137,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </main>
 
     <!-- Footer -->
-    <?php include_once 'includes/footer.php';?>
+    <?php include_once 'views/includes/footer.php';?>
 
 </body>
 

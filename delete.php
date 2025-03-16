@@ -1,6 +1,6 @@
 <?php
-require_once 'includes/conn.php';
-require_once 'includes/assets.php';
+require_once 'views/includes/conn.php';
+include_once 'views/includes/assets.php';
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if (isset($_POST['username'])) {

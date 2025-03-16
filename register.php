@@ -1,6 +1,6 @@
 <?php
-require_once 'includes/conn.php';
-require_once 'includes/assets.php';
+require_once 'views/includes/conn.php';
+include_once 'views/includes/assets.php';
 // Prepare statement
 $sql = "INSERT INTO register (username,first_name,last_name,user_id, email, password, account_registered_at) 
 VALUES (?, ?, ?,?,?, ?,?)";

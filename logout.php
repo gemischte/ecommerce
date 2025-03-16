@@ -1,5 +1,5 @@
 <?php
-require_once 'includes/assets.php';
+ 
 session_start();
 session_unset();
 session_destroy();

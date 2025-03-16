@@ -4,9 +4,8 @@
 
 <?php
 session_start();
-
-include_once 'includes/conn.php';
-include_once 'includes/assets.php';
+include_once 'views/includes/conn.php';
+include_once 'views/includes/assets.php';
 
 //all country list
 $all_countries_list = "https://restcountries.com/v3.1/all";
@@ -19,23 +18,23 @@ if (isset($_POST['remove_from_cart'])) {
 }
 
 if (isset($_POST['checkout'])) {
-  $orders_id ='ORD'. '-'.date("Y").'-'.date("m").'-'.rand(100000, 999999).'-'.rand(100000, 999999);
+  $orders_id = 'ORD' . '-' . date("Y") . '-' . date("m") . '-' . rand(100000, 999999) . '-' . rand(100000, 999999);
   $country = $_POST['country'];
   $city = $_POST['city'];
   $address = $_POST['address'];
   $orders_created_at = date('Y-m-d H:i:s');
   $payment_method = $_POST['payment_method'];
   $postal_code = $_POST['postal_code'];
-  
+
   $sql = "INSERT INTO orders_info (orders_id, country, city, address, orders_created_at, payment_method, postal_code) 
   VALUES(?,?,?,?,?,?,?)";
 
   if ($stmt = $conn->prepare($sql)) {
-      $stmt->bind_param("sssssss", $orders_id, $country, $city, $address, $orders_created_at, $payment_method, $postal_code);
-      $stmt->execute();
-      if ($stmt->affected_rows > 0) {
+    $stmt->bind_param("sssssss", $orders_id, $country, $city, $address, $orders_created_at, $payment_method, $postal_code);
+    $stmt->execute();
+    if ($stmt->affected_rows > 0) {
 
-          echo "
+      echo "
           <script>
           setTimeout(function() {
               const Toast = Swal.mixin({
@@ -56,10 +55,8 @@ if (isset($_POST['checkout'])) {
                   }, 100);
           </script>
           ";
-      }
-      else 
-      {
-        echo '
+    } else {
+      echo '
         <script>
                 Swal.fire({
                     icon: "error",
@@ -71,11 +68,9 @@ if (isset($_POST['checkout'])) {
                 });
         </script>
         ';
-      }
+    }
     # code...
-  }
-  else 
-  {
+  } else {
     die("Error: " . $conn->error);
   }
 }
@@ -83,31 +78,7 @@ if (isset($_POST['checkout'])) {
 ?>
 
 
-<!doctype html>
-<html lang="en" data-bs-theme="auto">
-
-<head>
-  <script src="/docs/5.3/assets/js/color-modes.js"></script>
-
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="">
-  <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-  <meta name="generator" content="Hugo 0.122.0">
-  <title>Checkout page</title>
-  <link rel="icon" href="image/favicon.ico">
-
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
-
-  <!-- Styles -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
-  <link rel="stylesheet" href="css/bootstrap.min.css">
-  <link rel="stylesheet" href="css/style.css">
-
-  <!-- Scripts -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
-  <script src="js/Function.js"></script>
-</head>
+<?php include('views/includes/header.php') ?>
 
 <body class="bg-body-tertiary  was-validated">
 
@@ -122,71 +93,87 @@ if (isset($_POST['checkout'])) {
         <div class="col-md-5 col-lg-4 order-md-last">
           <h4 class="d-flex justify-content-between align-items-center mb-3">
             <span class="text-primary">Your cart</span>
-            
+
             <?php
             if (isset($_SESSION['cart'])) {
               $count = count($_SESSION['cart']);
               echo "
               <span class='badge bg-primary rounded-pill'>$count</span>
               ";
-            }
-            
-            else{
+            } else {
               echo "
               <span class='badge bg-primary rounded-pill'>0</span>
               ";
-            }                    
+            }
             ?>
 
           </h4>
 
 
-<?php
-if (!empty($_SESSION['cart'])) {
+          <?php
+          if (!empty($_SESSION['cart'])) {
 
-  $product_ids = implode(',', array_keys($_SESSION['cart']));
-  $sql = "SELECT product_id, products_image,products_name,price FROM products WHERE product_id IN ($product_ids)";
-  $result = $conn->query($sql);
+            $product_ids = implode(',', array_keys($_SESSION['cart']));
+            $sql = "SELECT product_id, products_image,products_name,price FROM products WHERE product_id IN ($product_ids)";
+            $result = $conn->query($sql);
 
-  if ($result->num_rows > 0) {
+            if ($result->num_rows > 0) {
 
-    echo "<ul class='list-group mb-3'>";
-    echo "<br>";
+              echo "<ul class='list-group mb-3'>";
+              echo "<br>";
 
-    $subtotal = 0;
-    while ($row = $result->fetch_assoc()) {
-      $product_id = $row['product_id'];
-      $name = $row['products_name'];
-      $price = $row['price'];
-      $image_path = $row['products_image'];
-      $quantity = $_SESSION['cart'][$product_id];
-      $total_price = $price * $quantity;
-      $tax = $total_price * 0.10;
-      $subtotal += $row['price'] * $quantity + $tax;
+              $subtotal = 0;
+              while ($row = $result->fetch_assoc()) {
+                $product_id = $row['product_id'];
+                $name = $row['products_name'];
+                $price = $row['price'];
+                $image_path = $row['products_image'];
+                $quantity = $_SESSION['cart'][$product_id];
+                $total_price = $price * $quantity;
+                $tax = $total_price * 0.05;
+                $subtotal += $row['price'] * $quantity + $tax;
 
-      echo "
-            <li class='list-group-item d-flex justify-content-between lh-sm'>
-              <div>    
-                <img src='{$image_path}'  class='rounded me-2 d-inline-block' width='100'>
-                <h6 class='text-end d-inline-block'>{$name}</h6>
+                echo "
+                <div class='card mb-3'>
+                <div class='card-body'>
+                <div class='d-flex justify-content-between'>
+                <div class='d-flex flex-row align-items-center'>
+                <div>
+                <img
+               src='{$image_path}'
+               class='img-fluid rounded-3' style='width: 100px;'>
+               </div>
+               
+              <div class='ms-3'>
+             <h5>{$name}</h5>
+             </div>
 
-                <form action='checkout.php' method='post' class='d-inline'>
-                <input type='hidden' name='product_id' value='$product_id'>
-                <button type='submit' name='remove_from_cart' class='bi bi-trash btn btn-danger'></button>
-                </form>
-                
-                <small class='text-body-secondary  d-block'>quantity:{$quantity}</small>
-                <small class='text-body-secondary  d-block'>total price:{$total_price}</small>       
-              </div>    
-            </li>";
-}
+             </div>
+            <div class='d-flex flex-row align-items-center'>
+           <div style='width: 50px;'>
+             <p class='fw-normal mb-0'>*{$quantity}</p>
+           </div>
+           <div style='width: 80px;'>
+             <p class='mb-0'>$ {$total_price}</p>
+           </div>
 
-echo "
+            <form action='checkout.php' method='post' class='d-inline'>
+            <input type='hidden' name='product_id' value='$product_id'>
+            <button type='submit' name='remove_from_cart' class='btn btn-danger'><i class='fa-solid fa-trash'></i></button>
+            </form>
+            
+         </div>
+       </div>
+     </div>
+   </div>";
+              }
+
+              echo "
 
             <li class='list-group-item d-flex justify-content-between bg-body-tertiary'>
               <div class='text-success'>
               <h6 class='my-0'>Tax </h6>
-              <small>(10%)</small>
+              <small>(5%)</small>
               </div>
               <span class='text-success'>{$tax}</span>
             </li>
@@ -205,18 +192,14 @@ echo "
             </li>
 
           </ul> ";
-}
-else {
-  echo "<tr><td colspan='5'>Error: " . $conn->error . "</td></tr>";
-  
-}
-}
-else {
-  echo "<p>Your cart is empty</p>";
+            } else {
+              echo "<tr><td colspan='5'>Error: " . $conn->error . "</td></tr>";
+            }
+          } else {
+            echo "<p>Your cart is empty</p>";
+          }
+          ?>
 
-}
-?>
- 
 
           <form class="card p-2">
             <div class="input-group">
@@ -226,20 +209,20 @@ else {
           </form>
         </div>
 
-        
+
         <div class="col-md-7 col-lg-8">
           <h4 class="mb-3">Billing address</h4>
           <form class="needs-validation" method="post">
             <div class="row g-3">
               <div class="col-sm-6">
                 <label for="firstName" class="form-label">First name</label>
-                <input type="text" 
-                class="form-control" 
-                id="firstName" 
-                name="firstName" 
-                placeholder="" 
-                value="" 
-                required>
+                <input type="text"
+                  class="form-control"
+                  id="firstName"
+                  name="firstName"
+                  placeholder=""
+                  value=""
+                  required>
                 <div class="invalid-feedback">
                   Valid first name is required.
                 </div>
@@ -247,13 +230,13 @@ else {
 
               <div class="col-sm-6">
                 <label for="lastName" class="form-label">Last name</label>
-                <input type="text" 
-                class="form-control" 
-                id="lastName" 
-                name="lastName" 
-                placeholder="" 
-                value="" 
-                required>
+                <input type="text"
+                  class="form-control"
+                  id="lastName"
+                  name="lastName"
+                  placeholder=""
+                  value=""
+                  required>
                 <div class="invalid-feedback">
                   Valid last name is required.
                 </div>
@@ -263,13 +246,13 @@ else {
                 <label for="username" class="form-label">Email</label>
                 <div class="input-group has-validation">
                   <span class="input-group-text">@</span>
-                  <input type="text" 
-                  class="form-control" 
-                  id="email" 
-                  name="email" 
-                  placeholder="Email" 
-                  pattern="\S+@\S+\.\S+" 
-                  required>
+                  <input type="text"
+                    class="form-control"
+                    id="email"
+                    name="email"
+                    placeholder="Email"
+                    pattern="\S+@\S+\.\S+"
+                    required>
                   <div class="invalid-feedback">Enter your email.</div>
                   <div class="valid-feedback">The email is valid. You can go to email get orders information.</div>
                 </div>
@@ -277,12 +260,12 @@ else {
 
               <div class="col-12">
                 <label for="address" class="form-label">Address</label>
-                <input type="text" 
-                class="form-control" 
-                id="address" 
-                name="address" 
-                placeholder="1234 Main St" 
-                required>
+                <input type="text"
+                  class="form-control"
+                  id="address"
+                  name="address"
+                  placeholder="1234 Main St"
+                  required>
                 <div class="invalid-feedback">
                   Please enter your shipping address.
                 </div>
@@ -290,10 +273,10 @@ else {
 
               <div class="col-md-5">
                 <label for="country" class="form-label">Country</label>
-                <select class="form-select" 
-                id="country" 
-                name="country" 
-                required>
+                <select class="form-select"
+                  id="country"
+                  name="country"
+                  required>
                   <option value="">Choose...</option>
                   <?php
                   foreach ($countries as $country) {
@@ -305,32 +288,32 @@ else {
 
               <div class="col-md-3">
                 <label for="city" class="form-label">city</label>
-                <input 
-                type="text" 
-                class="form-control" 
-                id="city" 
-                name="city" 
-                placeholder="California" 
-                required>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="city"
+                  name="city"
+                  placeholder="California"
+                  required>
                 <div class="invalid-feedback">
-                Please provide a valid city.
+                  Please provide a valid city.
                 </div>
               </div>
 
               <div class="col-md-3">
                 <label for="zip" class="form-label">Zip</label>
-                <input 
-                type="text" 
-                class="form-control" 
-                id="postal_code" 
-                name="postal_code" 
-                placeholder="" 
-                required>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="postal_code"
+                  name="postal_code"
+                  placeholder=""
+                  required>
                 <div class="invalid-feedback">
                   Zip code required.
                 </div>
               </div>
-              
+
             </div>
 
             <hr class="my-4">
@@ -339,10 +322,10 @@ else {
 
             <div class="col-md-3">
               <label for="payment_method" class="form-label">Payment method</label>
-              <select class="form-select" 
-              id="payment_method" 
-              name="payment_method" 
-              required>
+              <select class="form-select"
+                id="payment_method"
+                name="payment_method"
+                required>
                 <option selected disabled value="">Choose...</option>
                 <option value="Credit Card">Credit Card</option>
                 <option value="PayPal">Paypal</option>
@@ -350,41 +333,6 @@ else {
                 <option value="Cash">Cash</option>
               </select>
             </div>
-
-         <!--   <div class="row gy-3" id="" style="display: none;">
-              <div class="col-md-6">
-                <label for="cc-name" class="form-label">Name on card</label>
-                <input type="text" class="form-control" id="cc-name" name="cc-name" placeholder="" required>
-                <small class="text-body-secondary">Full name as displayed on card</small>
-                <div class="invalid-feedback">
-                  Name on card is required
-                </div>
-              </div>
-
-               <div class="col-md-6">
-                <label for="cc-number" class="form-label">Credit card number</label>
-                <input type="text" class="form-control" id="cc-number" name="cc-number" placeholder="" required>
-                <div class="invalid-feedback">
-                  Credit card number is required
-                </div>
-              </div>
-
-              <div class="col-md-3">
-                <label for="cc-expiration" class="form-label">Expiration</label>
-                <input type="text" class="form-control" id="cc-expiration" name="cc-expiration" placeholder="" required>
-                <div class="invalid-feedback">
-                  Expiration date required
-                </div>
-              </div>
-
-              <div class="col-md-3">
-                <label for="cc-cvv" class="form-label">CVV</label>
-                <input type="text" class="form-control" id="cc-cvv" name="cc-cvv" placeholder="" required>
-                <div class="invalid-feedback">
-                  Security code required
-                </div>
-              </div>
-            </div> -->
 
             <hr class="my-4">
 
@@ -395,11 +343,12 @@ else {
       </div>
     </main>
 
-    <footer class="my-5 pt-5 text-body-secondary text-center text-small">
-      <p class="mb-1">&copy; 2024~<span id="year"></span> Developed by gem1schte. All rights reserved.</p>
-    </footer>
-    
+
+
   </div>
+
+  <!-- Footer -->
+  <?php include_once 'views/includes/footer.php'; ?>
 
 </body>
 

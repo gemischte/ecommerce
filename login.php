@@ -1,6 +1,6 @@
 <?php
-require_once 'includes/conn.php';
-require_once 'includes/assets.php';
+require_once 'views/includes/conn.php';
+include_once 'views/includes/assets.php';
 // Execute the following logic only if a POST request is received
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Ensure that the form fields exist

@@ -1,5 +1,5 @@
 <?php
-require_once '../../includes/conn.php';
+require_once '../../views/includes/conn.php';
 session_start();
 
 $sql = 'SELECT product_id, products_name, stock_quantity,original_price,description,price, product_star,products_image FROM products';
