@@ -6,7 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
   <meta name="description" content="" />
   <meta name="author" content="" />
-  <title>Tempest shopping</title>
   <link rel="icon" href="image/favicon.ico">
   <!-- fontawesome icons-->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet" type="text/css">
@@ -24,4 +23,4 @@
     </div>
   </noscript>
   
-  <?php include('navbar.php');
+  <?php include('navbar.php');?>

@@ -78,15 +78,16 @@ if (isset($_POST['checkout'])) {
 ?>
 
 
-<?php include('views/includes/header.php') ?>
+<?php include('views/includes/header.php'); ?>
+
+<title>Checkout form</title>
 
 <body class="bg-body-tertiary  was-validated">
 
   <div class="container">
     <main>
       <div class="py-5 text-center">
-        <h2>Checkout form</h2>
-        <p class="lead"> Thanks you for buying our products</p>
+        <h2>Thanks you for buying our products</h2>
       </div>
 
       <div class="row g-5">
@@ -118,80 +119,84 @@ if (isset($_POST['checkout'])) {
             $result = $conn->query($sql);
 
             if ($result->num_rows > 0) {
+          ?>
 
-              echo "<ul class='list-group mb-3'>";
-              echo "<br>";
+              <ul class='list-group mb-3'>
+                <li class='card mb-3'>
+                  <br>
 
-              $subtotal = 0;
-              while ($row = $result->fetch_assoc()) {
-                $product_id = $row['product_id'];
-                $name = $row['products_name'];
-                $price = $row['price'];
-                $image_path = $row['products_image'];
-                $quantity = $_SESSION['cart'][$product_id];
-                $total_price = $price * $quantity;
-                $tax = $total_price * 0.05;
-                $subtotal += $row['price'] * $quantity + $tax;
+                  <?php
+                  $subtotal = 0;
+                  while ($row = $result->fetch_assoc()) {
+                    $product_id = $row['product_id'];
+                    $name = $row['products_name'];
+                    $price = $row['price'];
+                    $image_path = $row['products_image'];
+                    $quantity = $_SESSION['cart'][$product_id];
+                    $total_price = $price * $quantity;
+                    $tax = $total_price * 0.05;
+                    $subtotal += $row['price'] * $quantity + $tax;
+                  ?>
 
-                echo "
-                <div class='card mb-3'>
-                <div class='card-body'>
-                <div class='d-flex justify-content-between'>
-                <div class='d-flex flex-row align-items-center'>
-                <div>
-                <img
-               src='{$image_path}'
-               class='img-fluid rounded-3' style='width: 100px;'>
-               </div>
-               
-              <div class='ms-3'>
-             <h5>{$name}</h5>
-             </div>
 
-             </div>
-            <div class='d-flex flex-row align-items-center'>
-           <div style='width: 50px;'>
-             <p class='fw-normal mb-0'>*{$quantity}</p>
-           </div>
-           <div style='width: 80px;'>
-             <p class='mb-0'>$ {$total_price}</p>
-           </div>
+                    <hr>
+                    <div class='card-body'>
+                      <div class='d-flex justify-content-between'>
+                        <div class='d-flex flex-row align-items-center'>
+                          <div>
+                            <img
+                              src='<?= $image_path ?>'
+                              class='img-fluid rounded-3' style='width: 100px;'>
+                          </div>
 
-            <form action='checkout.php' method='post' class='d-inline'>
-            <input type='hidden' name='product_id' value='$product_id'>
-            <button type='submit' name='remove_from_cart' class='btn btn-danger'><i class='fa-solid fa-trash'></i></button>
-            </form>
-            
-         </div>
-       </div>
-     </div>
-   </div>";
-              }
+                          <div class='ms-3'>
+                            <h5><?= $name ?></h5>
+                          </div>
 
-              echo "
+                        </div>
+                        <div class='d-flex flex-row align-items-center'>
+                          <div style='width: 50px;'>
+                            <p class='fw-normal mb-0'>*<?= $quantity ?></p>
+                          </div>
+                          <div style='width: 80px;'>
+                            <p class='mb-0'>$ <?= $total_price ?></p>
+                          </div>
 
-            <li class='list-group-item d-flex justify-content-between bg-body-tertiary'>
-              <div class='text-success'>
-              <h6 class='my-0'>Tax </h6>
-              <small>(5%)</small>
-              </div>
-              <span class='text-success'>{$tax}</span>
-            </li>
+                          <form action='checkout.php' method='post' class='d-inline'>
+                            <input type='hidden' name='product_id' value='<?= $product_id ?>'>
+                            <button type='submit' name='remove_from_cart' class='btn btn-danger'><i class='fa-solid fa-trash'></i></button>
+                          </form>
 
-            <li class='list-group-item d-flex justify-content-between bg-body-tertiary'>
-              <div class='text-success'>
-                <h6 class='my-0'>Promo code</h6>
-                <small>EXAMPLECODE</small>
-              </div>
-              <span class='text-success'>−$5</span>
-            </li>
-            
-            <li class='list-group-item d-flex justify-content-between'>
-              <span>Total (USD)</span>
-              <strong>{$subtotal}</strong>
-            </li>
+                        </div>
+                      </div>
+                    </div>
+                  <?php
+                  }
+                  ?>
 
-          </ul> ";
+                <li class='list-group-item d-flex justify-content-between bg-body-tertiary'>
+                  <div class='text-success'>
+                    <h6 class='my-0'>Tax </h6>
+                    <small>(5%)</small>
+                  </div>
+                  <span class='text-success'><?= $tax ?></span>
+                </li>
+
+                <li class='list-group-item d-flex justify-content-between bg-body-tertiary'>
+                  <div class='text-success'>
+                    <h6 class='my-0'>Promo code</h6>
+                    <small>EXAMPLECODE</small>
+                  </div>
+                  <span class='text-success'>−$5</span>
+                </li>
+
+                <li class='list-group-item d-flex justify-content-between'>
+                  <span>Total (USD)</span>
+                  <strong><?= $subtotal ?></strong>
+                </li>
+
+              </ul>
+          <?php
             } else {
               echo "<tr><td colspan='5'>Error: " . $conn->error . "</td></tr>";
             }
@@ -348,7 +353,7 @@ if (isset($_POST['checkout'])) {
   </div>
 
   <!-- Footer -->
-  <?php include_once 'views/includes/footer.php'; ?>
+  <?php include('views/includes/footer.php'); ?>
 
 </body>
 

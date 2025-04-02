@@ -112,19 +112,21 @@ textarea.invalid:focus {
   padding: 0;
 }
 
-.btn-success:hover {
-  background: linear-gradient(90deg, #007bff, #00c6ff);
-}
-
-.card {
-  margin-bottom: 10px;
-}
-
-.card-header {
-  background: linear-gradient(90deg, #007bff, #00c6ff);
+.social-icon {
+  width: 35px;
+  height: 35px;
+  line-height: 35px;
+  border-radius: 50%;
+  text-align: center;
   color: #fff;
-  font-weight: bold;
-  border-bottom: none;
+  display: inline-block;
+  margin: 0 8px;
+  transition: all 0.3s ease;
+}
+
+.social-icon:hover {
+  transform: translateY(-3px);
+  color: #fff;
 }
 
 @media only screen and (min-width: 768px) {

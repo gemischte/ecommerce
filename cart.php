@@ -6,7 +6,7 @@ if (!isset($_SESSION['cart'])) {
     $_SESSION['cart'] = array();
 }
 
-// 加入商品到購物車
+// Add product to Cart
 if (isset($_POST['add_to_cart'])) {
     $product_id = filter_var($_POST['product_id'], FILTER_SANITIZE_NUMBER_INT);
     $quantity = filter_var($_POST['quantity'], FILTER_SANITIZE_NUMBER_INT);
@@ -20,14 +20,16 @@ if (isset($_POST['add_to_cart'])) {
     }
 }
 
-// 從購物車移除商品
+// Remove product from cart
 if (isset($_POST['remove_from_cart'])) {
     $product_id = filter_var($_POST['product_id'], FILTER_SANITIZE_NUMBER_INT);
     unset($_SESSION['cart'][$product_id]);
 }
 ?>
 
-<?php include('views/includes/header.php') ?>
+<?php include('views/includes/header.php');?>
+
+<title>Cart</title>
 
 <body class="bg-white">
 
@@ -42,6 +44,9 @@ if (isset($_POST['remove_from_cart'])) {
                         $result = $conn->query($sql);
 
                         if ($result) {
+                            echo"    <div class='card mb-4'>                            
+                                    <div class='card-body'>";
+                                    
                             while ($row = $result->fetch_assoc()) {
                                 $product_id = $row['product_id'];
                                 $name = htmlspecialchars($row['products_name']);
@@ -52,8 +57,6 @@ if (isset($_POST['remove_from_cart'])) {
                                 $total_price = number_format($row['price'] * $quantity, 2);
 
                                 echo "
-                                <div class='card mb-4'>
-                                    <div class='card-body'>
                                         <div class='row cart-item mb-3'>
                                             <div class='col-md-3'>
                                                 <img src='{$image_path}'style='width: 100px;'>
@@ -65,9 +68,9 @@ if (isset($_POST['remove_from_cart'])) {
 
                                             <div class='col-md-2'>
                                                 <div class='input-group'>
-                                                    <button class='btn btn-outline-secondary btn-sm' type='button'>-</button>
+                                                    <button class='btn btn-outline-secondary btn-sm' value='-1' type='button'>-</button>
                                                     <input style='max-width:100px' type='text' class='form-control  form-control-sm text-center quantity-input' value='{$quantity}'>
-                                                    <button class='btn btn-outline-secondary btn-sm' type='button'>+</button>
+                                                    <button class='btn btn-outline-secondary btn-sm' value='1' type='button'>+</button>
                                                 </div>
                                             </div>
 
@@ -86,9 +89,11 @@ if (isset($_POST['remove_from_cart'])) {
                                         </div>
                                         <hr>
 
-                                    </div>
-                                </div>";
+                                 ";
                             }
+                            echo "</div>";
+                            echo "</div>";
+
                         } else {
                             echo "<tr><td colspan='5'>Error: " . $conn->error . "</td></tr>";
                         }
@@ -143,7 +148,7 @@ if (isset($_POST['remove_from_cart'])) {
     </div>
 
     <!-- Footer -->
-    <?php include_once 'views/includes/footer.php'; ?>
+    <?php include('views/includes/footer.php');?>
 
 </body>
 

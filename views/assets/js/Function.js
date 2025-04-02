@@ -41,13 +41,10 @@ function Change_bg_color() {
 //https://github.com/mattboldt/typed.js
 document.addEventListener('DOMContentLoaded', function () {
   new Typed('#Register_Section_Title', {
-      strings: ['Hello', 'Welcome.'],
-      typeSpeed: 50,
-      backSpeed: 50,
-      backDelay: 500,
-      cursorChar: '_',
-      fadeOut: true,
-      loop: true
+    strings: ['Already have an account? ^100.', 'Now.'],
+    typeSpeed: 50,
+    cursorChar: '_',
+    loop: true,
   });
 });
 

@@ -6,25 +6,6 @@ https://mdbootstrap.com/docs/standard/navigation/footer/
 
   <!-- Section: Social media -->
   <section class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
-    <!-- Left -->
-    <div class="me-5 d-none d-lg-block">
-      <span>Get connected with us on social networks:</span>
-    </div>
-    <!-- Left -->
-
-    <!-- Right -->
-    <div>
-      <a href="https://www.facebook.com/" class="me-4 text-reset" target="_blank" aria-label="Facebook">
-        <i class="fa-brands fa-facebook"></i>
-      </a>
-      <a href="https://x.com/" class="me-4 text-reset" target="_blank" aria-label="Twitter">
-        <i class="fa-brands fa-square-x-twitter"></i>
-      </a>
-      <a href="https://www.instagram.com/" class="me-4 text-reset" target="_blank" aria-label="Instagram">
-        <i class="fa-brands fa-instagram"></i>
-      </a>
-    </div>
-    <!-- Right -->
   </section>
   <!-- Section: Social media -->
 
@@ -44,6 +25,13 @@ https://mdbootstrap.com/docs/standard/navigation/footer/
           </p>
 
           <p>Have a Happ Day!<i class="fa-solid fa-face-smile"></i></p>
+
+          <div class="social-links">
+            <a href="https://www.facebook.com/" target="_blank" aria-label="Facebook" class="social-icon bg-primary"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://x.com/" target="_blank" aria-label="Twitter" class="social-icon bg-info"><i class="fa-brands fa-x-twitter"></i></a>
+            <a href="https://www.instagram.com/" target="_blank" aria-label="Instagram" class="social-icon bg-danger"><i class="fa-brands fa-instagram"></i></a>
+          </div>
+          
         </div>
         <!-- Grid column -->
 
@@ -55,28 +43,28 @@ https://mdbootstrap.com/docs/standard/navigation/footer/
           </h6>
 
           <p>
-            <a href="#!" class="text-reset">
+            <a href="#!" class="text-reset text-decoration-none">
               <i class="fa-solid fa-credit-card fa-fw"></i>
               Credit Card
             </a>
           </p>
 
           <p>
-            <a href="#!" class="text-reset">
+            <a href="#!" class="text-reset text-decoration-none">
               <i class="fa-solid fa-money-bill fa-fw"></i>
               Cash
             </a>
           </p>
 
           <p>
-            <a href="#!" class="text-reset">
+            <a href="#!" class="text-reset text-decoration-none">
               <i class="fa-solid fa-building-columns fa-fw"></i>
               Bank
             </a>
           </p>
 
           <p>
-            <a href="#!" class="text-reset">
+            <a href="#!" class="text-reset text-decoration-none">
               <i class="fa-brands fa-paypal  fa-fw"></i>
               PayPal
             </a>
@@ -93,28 +81,28 @@ https://mdbootstrap.com/docs/standard/navigation/footer/
           </h6>
 
           <p>
-            <a href="https://github.com/" class="text-reset"  target="_blank">
+            <a href="https://github.com/" class="text-reset text-decoration-none" target="_blank">
               <i class="fa-brands fa-github"></i>
               Github
             </a>
           </p>
 
           <p>
-            <a href="mailto:mail@example.com" class="text-reset">
+            <a href="mailto:mail@example.com" class="text-reset text-decoration-none">
               <i class="fa-solid fa-envelope"></i>
               Email
             </a>
           </p>
 
           <p>
-            <a href="https://maps.app.goo.gl/A8sBzVz2nsEmmdk9A" class="text-reset" target="_blank">
+            <a href="https://maps.app.goo.gl/A8sBzVz2nsEmmdk9A" class="text-reset text-decoration-none" target="_blank">
               <i class="fa-solid fa-location-dot"></i>
               Address
             </a>
           </p>
 
           <p>
-            <a href="tel:+1 XXX XXX XXXX" class="text-reset">
+            <a href="tel:+1 XXX XXX XXXX" class="text-reset text-decoration-none">
               <i class="fa-solid fa-phone"></i>
               +1 XXX XXX XXXX
             </a>
@@ -143,3 +131,16 @@ https://mdbootstrap.com/docs/standard/navigation/footer/
 <script src="views/assets/js/Function.js"></script>
 <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+
+<!-- https://gtranslate.io/website-translator-widget -->
+<script src="https://cdn.gtranslate.net/widgets/latest/globe.js" defer></script>
+<script>
+  window.gtranslateSettings = {
+    "default_language": "en",
+    "languages": ["en", "zh-CN", "ja", "fr", "de"],
+    "alt_flags":{"en":"usa"},
+    "globe_color": "#808080",
+    "wrapper_selector": ".gtranslate_wrapper",
+    "globe_size": 40
+  }
+</script>

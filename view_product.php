@@ -15,7 +15,9 @@ if (isset($_GET['id'])) {
         $row = $result->fetch_assoc();
 ?>
 
-        <?php include('views/includes/header.php') ?>
+        <?php include('views/includes/header.php');?>
+        
+        <title>Tempest shopping</title>
 
         <div class="container py-5">
             <div class="row">
@@ -116,7 +118,7 @@ if (isset($_GET['id'])) {
 
 
         <!-- Footer -->
-        <?php include('views/includes/footer.php') ?>
+        <?php include('views/includes/footer.php');?>
 
 <?php
     } else {

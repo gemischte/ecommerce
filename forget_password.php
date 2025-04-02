@@ -1,3 +1,6 @@
+<!-- Ui Source code:
+https://bootstrapbrain.com/component/bootstrap-free-forgot-password-form-snippet/#code 
+-->
 <?php
 require_once 'views/includes/conn.php';
 include_once 'views/includes/assets.php';
@@ -14,7 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     //Clean expiry token
     $cleanup_expiry_token = "UPDATE register SET token = NULL, token_expiry = NULL WHERE token_expiry <= NOW()";
     $conn->query($cleanup_expiry_token);
-    
+
     if (!empty($_POST['email']) && filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
         $email = htmlspecialchars(trim($_POST['email']));
         $sql = "SELECT email FROM register WHERE email = ?";
@@ -38,13 +41,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $mail->Subject = 'Reset password';
                     $mail->Body = "<p>Hello {$email}</p> Click the link: <a href='http://localhost/Database/reset_password.php?token={$token}'>reset password</a>";
 
-                    try{
+                    try {
                         $mail->send();
-                    }
-                    catch (Exception $e) {
+                    } catch (Exception $e) {
                         echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
                     }
-                    
+
                     echo "
                     <script>
                         setTimeout(function() {
@@ -77,67 +79,95 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
+<?php include('views/includes/header.php');?>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Forget password</title>
-    <link rel="icon" href="image/favicon.ico">
-    <!-- Styles -->
-    <link rel="stylesheet" href="views/assets/css/style.css">
-    <link rel="stylesheet" href="views/assets/css/bootstrap.min.css">
-    <!-- Scripts -->
-    <script src="views/assets/js/Function.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
-</head>
+<title>Forget Password</title>
 
-<body class="bg-secondary was-validated">
+<section class="py-3 py-md-5 py-xl-8 was-validated">
+    <form method="post">
 
-    <noscript>
-        <div class="no_js">
-            <span>This site requires JavaScript.</span>
-        </div>
-    </noscript>
-
-    <main class="container mt-5">
-        <form method="post">
-            <div class="row justify-content-center">
-                <div class="col-lg-5 col-md-6 col-sm-8">
-                    <div class="card text-white bg-dark">
-                        <div class="card-header text-center fw-bold">Reset Password</div>
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Email</label>
-                            <div class="input-group input-group-sm">
-                                <input
-                                    placeholder="mail@example.com"
-                                    title=""
-                                    type="text"
-                                    name="email"
-                                    id="email"
-                                    class="form-control"
-                                    required
-                                    pattern="\S+@\S+\.\S+"
-                                    autofocus />
-                                <div class="invalid-feedback">Enter your registered email.</div>
-                                <div class="valid-feedback">The email is valid. You can now submit to reset your password via email.</div>
-                            </div>
-                        </div>
-
-                        <!-- submit button -->
-                        <div class="align-items-center d-flex justify-content-center">
-                            <button type="submit" class="btn btn-success">Submit</button>
-                        </div>
-
+        <div class="container">
+            
+            <div class="row">
+                <div class="col-12">
+                    <div class="mb-5">
+                        <h2 class="display-5 fw-bold text-center">Password Reset</h2>
+                        <p class="text-center m-0">Provide the email address associated with your account to recover your password.</p>
                     </div>
                 </div>
             </div>
-        </form>
-    </main>
 
-    <!-- Footer -->
-    <?php include_once 'views/includes/footer.php';?>
+            <div class="row justify-content-center">
+                <div class="col-12 col-lg-10 col-xl-8">
+                    <div class="row gy-5 justify-content-center">
+                        <div class="col-12 col-lg-5">
+                        
+                                <div class="row gy-3 overflow-hidden">
+                                    <div class="col-12">
+                                        <div class="form-floating mb-3">
+                                            <input
+                                            placeholder=""
+                                            title="mail@example.com"
+                                            type="text"
+                                            name="email"
+                                            id="email"
+                                            class="form-control"
+                                            required
+                                            pattern="\S+@\S+\.\S+"
+                                            autofocus />
+                                            <label for="email" class="form-label">Email</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <div class="d-grid">
+                                            <button class="btn btn-primary btn-lg" type="submit">Send Reset Mail</button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-12">
+                                        <div class="row justify-content-between">
+                                            <div class="col-6">
+                                                <a href="login.html" class="link-secondary text-decoration-none">Login</a>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="text-end">
+                                                    <a href="register.html" class="link-secondary text-decoration-none">Register</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                        </div>
+                        
+                        <div class="col-12 col-lg-2 d-flex align-items-center justify-content-center gap-3 flex-lg-column">
+                            <div class="bg-dark h-100 d-none d-lg-block" style="width: 1px; --bs-bg-opacity: .1;"></div>
+                            <div class="bg-dark w-100 d-lg-none" style="height: 1px; --bs-bg-opacity: .1;"></div>
+                            <div>or</div>
+                            <div class="bg-dark h-100 d-none d-lg-block" style="width: 1px; --bs-bg-opacity: .1;"></div>
+                            <div class="bg-dark w-100 d-lg-none" style="height: 1px; --bs-bg-opacity: .1;"></div>
+                        </div>
+                        
+                        <div class="col-12 col-lg-5 d-flex align-items-center">
+                            <div class="d-flex gap-3 flex-column w-100 ">
+                                <a href="mailto:mail@example.com" class="btn btn-lg btn-danger">
+                                    <i class="fa-solid fa-envelope"></i>
+                                    <span class="ms-2 fs-6">Contact us via Email</span>
+                                </a>                                                     
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </form>
+</section>
+
+<!-- Footer -->
+<?php include('views/includes/footer.php');?>
 
 </body>
 

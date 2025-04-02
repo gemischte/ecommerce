@@ -37,7 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             if ($UPDATEstmt) {
                                 $UPDATEstmt->bind_param("ss", $password, $token);
                                 if ($UPDATEstmt->execute()) {
-                                echo "
+                                    echo "
                                 <script>
                                     setTimeout(function() {
                                         Swal.fire({
@@ -53,12 +53,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 ";
                                 }
                             }
-                        } 
-                    }
-                    else 
-                    {
+                        }
+                    } else {
                         echo '<div class = "error">';
-                        echo("Token not found or has expired.");
+                        echo ("Token not found or has expired.");
                         echo '</div>';
                     }
                 }
@@ -81,93 +79,73 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
+<?php include('views/includes/header.php');?>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reset password</title>
-    <link rel="icon" href="image/favicon.ico">
-    <!-- Styles -->
-    <link rel="stylesheet" href="views/assets/css/style.css">
-    <link rel="stylesheet" href="views/assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+<title>Reset Password</title>
 
-    <!-- Scripts -->
-    <script src="views/assets/js/Function.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
-</head>
+<section class="py-3 py-md-5 py-xl-8 was-validated">
+    <form method="post">
+        <div class="container">
+            
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold">Reset Password</h2>
+            </div>
 
-<body class="bg-secondary was-validated">
-
-    <noscript>
-        <div class="no_js">
-            <span>This site requires JavaScript.</span>
-        </div>
-    </noscript>
-
-    <main class="container mt-5">
-        <form method="post">
             <div class="row justify-content-center">
-                <div class="col-lg-5 col-md-6 col-sm-8">
-                    <div class="card text-white bg-dark">
-                        <div class="card-header text-center fw-bold">Reset Password</div>
-                        <div class="mb-3">
+                <div class="col-12 col-lg-10 col-xl-8">
+                    <div class="row gy-5 justify-content-center">
+                        <div class="col-12 col-lg-5">
 
-                            <label for="password" class="form-label">Password</label>
-                            <div class="input-group input-group-sm">
-                                <input
-                                    placeholder="e.g.Password123"
-                                    title="Password must be 6-16 characters long, with uppercase letters, lowercase letters, and numbers."
-                                    type="password"
-                                    name="password"
-                                    id="password"
-                                    class="form-control"
-                                    required
-                                    pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,16}"
-                                    autofocus />
-                                <button type="button" class="btn btn-light" onclick="showpassword()">
+                            <div class="form-floating mb-3 position-relative">
+                                <input type="password" 
+                                name="password" 
+                                id="password" 
+                                class="form-control"
+                                placeholder="" 
+                                required
+                                pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,16}"
+                                title="Password must be 6-16 characters long, with uppercase letters, lowercase letters, and numbers."
+                                autofocus />
+                                <label for="password">Password</label>
+                                <button type="button" class="btn btn-light position-absolute end-0 top-50 translate-middle-y me-2" onclick="showpassword()">
                                     <i id="eyeIcon" class="fa fa-eye"></i>
                                 </button>
-                                <div class="invalid-feedback">Valid password.</div>
-                                <div class="valid-feedback">Please enter a valid password.</div>
                             </div>
 
-                            <label for="confirmPassword" class="form-label">Confirm Password</label>
-                            <div class="input-group input-group-sm">
-                                <input
-                                    placeholder="e.g.Password123"
-                                    title="Enter Confirm Password"
-                                    type="password"
-                                    name="confirmPassword"
-                                    id="confirmPassword"
-                                    class="form-control"
-                                    required
-                                    pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,16}"
-                                    autofocus />
-                                <button type="button" class="btn btn-light" onclick="confirm_show_password()">
+                            <div class="form-floating mb-3 position-relative">
+                                <input 
+                                type="password" 
+                                name="confirmPassword" 
+                                id="confirmPassword" 
+                                class="form-control"
+                                placeholder="" 
+                                required
+                                pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,16}"
+                                title="Confirm Password" />
+                                <label for="confirmPassword">Confirm Password</label>
+                                <button type="button" class="btn btn-light position-absolute end-0 top-50 translate-middle-y me-2" onclick="confirm_show_password()">
                                     <i id="confirm_password_eye_icon" class="fa fa-eye"></i>
                                 </button>
-                                <div class="invalid-feedback">Valid password.</div>
-                                <div class="valid-feedback">Please enter a valid password.</div>
+                            </div>
+
+                            <div class="col-12">
+                                <div class="d-grid">
+                                    <button class="btn btn-primary btn-lg" type="submit">Reset Password</button>
+                                </div>
                             </div>
 
                         </div>
-
-                        <!-- submit button -->
-                        <div class="align-items-center d-flex justify-content-center">
-                            <button type="submit" class="btn btn-success">Submit</button>
-                        </div>
-
                     </div>
                 </div>
             </div>
-        </form>
-    </main>
 
-    <!-- Footer -->
-    <?php include_once 'views/includes/footer.php'; ?>
+        </div>
+    </form>
+</section>
+
+
+<!-- Footer -->
+<?php include('views/includes/footer.php');?>
 
 </body>
 

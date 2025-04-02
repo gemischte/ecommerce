@@ -1,6 +1,6 @@
 <?Php
 require_once '../../views/includes/conn.php';
-include_once '../../views/assets.php';
+include_once '../../views/includes/assets.php';
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if (

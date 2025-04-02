@@ -28,9 +28,9 @@
 <body id="page-top">
 
 <div id="wrapper">
-<?php include('includes/sidebar.php'); ?>
+<?php include('includes/sidebar.php');?>
 
 <div id="content-wrapper" class="d-flex flex-column">
-<?php include('includes/navbar.php'); ?>
+<?php include('includes/navbar.php');?>
    
 
