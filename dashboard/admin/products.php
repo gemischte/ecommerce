@@ -1,33 +1,37 @@
 <?Php
-require_once '../../views/includes/conn.php';
+require_once '../../views/includes/config.php';
 include_once '../../views/includes/assets.php';
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if (
-        isset($_POST['products_name']) &&
+        isset($_POST['product_name']) &&
         isset($_POST['description']) &&
         isset($_POST['price']) &&
         isset($_POST['original_price']) &&
         isset($_POST['stock_quantity']) &&
-        isset($_POST['products_image'])
+        isset($_POST['product_images'])
     ) {
 
-        $name = $_POST['products_name'];
-        $description = $_POST['description'];
+        $product_names = $_POST['product_name'];
+        $product_description = $_POST['description'];
         $brand = $_POST['brand'];
         $price = $_POST['price'];
         $original_price = $_POST['original_price'];
         $stock_quantity = $_POST['stock_quantity'];
-        $image_path = $_POST['products_image'];
+        $product_images = $_POST['product_images'];
 
         $product_id = rand(1000, 99999);
 
-        $sql = "INSERT INTO products  (products_name,product_id ,description, brand,price, original_price,stock_quantity, products_image) 
+        $sql = "INSERT INTO products  (product_name,product_id ,description, 
+        brand,price, original_price,stock_quantity, product_images) 
          VALUES (?, ?, ?, ?, ?, ?,?, ?)";
         $stmt = $conn->prepare($sql);
 
         if ($stmt) {
-            $stmt->bind_param("sssssdss", $name, $product_id, $description, $brand, $price, $original_price, $stock_quantity, $image_path);
+            $stmt->bind_param("sisssdss", 
+            $product_names, $product_id, 
+            $product_description, $brand, $price, 
+            $original_price, $stock_quantity, $product_images);
 
             if ($stmt->execute()) {
                 echo "
@@ -43,9 +47,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 </script>
                 ";
             } else {
-                echo '<div class = "error">';
-                echo ("Product added faild!");
-                echo '</div>';
+                echo "<script>alert('Product addition failed!');</script>";
             }
 
             $stmt->close();
@@ -93,7 +95,8 @@ include('includes/header.php');
                         type="text"
                         class="form-control"
                         id="name"
-                        name="products_name"
+                        name="product_name"
+                        maxlength="20"
                         placeholder="Enter product name"
                         required>
                 </div>
@@ -150,18 +153,19 @@ include('includes/header.php');
                             class="form-control"
                             id="brand"
                             name="brand"
+                            maxlength="20"
                             placeholder="Enter available quantity">
                     </div>
 
                 </div>
 
                 <div class="mb-3">
-                    <label for="products_image" class="form-label">Image Path</label>
+                    <label for="product_images" class="form-label">Image Path</label>
                     <input
                         type="text"
                         class="form-control"
-                        id="products_image"
-                        name="products_image"
+                        id="product_images"
+                        name="product_images"
                         placeholder="Enter image path or URL"
                         required>
                 </div>

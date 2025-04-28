@@ -3,12 +3,12 @@
  -->
 
 <?php
-session_start();
-include_once 'views/includes/conn.php';
+include_once 'views/includes/config.php';
 include_once 'views/includes/assets.php';
+include_once 'views/mail/mailer.php';
 
 //all country list
-$all_countries_list = "https://restcountries.com/v3.1/all";
+$all_countries_list = "https://www.apicountries.com/countries";
 $countries_data = file_get_contents($all_countries_list);
 $countries = json_decode($countries_data, true);
 
@@ -26,10 +26,10 @@ if (isset($_POST['checkout'])) {
   $payment_method = $_POST['payment_method'];
   $postal_code = $_POST['postal_code'];
 
-  $sql = "INSERT INTO orders_info (orders_id, country, city, address, orders_created_at, payment_method, postal_code) 
+  $insert_order_info = "INSERT INTO orders_info (orders_id, country, city, address, orders_created_at, payment_method, postal_code) 
   VALUES(?,?,?,?,?,?,?)";
 
-  if ($stmt = $conn->prepare($sql)) {
+  if ($stmt = $conn->prepare($insert_order_info)) {
     $stmt->bind_param("sssssss", $orders_id, $country, $city, $address, $orders_created_at, $payment_method, $postal_code);
     $stmt->execute();
     if ($stmt->affected_rows > 0) {
@@ -55,9 +55,6 @@ if (isset($_POST['checkout'])) {
                   }, 100);
           </script>
           ";
-          echo '<div class = "error">';
-          echo 'Your order id is: ' . $orders_id;
-          echo '</div>';
     } else {
       echo '
         <script>
@@ -118,7 +115,7 @@ if (isset($_POST['checkout'])) {
           if (!empty($_SESSION['cart'])) {
 
             $product_ids = implode(',', array_keys($_SESSION['cart']));
-            $sql = "SELECT product_id, products_image,products_name,price FROM products WHERE product_id IN ($product_ids)";
+            $sql = "SELECT product_id, product_images,product_name,price FROM products WHERE product_id IN ($product_ids)";
             $result = $conn->query($sql);
 
             if ($result->num_rows > 0) {
@@ -132,9 +129,9 @@ if (isset($_POST['checkout'])) {
                   $subtotal = 0;
                   while ($row = $result->fetch_assoc()) {
                     $product_id = $row['product_id'];
-                    $name = $row['products_name'];
+                    $product_names = $row['product_name'];
                     $price = $row['price'];
-                    $image_path = $row['products_image'];
+                    $product_images = $row['product_images'];
                     $quantity = $_SESSION['cart'][$product_id];
                     $total_price = $price * $quantity;
                     $tax = $total_price * 0.05;
@@ -148,12 +145,12 @@ if (isset($_POST['checkout'])) {
                         <div class='d-flex flex-row align-items-center'>
                           <div>
                             <img
-                              src='<?= $image_path ?>'
+                              src='<?= $product_images ?>'
                               class='img-fluid rounded-3' style='width: 100px;'>
                           </div>
 
                           <div class='ms-3'>
-                            <h5><?= $name ?></h5>
+                            <h5><?= $product_names ?></h5>
                           </div>
 
                         </div>
@@ -203,22 +200,21 @@ if (isset($_POST['checkout'])) {
               echo "<tr><td colspan='5'>Error: " . $conn->error . "</td></tr>";
             }
           } else {
-            echo "<p>Your cart is empty</p>";
+            echo "<p>" . __('Your cart is empty') ."</p>";
+            echo "<a href='" . $web_url . "index.php' class='text-reset text-decoration-none'>" .  __('Continue Shopping') ."</a>";
           }
           ?>
 
 
           <form class="card p-2">
             <div class="input-group">
-              <input type="text" 
-              class="form-control" 
-              placeholder="<?= __('Promo code') ?>"
-              >
+              <input type="text"
+                class="form-control"
+                placeholder="<?= __('Promo code') ?>">
               <button type="submit" class="btn btn-secondary"><?= __('Redeem') ?></button>
             </div>
           </form>
         </div>
-
 
         <div class="col-md-7 col-lg-8">
           <h4 class="mb-3"><?= __('Billing address') ?></h4>
@@ -260,6 +256,7 @@ if (isset($_POST['checkout'])) {
                     class="form-control"
                     id="email"
                     name="email"
+                    value=""
                     placeholder="Email"
                     pattern="\S+@\S+\.\S+"
                     required>
@@ -267,6 +264,34 @@ if (isset($_POST['checkout'])) {
                   <div class="valid-feedback"><?= __('The email is valid. You can go to email get orders information') ?></div>
                 </div>
               </div>
+
+              <?php
+              if (isset($_POST['checkout'])) {
+                $email = $_POST['email'];
+
+                require 'vendor/autoload.php';
+                $mpdf = new \Mpdf\Mpdf();
+                $html = "<h2>Order Confirmation</h2>
+                <p>Order ID: <strong>$orders_id</strong></p>
+                <p>Shipping Address: $country,$city,$address,$postal_code</p>
+                <p>Payment Method: $payment_method</p>";
+                $mpdf->WriteHTML($html);
+                $pdfContent = $mpdf->Output('', 'S');
+
+                if (!empty($_POST['email']) && filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+                  $mail->addAddress($email);
+                  $mail->Subject = "Order Confirmation";
+                  $mail->Body = "The is your order confirmation. Please find the attached PDF for details.";
+                  $mail->addStringAttachment($pdfContent, 'order.pdf');
+
+                  try {
+                    $mail->send();
+                  } catch (Exception $e) {
+                    echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+                  }
+                }
+              }
+              ?>
 
               <div class="col-12">
                 <label for="address" class="form-label"><?= __('Address') ?></label>
@@ -290,7 +315,8 @@ if (isset($_POST['checkout'])) {
                   <option value="">Choose...</option>
                   <?php
                   foreach ($countries as $country) {
-                    echo "<option value='" . $country['name']['common'] . "'>" . $country['name']['common'] . "</option>";
+                    // echo "<option value='" . $country['name']['common'] . "'>" . $country['name']['common'] . "</option>";
+                    echo "<option value='" . htmlspecialchars($country['name']) . "'>" . htmlspecialchars($country['name']) . "</option>";
                   }
                   ?>
                 </select>
@@ -347,6 +373,13 @@ if (isset($_POST['checkout'])) {
             <hr class="my-4">
 
             <button class="w-100 btn btn-primary btn-lg" type="submit" name="checkout"><?= __('Continue to checkout') ?></button>
+          </form>
+
+          <form action="views/payment/stripe.php" method="POST">
+            <button class="btn btn-lg btn-dark">
+              <i class="fa-solid fa-credit-card"></i>
+              <span class="ms-2 fs-6"><?= __('Debit Card or Credit Card') ?></span>
+            </button>
           </form>
 
         </div>

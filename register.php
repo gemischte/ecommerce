@@ -1,11 +1,11 @@
 <?php
-require_once 'views/includes/conn.php';
+require_once 'views/includes/config.php';
 include_once 'views/includes/assets.php';
 // Prepare statement
-$sql = "INSERT INTO register (username,first_name,last_name,user_id, email, password, account_registered_at) 
+$register_account = "INSERT INTO register (username,first_name,last_name,user_id, email, password, account_registered_at) 
 VALUES (?, ?, ?,?,?, ?,?)";
 $user_id = rand(10000000,9223372036854775807); // Randomly generates a number between 8 and 19 digits
-$stmt = $conn->prepare($sql);
+$stmt = $conn->prepare($register_account);
 
 if (!$stmt) {
     die("Prepare failed: " . $conn->error); // Debugging

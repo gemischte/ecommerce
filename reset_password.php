@@ -1,5 +1,5 @@
 <?php
-include_once 'views/includes/conn.php';
+include_once 'views/includes/config.php';
 include_once 'views/includes/assets.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -31,12 +31,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         $token_expiry = $row['token_expiry'];
 
                         if ($token === $db_token && strtotime($token_expiry) > time()) {
-                            $UPDATEsql = "UPDATE register SET password = ?,token = NULL, token_expiry = NULL WHERE token = ?";
-                            $UPDATEstmt = $conn->prepare($UPDATEsql);
+                            $update_password = "UPDATE register SET password = ?,token = NULL, token_expiry = NULL WHERE token = ?";
+                            $stmt = $conn->prepare($update_password);
 
-                            if ($UPDATEstmt) {
-                                $UPDATEstmt->bind_param("ss", $password, $token);
-                                if ($UPDATEstmt->execute()) {
+                            if ($stmt) {
+                                $stmt->bind_param("ss", $password, $token);
+                                if ($stmt->execute()) {
                                     echo "
                                 <script>
                                     setTimeout(function() {

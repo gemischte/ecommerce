@@ -1,6 +1,6 @@
 <?php
-session_start();
-include 'views/includes/conn.php';
+include 'views/includes/header.php';
+include 'views/includes/config.php';
 
 if (!isset($_SESSION['cart'])) {
     $_SESSION['cart'] = array();
@@ -27,89 +27,92 @@ if (isset($_POST['remove_from_cart'])) {
 }
 ?>
 
-<?php include('views/includes/header.php');?>
-
 <title>Cart</title>
 
 <body class="bg-white">
 
     <div class="container py-5">
-        <h1 class="text-center"><?= __('Shopping Cart')?></h1>
+        <h1 class="text-center"><?= __('Shopping Cart') ?></h1>
         <!-- Cart Table -->
         <div class="table-responsive">
-                    <?php
-                    if (!empty($_SESSION['cart'])) {
-                        $product_ids = implode(',', array_keys($_SESSION['cart']));
-                        $sql = "SELECT product_id, brand,products_image,products_name, price FROM products WHERE product_id IN ($product_ids)";
-                        $result = $conn->query($sql);
+            <?php
+            if (!empty($_SESSION['cart'])) {
+                $product_ids = implode(',', array_keys($_SESSION['cart']));
+                $sql = "SELECT product_id, brand,product_images,product_name, price FROM products WHERE product_id IN ($product_ids)";
+                $result = $conn->query($sql);
 
-                        if ($result) {
-                            echo"    <div class='card mb-4'>                            
-                                    <div class='card-body'>";
-                                    
-                            while ($row = $result->fetch_assoc()) {
+                if ($result) {
+            ?>
+                    <div class="card mb-4">
+                        <div class="card-body">
+
+                            <?php
+                            while ($row = $result->fetch_assoc()):
                                 $product_id = $row['product_id'];
-                                $name = htmlspecialchars($row['products_name']);
+                                $product_names = htmlspecialchars($row['product_name']);
                                 $brand = htmlspecialchars($row['brand']);
-                                $image_path = htmlspecialchars($row['products_image']);
+                                $product_images = htmlspecialchars($row['product_images']);
                                 $price = number_format($row['price'], 2);
                                 $quantity = $_SESSION['cart'][$product_id];
                                 $total_price = number_format($row['price'] * $quantity, 2);
+                            ?>
 
-                                echo "
-                                        <div class='row cart-item mb-3'>
-                                            <div class='col-md-3'>
-                                                <img src='{$image_path}'style='width: 100px;'>
-                                            </div>
-                                            <div class='col-md-5'>
-                                                <h5 class='card-title'>{$name}</h5>
-                                                <p class='text-muted'>Brand: {$brand}</p>
-                                            </div>
+                                <div class='row cart-item mb-3'>
 
-                                            <div class='col-md-2'>
-                                                <div class='input-group'>
-                                                    <button class='btn btn-outline-secondary btn-sm' value='-1' type='button'>-</button>
-                                                    <input style='max-width:100px' type='text' class='form-control  form-control-sm text-center quantity-input' value='{$quantity}'>
-                                                    <button class='btn btn-outline-secondary btn-sm' value='1' type='button'>+</button>
-                                                </div>
-                                            </div>
+                                    <div class='col-md-3'>
+                                        <img src='<?= $product_images ?>' style='width: 100px;'>
+                                    </div>
 
-                                            <div class='col-md-2 text-end'>
-                                                <p class='fw-bold'>$ {$total_price}</p>
+                                    <div class='col-md-5'>
+                                        <h5 class='card-title'><?= $product_names ?></h5>
+                                        <p class='text-muted'>Brand: <?= $brand ?></p>
+                                    </div>
 
-                                                <form action='cart.php' method='POST' >
-                                                <input type='hidden' name='product_id' value='$product_id'>
-                                                <button type='submit' name='remove_from_cart'  class='btn btn-sm btn-danger'>
-                                                        <i class='fa-solid fa-trash'></i>
-                                                    </button>
-                                                </form>
-
-                                            </div>
-                                            
+                                    <div class='col-md-2'>
+                                        <div class='input-group'>
+                                            <button class='btn btn-outline-secondary btn-sm' value='-1' type='button'>-</button>
+                                            <input style='max-width:100px' type='text' class='form-control  form-control-sm text-center quantity-input' value='<?= $quantity ?>'>
+                                            <button class='btn btn-outline-secondary btn-sm' value='1' type='button'>+</button>
                                         </div>
-                                        <hr>
+                                    </div>
 
-                                 ";
-                            }
-                            echo "</div>";
-                            echo "</div>";
+                                    <div class='col-md-2 text-end'>
+                                        <p class='fw-bold'>$ <?= $total_price ?></p>
+                                        <form action='cart.php' method='POST'>
+                                            <input type='hidden' name='product_id' value='<?= $product_id ?>'>
+                                            <button type='submit' name='remove_from_cart' class='btn btn-sm btn-danger'>
+                                                <i class='fa-solid fa-trash'></i>
+                                            </button>
+                                        </form>
+                                    </div>
 
-                        } else {
-                            echo "<tr><td colspan='5'>Error: " . $conn->error . "</td></tr>";
-                        }
-                    } else {
-                        echo "<p style='user-select: none;' class='fs-1 text-center  text-danger'>Your cart is empty.</p>";
-                    }
-                    ?>
+                                </div>
+
+                                <hr>
+
+                            <?php endwhile; ?>
+                        </div>
+                    </div>
+
+
+            <?php
+                } else {
+                    echo "<p>Error: " . $conn->error . "</p>";
+                }
+            } else {
+                echo "<p style='user-select: none;' class='fs-1 text-center  text-danger'>" . __('Your cart is empty') . "</p>";
+                echo "<p class='text-center'><a href='" . $web_url . "index.php' class='btn btn-primary'>" .  __('Continue Shopping') . "</a></p>";
+            }
+            ?>
         </div>
-            
+
         <!-- Cart Summary -->
         <?php if (!empty($_SESSION['cart'])) : ?>
             <div class="row mt-4">
                 <div class="col-md-6 offset-md-6">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title"><?= __('Cart Summary')?></h5>
+                            <h5 class="card-title"><?= __('Cart Summary') ?></h5>
                             <?php
                             $subtotal = 0;
                             foreach ($_SESSION['cart'] as $product_id => $quantity) {
@@ -123,21 +126,21 @@ if (isset($_POST['remove_from_cart'])) {
                             $total = $subtotal + $tax;
                             ?>
                             <div class="d-flex justify-content-between">
-                                <span><?= __('Subtotal')?></span>
+                                <span><?= __('Subtotal') ?></span>
                                 <span>$<?php echo number_format($subtotal, 2); ?></span>
                             </div>
                             <div class="d-flex justify-content-between">
-                                <span><?= __('Tax')?>(5%)</span>
+                                <span><?= __('Tax') ?>(5%)</span>
                                 <span>$<?php echo number_format($tax, 2); ?></span>
                             </div>
                             <hr>
                             <div class="d-flex justify-content-between fw-bold">
-                                <span><?= __('Total')?></span>
+                                <span><?= __('Total') ?></span>
                                 <span>$<?php echo number_format($total, 2); ?></span>
                             </div>
 
-                            <form action="checkout.php" method="post">
-                            <button class="btn btn-primary w-100 mt-3"><?= __('Proceed to Checkout')?></button>
+                            <form action=<?= $web_url . "checkout.php" ?> method="post">
+                                <button class="btn btn-primary w-100 mt-3"><?= __('Proceed to Checkout') ?></button>
                             </form>
 
                         </div>
@@ -148,7 +151,7 @@ if (isset($_POST['remove_from_cart'])) {
     </div>
 
     <!-- Footer -->
-    <?php include('views/includes/footer.php');?>
+    <?php include('views/includes/footer.php'); ?>
 
 </body>
 

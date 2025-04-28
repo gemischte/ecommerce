@@ -1,5 +1,5 @@
 <?php
-require_once 'views/includes/conn.php';
+require_once 'views/includes/config.php';
 include_once 'views/includes/assets.php';
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -35,8 +35,8 @@ if (isset($_GET['confirm']) && $_GET['confirm'] === 'true' && isset($_GET['usern
     $username = $_GET['username'];
 
     // Prepare the delete query
-    $sql = "DELETE FROM register WHERE username = ?";
-    $stmt = $conn->prepare($sql);
+    $delete_account = "DELETE FROM register WHERE username = ?";
+    $stmt = $conn->prepare($delete_account);
 
     if ($stmt) {
         // Bind the parameters

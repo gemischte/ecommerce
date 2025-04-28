@@ -6,9 +6,9 @@
 
                 </div>
                 <div>
-                    <a class="text-reset" href="login.html" target="_blank" rel="sponsored"><?= __('Login') ?></a>
+                    <a class="text-reset" href="login.html" rel="sponsored"><?= __('Login') ?></a>
                     <div class="vr mx-2"></div>
-                    <a class="text-reset" href="register.html" target="_blank"><?= __('Register') ?></a>
+                    <a class="text-reset" href="register.html"><?= __('Register') ?></a>
                 </div>
             </div>
         </div>
@@ -65,9 +65,9 @@
 
                 <!-- Register & Login for mobile view -->
                 <div class="d-lg-none mt-3">
-                    <a class="text-reset" href="login.html" target="_blank" rel="sponsored">Login</a>
+                    <a class="text-reset" href="login.html" rel="sponsored">Login</a>
                     <div class="vr mx-2"></div>
-                    <a class="text-reset" href="register.html" target="_blank">Register</a>
+                    <a class="text-reset" href="register.html">Register</a>
                 </div>
 
 

@@ -2,7 +2,7 @@
 https://bootstrapbrain.com/component/bootstrap-free-forgot-password-form-snippet/#code 
 -->
 <?php
-require_once 'views/includes/conn.php';
+require_once 'views/includes/config.php';
 include_once 'views/includes/assets.php';
 include_once 'views/mail/mailer.php';
 
@@ -29,12 +29,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $result = $stmt->get_result();
 
             if ($result->num_rows > 0) {
-                $update_sql = "UPDATE register SET token = ?, token_expiry = ? WHERE email = ?";
-                $update_stmt = $conn->prepare($update_sql);
+                $reset_password = "UPDATE register SET token = ?, token_expiry = ? WHERE email = ?";
+                $stmt = $conn->prepare($reset_password);
 
-                if ($update_stmt) {
-                    $update_stmt->bind_param("sss", $token, $token_expiry, $email);
-                    $update_stmt->execute();
+                if ($stmt) {
+                    $stmt->bind_param("sss", $token, $token_expiry, $email);
+                    $stmt->execute();
 
                     //Send mail link
                     $mail->addAddress($email);

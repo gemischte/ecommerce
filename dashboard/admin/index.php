@@ -1,8 +1,8 @@
 <?php
-require_once '../../views/includes/conn.php';
-session_start();
+require_once '../../views/includes/config.php';
 
-$sql = 'SELECT product_id, products_name, stock_quantity,original_price,description,price, product_star,products_image FROM products';
+
+$sql = 'SELECT product_id, product_name, brand,stock_quantity,original_price,description,price, product_star,product_images FROM products';
 $result = $conn->query($sql);
 
 if (!$result) {
@@ -36,7 +36,8 @@ if (!$result) {
                 <tr>
                     <th>product_id</th>
                     <th>Product image</th>
-                    <th>Product</th>
+                    <th>Product Name</th>
+                    <th>Brand</th>
                     <th>Original Price</th>
                     <th>Price</th>
                     <th>Stock Quantity</th>
@@ -47,7 +48,8 @@ if (!$result) {
             <tfoot>
                 <th>product_id</th>
                 <th>Product image</th>
-                <th>Product</th>
+                <th>Product Name</th>
+                <th>Brand</th>
                 <th>Original Price</th>
                 <th>Price</th>
                 <th>Stock Quantity</th>
@@ -67,8 +69,9 @@ if (!$result) {
 
                 <tr>
                     <td><?php echo htmlspecialchars($row['product_id']); ?></td>
-                    <td> <img src="<?php echo htmlspecialchars($row['products_image']); ?>" class="rounded" width="100" /> </td>
-                    <td><?php echo htmlspecialchars($row['products_name']); ?></td>
+                    <td> <img src="<?php echo htmlspecialchars($row['product_images']); ?>" class="rounded" width="100" /> </td>
+                    <td><?php echo htmlspecialchars($row['product_name']); ?></td>
+                    <td><?php echo htmlspecialchars($row['brand']) ?></td>
                     
                     <td>
                         <?php
@@ -85,17 +88,17 @@ if (!$result) {
 
                     <!-- Delete product -->
                     <td>
-                        <form action='#' method='post' class='d-inline'>
-                            <input type='hidden' name='product_id' value='$product_id'>
-                            <button type='submit' name='remove_from_cart' class=' btn-danger'><i class="fa-solid fa-trash"></i></button>
+                        <form action=<?= $admin_url . "functions/delete_product.php?id=" . htmlspecialchars($row['product_id'])?> method='post' class='d-inline'>
+                            <input type='hidden' name='product_id' value='<?= htmlspecialchars($row['product_id']); ?>'>
+                            <button type='submit' name='submit' class='btn btn-danger'><i class="fa-solid fa-trash"></i></button>
                         </form>
                     </td>
 
                     <!-- Edit product -->
                     <td>
-                        <form action="#" method="post" class="d-d-inline">
-                            <input type="hidden" name='product_id' value='$product_id'>
-                            <button type="submit" name='#' class=""><i class="fa-solid fa-pen-to-square"></i></button>
+                        <form action=<?= $admin_url . "functions/edit_product.php?id=" . htmlspecialchars($row['product_id'])?> method="post" class="d-d-inline">
+                            <input type="hidden" name='product_id' value='<?= htmlspecialchars($row['product_id']); ?>'>
+                            <button type="submit" name='submit' class="btn btn-secondary"><i class="fa-solid fa-pen-to-square"></i></button>
                         </form>
                     </td>
 

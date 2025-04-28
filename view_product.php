@@ -1,6 +1,5 @@
 <?php
-require_once 'views/includes/conn.php';
-session_start();
+require_once 'views/includes/config.php';
 
 if (isset($_GET['id'])) {
     $product_id = $_GET['id'];
@@ -24,7 +23,7 @@ if (isset($_GET['id'])) {
 
                 <!-- Left Column -->
                 <div class="col-md-6 mb-4">
-                    <img src="<?php echo htmlspecialchars($row['products_image']); ?>" class="img-fluid product-image" alt="Product Image">
+                    <img src="<?php echo htmlspecialchars($row['product_images']); ?>" class="img-fluid product-image" alt="Product Image">
                 </div>
 
                 <!-- Right Column -->
@@ -32,7 +31,7 @@ if (isset($_GET['id'])) {
                     <div class="product-card">
                         <div class="card-body">
                             
-                            <h1 class="card-title"><?php echo htmlspecialchars($row['products_name']); ?></h1>
+                            <h1 class="card-title"><?php echo htmlspecialchars($row['product_name']); ?></h1>
 
                             <span class="text-muted text-decoration-line-through">
                                 <?php
@@ -57,7 +56,7 @@ if (isset($_GET['id'])) {
                             </div>
 
                             <!-- Add to Cart Form -->
-                            <form action="cart.php" method="post">
+                            <form action="<?= $web_url . "cart.php" ?>" method="post">
                                 <input type="hidden" name="product_id" value="<?php echo htmlspecialchars($row['product_id']) ?>">
                                 <label class="me-2"><?= __('Quantity')?>:</label>
                                 <select name="quantity" id="quantity">

@@ -1,5 +1,5 @@
 <?php
-require_once 'views/includes/conn.php';
+require_once 'views/includes/config.php';
 include_once 'views/includes/assets.php';
 // Execute the following logic only if a POST request is received
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -9,8 +9,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $password = $_POST['password'];
 
         // Use a prepared statement to query the database
-        $sql = "SELECT password FROM register WHERE username = ? ";
-        $stmt = $conn->prepare($sql);
+        $login_account = "SELECT password FROM register WHERE username = ? ";
+        $stmt = $conn->prepare($login_account);
 
         if ($stmt) {
             // Bind parameters
@@ -27,12 +27,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 // Verify the password
                 if (password_verify($password, $row['password'])) {
                     
-                    // Start a new session
+                    // Store the username in the session
+                    $_SESSION['user'] = $username;
                     header("Location: index.php");
-                    echo "Login successful! Welcome, " . htmlspecialchars($username) . ".</p>";
-
-                    // Update last login time
+                    exit();
                     
+                    // Update last login time                    
                     $login_time = date('Y-m-d H:i:s');
                     $update_sql = "UPDATE register SET last_login_time = ? WHERE username = ?";
                     $update_stmt = $conn->prepare($update_sql);
@@ -43,17 +43,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         $update_stmt->execute();
                         $update_stmt->close();
                     }
-
-                    //logout Account
-                    echo '<form method="POST" action="logout.php">';
-                    echo '<button type="submit">logout</button>';
-                    echo '</form>';
-
-                    //Delete Account
-                    echo '<form method="POST" action="delete.php">';
-                    echo '<input type="hidden" name="username" value="' . htmlspecialchars($username) . '">';
-                    echo '<button type="submit">Delete Account</button>';
-                    echo '</form>';
 
                 } else {
                     echo '

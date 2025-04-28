@@ -18,7 +18,8 @@ $lang = [
 	'Contact us via Email'=>'通過電子郵件聯繫我們',
 	'Country'=>'國家',
 	'California'=>'加利福尼亞州',
-	'Credit Card'=>'信用卡',
+	'Continue Shopping'=>'繼續購物',
+	'Debit Card or Credit Card'=>'簽帳卡或信用卡',
 	'city'=>'城市',
 	'Description'=>'介紹',
 	'Email'=>'電子郵件',
@@ -60,6 +61,6 @@ $lang = [
 	'Total'=>'總計',
 	'View products'=>'查看產品',
 	'Your cart'=>'您的購物車',
-	'Your cart is empty.'=>'您的購物車是空的。',
+	'Your cart is empty'=>'您的購物車是空的',
 	'Zip'=>'郵遞區號',
 ];

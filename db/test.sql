@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 18, 2025 at 02:43 PM
+-- Generation Time: Apr 28, 2025 at 02:19 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -52,10 +52,10 @@ INSERT INTO `orders_info` (`orders_id`, `country`, `city`, `address`, `postal_co
 
 CREATE TABLE `products` (
   `product_id` int(11) NOT NULL,
-  `products_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `products_image` varchar(255) DEFAULT NULL,
+  `product_name` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `product_images` varchar(255) DEFAULT NULL,
   `description` text CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
-  `brand` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `brand` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `original_price` decimal(10,2) DEFAULT NULL,
   `price` decimal(10,2) NOT NULL,
   `stock_quantity` int(11) NOT NULL,
@@ -66,9 +66,9 @@ CREATE TABLE `products` (
 -- Dumping data for table `products`
 --
 
-INSERT INTO `products` (`product_id`, `products_name`, `products_image`, `description`, `brand`, `original_price`, `price`, `stock_quantity`, `product_star`) VALUES
+INSERT INTO `products` (`product_id`, `product_name`, `product_images`, `description`, `brand`, `original_price`, `price`, `stock_quantity`, `product_star`) VALUES
 (41516, 'Samsung SSD 980 PRO', 'https://upload.wikimedia.org/wikipedia/commons/7/75/Samsung_980_PRO_PCIe_4.0_NVMe_SSD_1TB-top_PNr%C2%B00915.jpg', 'Powered by Samsung in-house controller for pcie® 4.0 SSD, the 980 PRO is optimized for speed. It delivers read speeds up to 7,000 MB/s, making it 2 times faster than PCIe® 3.0 SSDs and 12.7 times faster than SATA SSDs. The 980 PRO achieves max speeds on PCIe® 4.0 and may vary in other environments.', 'Samsung', 999.00, 642.00, 999, 4.5),
-(93038, 'iphone16 pro', 'https://www.apple.com/v/iphone-16-pro/d/images/meta/iphone-16-pro_overview__ejy873nl8yi6_og.png?202412122331a', 'Splash, Water, and Dust Resistant3\nRated IP68 (maximum depth of 6 meters up to 30 minutes) under IEC standard 60529', 'Apple', NULL, 1000.00, 999, 5.0),
+(93038, 'iphone16 pro', 'https://www.apple.com/v/iphone-16-pro/d/images/meta/iphone-16-pro_overview__ejy873nl8yi6_og.png?202412122331a', 'Splash, Water, and Dust Resistant3\r\nRated IP68 (maximum depth of 6 meters up to 30 minutes) under IEC standard 60529', 'Apple', 0.00, 1000.00, 999, 5.0),
 (93586, 'Nvidia RTX 5060', 'https://www.overclockers.co.uk/blog/wp-content/uploads/2025/01/ordering-rtx-50-twitter-1536x864.png', 'The Nvidia GeForce RTX 5060 is a mid-range desktop graphics card utilizing the GB206 chip based on the Blackwell architecture. The 5060 offers 8 GB GDDR7 graphics memory with a 128-bit memory bus.', 'Nvidia', 999.00, 655.00, 999, 5.0);
 
 -- --------------------------------------------------------
@@ -95,9 +95,9 @@ CREATE TABLE `register` (
 --
 
 INSERT INTO `register` (`user_id`, `username`, `password`, `email`, `token`, `token_expiry`, `account_registered_at`, `last_login_time`, `first_name`, `last_name`) VALUES
-(219273716, 'Test456', '$2y$10$sXe5Dfm3CyRdQnuJVvLBBeGNlNC80IIJXghV3ZMjTlzZAgGzGDrFe', 'Test456@yahoo.com', NULL, NULL, '2024-12-27 14:35:21', '2025-03-25 14:18:18', NULL, NULL),
-(3253652496792670337, 'Test789', '$2y$10$u68BZauRWGSQ/EYNusgNFuXUZCTL2GkI8tBjfhVzrkwaTbQVZDy/C', 'Test789@icloud.com', NULL, NULL, '2024-12-28 14:41:58', '2025-03-25 14:16:10', NULL, NULL),
-(4845727533474930302, 'Test123', '$2y$10$llpH5dn.MyYyIXOsk.1H0ueebvX.y7YDJUupZuCTx8UlDA/qv943K', 'Test123@gmail.com', NULL, NULL, '2024-12-28 14:41:01', '2025-03-30 17:06:55', NULL, NULL);
+(219273716, 'Test456', '$2y$10$RvBrSlV4tQio0k6FW6apPe1vh8qyNkiKiVhi7iI3JDoPfbM5htFNa', 'Test456@yahoo.com', NULL, NULL, '2024-12-27 14:35:21', '2025-03-25 14:18:18', '', ''),
+(3253652496792670337, 'Test789', '$2y$10$u68BZauRWGSQ/EYNusgNFuXUZCTL2GkI8tBjfhVzrkwaTbQVZDy/C', 'Test789@icloud.com', NULL, NULL, '2024-12-28 14:41:58', '2025-03-25 14:16:10', '', ''),
+(4845727533474930302, 'Test123', '$2y$10$llpH5dn.MyYyIXOsk.1H0ueebvX.y7YDJUupZuCTx8UlDA/qv943K', 'Test123@gmail.com', NULL, NULL, '2024-12-28 14:41:01', '2025-04-22 11:46:19', '', '');
 
 --
 -- Indexes for dumped tables
@@ -124,12 +124,6 @@ ALTER TABLE `register`
 --
 -- AUTO_INCREMENT for dumped tables
 --
-
---
--- AUTO_INCREMENT for table `products`
---
-ALTER TABLE `products`
-  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=98858;
 
 --
 -- AUTO_INCREMENT for table `register`

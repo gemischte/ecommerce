@@ -7,6 +7,8 @@ use PHPMailer\PHPMailer\Exception;
 
 //Load Composer's autoloader
 require 'vendor/autoload.php';
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../../', '.env');
+$dotenv->load();
 
 //Create an instance; passing `true` enables exceptions
 $mail = new PHPMailer(true);
@@ -17,14 +19,14 @@ try {
     $mail->isSMTP();                                            //Send using SMTP
     $mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
     $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
-    $mail->Username   = 'user@example.com';                     //SMTP username
-    $mail->Password   = 'Password';                               //SMTP password
+    $mail->Username   = $_ENV['SMTP_account'];                     //SMTP username
+    $mail->Password   =  $_ENV['SMTP_pwd'];                               //SMTP password
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
     $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
 
     //Recipients
-    $mail->setFrom('user@example.com', 'Mailer');
-    $mail->addBCC('user@example.com');
+    $mail->setFrom($_ENV['SMTP_Recipients'], 'Mailer');
+    $mail->addBCC ($_ENV['SMTP_Recipients']); 
 
     //Content
     $mail->isHTML(true);                                  //Set email format to HTML

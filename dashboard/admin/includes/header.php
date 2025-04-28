@@ -1,6 +1,10 @@
 <!-- Ui Source code From: 
  https://github.com/StartBootstrap/startbootstrap-sb-admin-2.git -->
-
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -28,9 +32,9 @@
 <body id="page-top">
 
 <div id="wrapper">
-<?php include('includes/sidebar.php');?>
+<?php include('sidebar.php');?>
 
 <div id="content-wrapper" class="d-flex flex-column">
-<?php include('includes/navbar.php');?>
+<?php include('navbar.php');?>
    
 
