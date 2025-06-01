@@ -47,3 +47,22 @@ function confirm_show_password() {
     ConfirmVisible = true;
   }
 }
+
+document.querySelectorAll('.brand-checkbox').forEach(checkbox => {
+  checkbox.addEventListener('change', () => {
+    const checkedBrands = Array.from(document.querySelectorAll('.brand-checkbox:checked')).map(cb => cb.value);
+
+    fetch('functions/includes/filters.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: 'brands=' + encodeURIComponent(JSON.stringify(checkedBrands))
+    })
+    .then(response => response.text())
+    .then(html => {
+      document.getElementById('products-container').innerHTML = html;
+    })
+    .catch(err => {
+      console.error('Error fetching filtered products:', err);
+    });
+  });
+});

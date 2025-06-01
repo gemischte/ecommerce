@@ -1,0 +1,145 @@
+<?php
+require_once __DIR__ . '/../core/config.php';
+
+$user_id = $_SESSION['user_id'];
+if (!$user_id) {
+    header("Location: login.php");
+    exit();
+}
+
+$sql = "SELECT 
+pd.product_name,
+pd.product_images,
+pd.price,
+pd.brand,
+oi.payment_method AS pay,
+oi.orders_created_at AS date,
+od.*
+FROM
+order_details AS od
+JOIN products AS pd ON od.product_id = pd.product_id
+JOIN orders_info AS oi ON od.orders_id = oi.orders_id
+WHERE od.user_id = ?
+ORDER BY 
+od.product_id DESC, 
+od.orders_id DESC, 
+od.quantity DESC, 
+oi.orders_created_at DESC
+";
+
+$stmt = $conn->prepare($sql);
+if (!$stmt) {
+    die("SQL prepare failed: " . $conn->error);
+}
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$result = $stmt->get_result();
+
+$orders = [];
+while ($row = $result->fetch_assoc()) {
+    $orders_id = $row['orders_id'];
+    if (!isset($orders[$orders_id])) {
+        $orders[$orders_id] = [
+            'order_id' => $orders_id,
+            'pay' => $row['pay'],
+            'date' => $row['date'],
+            'brand' => $row['brand'],
+            'products' => []
+        ];
+    }
+    $orders[$orders_id]['products'][] = [
+        'product_name' => $row['product_name'],
+        'product_images' => $row['product_images'],
+        'brand' => $row['brand'],
+        'quantity' => $row['quantity'],
+        'price' => $row['price']
+    ];
+}
+?>
+
+<?php include __DIR__ . '/../views/includes/header.php'; ?>
+
+<body class="bg-white">
+
+    <div class="container py-5">
+        <h1 class="text-center mb-4"><?= __('Order History') ?></h1>
+
+        <?php if (!empty($orders)): ?>
+            <?php foreach ($orders as $order): ?>
+                <?php
+                $total_price = 0;
+                foreach ($order['products'] as $product) {
+                    $total_price += $product['price'];
+                }
+                $order_tax = $total_price * 0.05;
+                $sub_total = $total_price + $order_tax;
+                ?>
+                <div class="card mb-4">
+
+                    <div class="card-header bg-light">
+                        <strong><?= __('Order Id') ?>:</strong> <?= htmlspecialchars($order['order_id']) ?>
+                        <span class="ms-3"><strong><?= __('Payment method') ?>:</strong> <?= htmlspecialchars($order['pay']) ?></span>
+                        <span class="ms-3"><strong><?= __('Total') ?>:</strong> <?= htmlspecialchars(number_format($sub_total, 2)) ?></span>
+                        <span class="ms-3"><strong><?= __('Date') ?>:</strong> <?= htmlspecialchars($order['date']) ?></span>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="table-responsive">
+
+                            <table class="table table-bordered align-middle">
+
+                                <thead class="table-light">
+                                    <tr>
+                                        <th><?= __('Product image') ?></th>
+                                        <th><?= __('Product name') ?></th>
+                                        <th><?= __('Quantity') ?></th>
+                                        <th><?= __('Price') ?>(5%)</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <?php foreach ($order['products'] as $product): ?>
+                                        <tr>
+
+                                            <td>
+                                                <img src="<?= htmlspecialchars($product['product_images']) ?>" alt="<?= htmlspecialchars($product['product_name']) ?>" class="img-fluid" style="max-width: 100px;">
+                                            </td>
+
+                                            <td><?= htmlspecialchars($product['product_name']) ?>
+                                                <p class="small"><strong><?= __('Brand') ?>:</strong><?= htmlspecialchars($product['brand']) ?></p>
+                                            </td>
+
+                                            <td><?= htmlspecialchars($product['quantity']) ?></td>
+
+                                            <td>
+                                                <?php
+                                                $price = ($product['price']);
+                                                $tax = $price * 0.05;
+                                                $sub_total = $price + $tax;
+                                                echo htmlspecialchars(number_format($sub_total, 2));
+                                                ?>
+                                            </td>
+
+                                        </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <p class="text-center text-danger"><?= __('No orders found') ?></p>
+            <div class="text-center">
+                <a href="<?= WEBSITE_URL . "index.php" ?>" class="btn btn-primary">
+                    <?= __('Continue Shopping') ?>
+                </a>
+            </div>
+        <?php endif; ?>
+    </div>
+
+    <?php include __DIR__ . '/../views/includes/footer.php'; ?>
+</body>
+
+</html>

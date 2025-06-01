@@ -13,12 +13,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     ) {
 
         $product_names = $_POST['product_name'];
-        $product_description = $_POST['description'];
+        $description = $_POST['description'];
         $brand = $_POST['brand'];
+        $category = $_POST['category'];
         $price = $_POST['price'];
         $original_price = $_POST['original_price'];
         $stock = $_POST['stock'];
-        $product_images = $_POST['product_images'];
+        $images = $_POST['product_images'];
 
         $product_id = rand(1000, 99999);
 
@@ -32,15 +33,25 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 "sisssdss",
                 $product_names,
                 $product_id,
-                $product_description,
+                $description,
                 $brand,
                 $price,
                 $original_price,
                 $stock,
-                $product_images
+                $images
             );
 
             if ($stmt->execute()) {
+
+                $category_sql = "INSERT INTO category (product_id, category_name) 
+                VALUES (?, ?)";
+                $stmt2 = $conn->prepare($category_sql);
+
+                if ($stmt2) {
+                    $stmt2->bind_param("is", $product_id, $category);
+                    $stmt2->execute();
+                    $stmt2->close();
+                }
 ?>
 
                 <script>
@@ -72,7 +83,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             $stmt->close();
         } else {
-           echo "SQL prepare failed: " . $conn->error;
+            echo "SQL prepare failed: " . $conn->error;
         }
     }
 }
@@ -115,7 +126,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 </div>
 
                 <div class="mb-3">
-                    <label for="description" class="form-label">Product Description</label>
+                    <label for="description" class="form-label">Description</label>
                     <textarea
                         class="form-control"
                         id="description"
@@ -148,7 +159,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     </div>
 
                     <div class="col-md-6 mb-3">
-                        <label for="stock" class="form-label">Stock Quantity</label>
+                        <label for="stock" class="form-label">Stock</label>
                         <input
                             type="number"
                             class="form-control"
@@ -177,12 +188,41 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                             id="brand"
                             name="brand"
                             maxlength="20"
-                            placeholder="Enter available quantity"
+                            placeholder="Enter Brand"
                             list="brand_list">
                         <datalist id="brand_list">
                             <?php
                             foreach ($brand_list as $brand_item): ?>
                                 <option value="<?= htmlspecialchars($brand_item) ?>">
+                                <?php endforeach;
+                                ?>
+                        </datalist>
+                    </div>
+
+                    <?php
+                    $category = "SELECT DISTINCT category_name FROM category";
+                    $result = $conn->query($category);
+                    $category_list = [];
+
+                    if ($result->num_rows > 0) {
+                        while ($row = $result->fetch_assoc()) {
+                            $category_list[] = $row['category_name'];
+                        }
+                    }
+                    ?>
+                    <div class="col-md-6 mb-3">
+                        <label for="category" class="form-label">category</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="category"
+                            name="category"
+                            placeholder="Enter Category"
+                            list="category_list">
+                        <datalist id="category_list">
+                            <?php
+                            foreach ($category_list as $category_item): ?>
+                                <option value="<?= htmlspecialchars($category_item) ?>">
                                 <?php endforeach;
                                 ?>
                         </datalist>

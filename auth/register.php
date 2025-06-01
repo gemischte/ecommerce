@@ -22,8 +22,8 @@ if ($_POST['password'] !== $_POST['confirmPassword']) {
 }
 
 $register_account = "INSERT INTO user_accounts 
-(username,first_name,last_name,user_id, email, password, account_registered_at) 
-VALUES (?, ?, ?,?,?, ?,?)";
+(username,user_id, email, password, account_registered_at) 
+VALUES (?, ?, ?,?,?)";
 
 // Randomly generates a number between 8 and 19 digits
 $user_id = rand(10000000, 9223372036854775807);
@@ -39,7 +39,7 @@ $first_name = $_POST['first_name'];
 $last_name = $_POST['last_name'];
 $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 $account_registered_at = date('Y-m-d H:i:s');
-$stmt->bind_param("sssssss", $username, $first_name, $last_name, $user_id, $email, $password, $account_registered_at);
+$stmt->bind_param("sssss", $username, $user_id, $email, $password, $account_registered_at);
 
 //Check username or email is already registered
 $query = "SELECT 1 FROM user_accounts WHERE username = '$username' OR email = '$email'";
@@ -65,6 +65,14 @@ if ($check_result->num_rows > 0) {
 }
 
 if ($stmt->execute()) {
+
+	$phone = $_POST['phone'] ?? $phone;
+	$profiles = "INSERT INTO user_profiles (user_id,phone ,first_name, last_name)
+	VALUES (?,?,?,?)";
+	$stmt_details = $conn->prepare($profiles);
+	$stmt_details->bind_param("ssss", $user_id,$phone ,$first_name, $last_name);
+	$stmt_details->execute();
+	
 ?>
 
 	<script>

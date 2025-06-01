@@ -3,7 +3,7 @@ require_once __DIR__ . '/../../../core/config.php';
 require_once __DIR__ . '/../../../views/includes/assets.php';
 
 $product_id = null;
-$product_names = $product_description = $price = $original_price = $stock = $brand = $product_images = "";
+$product_names = $description = $price = $original_price = $stock = $brand = $images = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['product_id'])) {
     $product_id = $_POST['product_id'];
@@ -19,12 +19,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['product_id'])) {
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
             $product_names = $row['product_name'];
-            $product_description = $row['description'];
+            $description = $row['description'];
             $price = $row['price'];
             $original_price = $row['original_price'];
             $stock = $row['stock'];
             $brand = $row['brand'];
-            $product_images = $row['product_images'];
+            $images = $row['product_images'];
         } else {
 ?>
             <script>
@@ -52,12 +52,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
 
     // Validate and sanitize input data
     $product_names = $_POST['product_name'] ?? $product_names;
-    $product_description = $_POST['description'] ?? $product_description;
+    $description = $_POST['description'] ?? $description;
     $brand = $_POST['brand'] ?? $brand;
     $original_price = $_POST['original_price'] ?? $original_price;
     $price = $_POST['price'] ?? $price;
     $stock = $_POST['stock'] ?? $stock;
-    $product_images = $_POST['product_images'] ?? $product_images;
+    $images = $_POST['product_images'] ?? $images;
 
     $update = "UPDATE products SET product_name = ?, description = ?, price = ?, original_price = ?, stock = ?, brand = ?, product_images = ? WHERE product_id = ?";
     $stmt = $conn->prepare($update);
@@ -66,12 +66,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
         $stmt->bind_param(
             "ssddssss",
             $product_names,
-            $product_description,
+            $description,
             $price,
             $original_price,
             $stock,
             $brand,
-            $product_images,
+            $images,
             $product_id
         );
         if ($stmt->execute()) {
@@ -84,7 +84,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
                             icon: 'success',
                             title: 'Success!',
                             text: 'Your product has been successfully updated!',
-                            showConfirmButton: true,
+                            showConfirmButton: false,
+                            timer: 1500
                         }).then(() => {
                             window.location = '<?= ADMIN_URL . 'index.php'; ?>';
                         });
@@ -115,8 +116,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
 ?>
 
 <?php include __DIR__ . ('/../includes/header.php'); ?>
-<!-- Custom styles for this template-->
-<link href="../assets/css/sb-admin-2.min.css" rel="stylesheet">
 
 <div class="container">
     <div class="row">
@@ -161,7 +160,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
                         name="description"
                         rows="4"
                         placeholder="Enter product description"
-                        required><?= htmlspecialchars("$product_description") ?></textarea>
+                        required><?= htmlspecialchars("$description") ?></textarea>
                 </div>
 
                 <div class="row">
@@ -240,7 +239,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
                         class="form-control"
                         id="product_images"
                         name="product_images"
-                        value="<?= htmlspecialchars($product_images); ?>"
+                        value="<?= htmlspecialchars($images); ?>"
                         placeholder="Enter image path or URL"
                         required>
                 </div>

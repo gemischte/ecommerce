@@ -31,6 +31,8 @@ if (session_status() === PHP_SESSION_NONE) {
 </head>
 <body id="page-top">
 
+<?php include_once __DIR__ . '/../auth/auth.php'; ?>
+
 <div id="wrapper">
 <?php include('sidebar.php');?>
 

@@ -22,7 +22,7 @@ require_once __DIR__ . '/../views/includes/header.php';
                 <div class="row gy-5 justify-content-center">
                     <div class="col-12 col-lg-5">
 
-                        <form class="form-horizontal was-validated" method="POST" action="<?= WEBSITE_URL ."auth/register.php" ?>">
+                        <form class="form-horizontal was-validated" method="POST" action="<?= WEBSITE_URL . "auth/register.php" ?>">
 
                             <div class="row gy-3 overflow-hidden">
 
@@ -69,6 +69,21 @@ require_once __DIR__ . '/../views/includes/header.php';
                                             placeholder="Enter First name"
                                             required>
                                         <label for="first_name" class="form-label">First name</label>
+                                    </div>
+                                </div>
+
+                                <!-- Phone table -->
+                                <div class="col-12">
+                                    <div class="form-floating mb-3">
+                                        <input
+                                            class="form-control"
+                                            placeholder=""
+                                            type="text"
+                                            name="phone"
+                                            id="phone"
+                                            required
+                                            value="" />
+                                        <label for="phone" class="form-label">Phone</label>
                                     </div>
                                 </div>
 
@@ -175,7 +190,7 @@ require_once __DIR__ . '/../views/includes/header.php';
                                 </svg>
                                 <span class="ms-2 fs-6"><?= __('With Google OAuth') ?></span>
                             </a>
-                            
+
                         </div>
                     </div>
 

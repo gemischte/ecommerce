@@ -8,7 +8,6 @@ require_once __DIR__ . '/../views/includes/assets.php';
 require_once __DIR__ . '/../functions/includes/mailer.php';
 
 //all country list
-$all_countries_list = "https://www.apicountries.com/countries";
 $countries_data = file_get_contents($all_countries_list);
 $countries = json_decode($countries_data, true);
 
@@ -18,7 +17,7 @@ if (isset($_POST['remove_from_cart'])) {
 }
 
 if (isset($_POST['checkout'])) {
-  $orders_id = 'ORD' . '-' . date("Y") . '-' . date("m") . '-' . rand(100000, 999999) . '-' . rand(100000, 999999);
+  $orders_id = 'ORD' . '-' . date("Y") . '-' . date("m") . '-' . uniqid() . '-' . bin2hex(random_bytes(4));
   $country = $_POST['country'];
   $city = $_POST['city'];
   $address = $_POST['address'];
@@ -26,12 +25,50 @@ if (isset($_POST['checkout'])) {
   $payment_method = $_POST['payment_method'];
   $postal_code = $_POST['postal_code'];
 
-  $insert_order_info = "INSERT INTO orders_info (orders_id, country, city, address, orders_created_at, payment_method, postal_code) 
+  $order_info = "INSERT INTO orders_info (orders_id, country, city, address, orders_created_at, payment_method, postal_code) 
   VALUES(?,?,?,?,?,?,?)";
 
-  if ($stmt = $conn->prepare($insert_order_info)) {
+  if ($stmt = $conn->prepare($order_info)) {
     $stmt->bind_param("sssssss", $orders_id, $country, $city, $address, $orders_created_at, $payment_method, $postal_code);
     $stmt->execute();
+
+    if (!empty($_SESSION['cart'])) {
+      $user_id = $_SESSION['user_id'];
+
+      $product_ids = implode(',', array_keys($_SESSION['cart']));
+      $sql = "SELECT
+      p.product_id AS p_id, 
+      p.price AS price
+      FROM products AS p
+      WHERE p.product_id IN ($product_ids)";
+
+      $result = $conn->query($sql);
+      $prices = [];
+      if ($result) {
+        while ($row = $result->fetch_assoc()) {
+          $prices[$row['p_id']] = $row['price'];
+        }
+      }
+
+      $order_details = "INSERT INTO order_details (orders_id, user_id, product_id, quantity, price) 
+      VALUES (?,?,?,?,?)";
+      $stmt = $conn->prepare($order_details);
+      if (!$stmt) {
+        die("Prepare failed: " . $conn->error);
+      }
+
+      $total_price = 0;
+      $tax = 0;
+      foreach ($_SESSION['cart'] as $product_id => $quantity) {
+        $price = isset($prices[$product_id]) ? $prices[$product_id] : 0;
+        $total_price = $price * $quantity;
+        $tax = $total_price * 0.05;
+        $sub_total = $total_price + $tax;
+        $stmt->bind_param("siiid", $orders_id, $user_id, $product_id, $quantity, $sub_total);
+        $stmt->execute();
+      }
+    }
+
     if ($stmt->affected_rows > 0) {
 
 ?>
@@ -44,7 +81,7 @@ if (isset($_POST['checkout'])) {
             text: "Your order has been placed successfully.",
             showConfirmButton: true,
           }).then(() => {
-            window.location ="<?= WEBSITE_URL . "index.php" ?>";
+            window.location = "<?= WEBSITE_URL . "index.php" ?>";
           });
         }, 100);
       </script>
@@ -74,8 +111,7 @@ if (isset($_POST['checkout'])) {
 
 ?>
 
-
-<?php include __DIR__ . ('/../views/includes/header.php');?>
+<?php include __DIR__ . ('/../views/includes/header.php'); ?>
 
 <title>Checkout form</title>
 
@@ -215,10 +251,36 @@ if (isset($_POST['checkout'])) {
           </form>
         </div>
 
+
+        <?php
+        if (isset($_SESSION['user_id'])) {
+          $user_id = $_SESSION['user_id'];
+
+          $sql = "SELECT
+          up.first_name AS f_name,
+          up.last_name AS l_name,
+          up.country AS ctry,
+          up.city AS city,
+          up.address AS address,
+          up.postal_code AS p_code,
+          ua.email AS email
+          FROM user_profiles up
+          JOIN user_accounts ua ON up.user_id = ua.user_id
+          WHERE up.user_id = ?";
+
+          $stmt = $conn->prepare($sql);
+          $stmt->bind_param("i", $user_id);
+          $stmt->execute();
+          $result = $stmt->get_result();
+          $row = $result->fetch_assoc();
+        }
+        ?>
+
         <div class="col-md-7 col-lg-8">
           <h4 class="mb-3"><?= __('Billing address') ?></h4>
           <form class="needs-validation" method="post">
             <div class="row g-3">
+
               <div class="col-sm-6">
                 <label for="firstName" class="form-label"><?= __('First name') ?></label>
                 <input type="text"
@@ -226,7 +288,7 @@ if (isset($_POST['checkout'])) {
                   id="firstName"
                   name="firstName"
                   placeholder=""
-                  value=""
+                  value="<?= htmlspecialchars($row['f_name']) ?>"
                   required>
                 <div class="invalid-feedback">
                   <?= __('Real first name is required') ?>
@@ -240,7 +302,7 @@ if (isset($_POST['checkout'])) {
                   id="lastName"
                   name="lastName"
                   placeholder=""
-                  value=""
+                  value="<?= htmlspecialchars($row['l_name']) ?>"
                   required>
                 <div class="invalid-feedback">
                   <?= __('Real last name is required') ?>
@@ -255,7 +317,7 @@ if (isset($_POST['checkout'])) {
                     class="form-control"
                     id="email"
                     name="email"
-                    value=""
+                    value="<?= htmlspecialchars($row['email']) ?>"
                     placeholder="Email"
                     pattern="\S+@\S+\.\S+"
                     required>
@@ -301,6 +363,7 @@ if (isset($_POST['checkout'])) {
                   class="form-control"
                   id="address"
                   name="address"
+                  value="<?= htmlspecialchars($row['address']) ?>"
                   placeholder="1234 Main St"
                   required>
                 <div class="invalid-feedback">
@@ -316,8 +379,11 @@ if (isset($_POST['checkout'])) {
                   required>
                   <option value="">Choose...</option>
                   <?php
+                  $selectedCountry = htmlspecialchars($row['ctry']);
                   foreach ($countries as $country) {
-                    echo "<option value='" . htmlspecialchars($country['name']) . "'>" . htmlspecialchars($country['name']) . "</option>";
+                    $countryName = htmlspecialchars($country['name']);
+                    $selected = ($countryName === $selectedCountry) ? ' selected' : '';
+                    echo "<option value='$countryName'$selected>$countryName</option>";
                   }
                   ?>
                 </select>
@@ -330,6 +396,7 @@ if (isset($_POST['checkout'])) {
                   class="form-control"
                   id="city"
                   name="city"
+                  value="<?= htmlspecialchars($row['city']) ?>"
                   placeholder="<?= __('California') ?>"
                   required>
                 <div class="invalid-feedback">
@@ -338,16 +405,17 @@ if (isset($_POST['checkout'])) {
               </div>
 
               <div class="col-md-3">
-                <label for="zip" class="form-label"><?= __('Zip') ?></label>
+                <label for="postal_code" class="form-label"><?= __('postal code') ?></label>
                 <input
                   type="text"
                   class="form-control"
                   id="postal_code"
                   name="postal_code"
+                  value="<?= htmlspecialchars($row['p_code']) ?>"
                   placeholder=""
                   required>
                 <div class="invalid-feedback">
-                  <?= __('Provide a valid Zip code') ?>
+                  <?= __('Provide a valid postal code') ?>
                 </div>
               </div>
 
@@ -376,7 +444,7 @@ if (isset($_POST['checkout'])) {
             <button class="w-100 btn btn-primary btn-lg" type="submit" name="checkout"><?= __('Continue to checkout') ?></button>
           </form>
 
-          <form action="<?= WEBSITE_URL?>functions/payment/stripe/stripe.php" method="POST">
+          <form action="<?= WEBSITE_URL ?>functions/payment/stripe/stripe.php" method="POST">
             <button class="btn btn-lg btn-dark">
               <i class="fa-solid fa-credit-card"></i>
               <span class="ms-2 fs-6"><?= __('Debit Card or Credit Card') ?></span>
@@ -390,7 +458,7 @@ if (isset($_POST['checkout'])) {
   </div>
 
   <!-- Footer -->
-  <?php include __DIR__ . ('/../views/includes/footer.php');?>
+  <?php include __DIR__ . ('/../views/includes/footer.php'); ?>
 
 </body>
 

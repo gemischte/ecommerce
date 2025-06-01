@@ -103,8 +103,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
 ?>
 
 <?php include __DIR__ . ('/../includes/header.php'); ?>
-<!-- Custom styles for this template-->
-<link href="../assets/css/sb-admin-2.min.css" rel="stylesheet">
 
 <div class="container">
     <div class="row">

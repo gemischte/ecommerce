@@ -30,97 +30,79 @@ if ($brand_result->num_rows > 0) {
 }
 ?>
 
-<form action="index.php" method="POST">
-  <div class="container py-5">
-    <h4 class="mb-0"><i class="fa-solid fa-filter"></i><?= __('Filters') ?></h4>
-    <div class="row g-4">
-      <div class="col-lg-3">
-        <div class="filter-sidebar p-4 shadow-sm">
+<div class="container py-5">
+  <h4 class="mb-0"><i class="fa-solid fa-filter"></i> <?= __('Filters') ?></h4>
+  <div class="row g-4">
+    <div class="col-lg-3">
+      <div class="filter-sidebar p-4 shadow-sm">
+        <h5 class="mb-4"><?= __('Brand') ?></h5>
 
-          <h5 class="mb-4"><?= __('Brand') ?></h5>
+        <form id="filter-form">
+          <?php foreach ($brand as $item): ?>
+            <div class="form-check">
+              <input class="form-check-input brand-checkbox" type="checkbox" id="brand_<?= htmlspecialchars($item) ?>" name="brands[]" value="<?= htmlspecialchars($item) ?>">
+              <label class="form-check-label" for="brand_<?= htmlspecialchars($item) ?>">
+                <?= htmlspecialchars($item) ?>
+              </label>
+            </div>
+          <?php endforeach; ?>
+        </form>
 
-          <label class="form-check-label" for="electronics">
-            <?PHP
 
-            foreach ($brand as $item) {
-              echo "
-                      <input class='form-check-input' type='checkbox' id='electronics'>";
-              echo htmlspecialchars($item) . "<br>";
-            }
-            ?>
-          </label>
 
-          <button class="btn btn-outline-primary w-100"><?= __('Apply Filters') ?></button>
-        </div>
       </div>
     </div>
-  </div>
-</form>
-<!-- End Filters Sidebar -->
 
-<!-- Section-->
-<section class="py-5">
-  <div class="container px-4 px-lg-5 mt-5">
-    <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-      <?php
-      if ($result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) { ?>
-          <div class="col mb-5">
-            <div class="card h-100">
+    <div class="col-lg-9">
+      <section class="py-5">
+        <div class="container px-4 px-lg-5 mt-5">
+          <div id="products-container" class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+            <?php if ($result->num_rows > 0): ?>
+              <?php while ($row = $result->fetch_assoc()): ?>
+                <div class="col mb-5">
+                  <div class="card h-100">
 
-              <?php
-              if ($row['original_price'] > $row['price']) {
-                echo "<div class='badge bg-dark text-white position-absolute' style='top: 0.5rem; right: 0.5rem'>" . __('Sale') . "</div>";
-              }
-              ?>
+                    <?php if ($row['original_price'] > $row['price']): ?>
+                      <div class='badge bg-dark text-white position-absolute' style='top: 0.5rem; right: 0.5rem'><?= __('Sale') ?></div>
+                      <div class='badge bg-success text-white position-absolute' style='top: 0.5rem; left: 0.5rem'>
+                        <?= round((($row['original_price'] - $row['price']) / $row['original_price']) * 100) ?>%
+                      </div>
+                    <?php endif; ?>
 
-              <?php
-              if ($row['original_price'] > $row['price']) {
-                $discount = round((($row['original_price'] - $row['price']) / $row['original_price']) * 100);
-                echo "<div class='badge bg-success text-white position-absolute' style='top: 0.5rem; left: 0.5rem'>$discount%</div>";
-              }
-              ?>
+                    <img class="card-img-top" src="<?= htmlspecialchars($row['product_images']) ?>" alt="..." />
+                    <div class="card-body p-4">
+                      <div class="text-center">
+                        <h5 class="fw-bolder"><?= htmlspecialchars($row['product_name']) ?></h5>
 
-              <!-- Product image-->
-              <img class="card-img-top" src="<?php echo htmlspecialchars($row['product_images']); ?>" alt="..." />
-              <!-- Product details-->
-              <div class="card-body p-4">
-                <div class="text-center">
-                  <!-- Product name-->
-                  <h5 class="fw-bolder"><?php echo htmlspecialchars($row['product_name']); ?></h5>
-                  <!-- Product reviews-->
-                  <div class="d-flex justify-content-center small text-warning mb-2">
-                    <div class=""><i class="fa-solid fa-star"></i><?php echo htmlspecialchars($row['star']); ?></div>
+                        <div class="d-flex justify-content-center small text-warning mb-2">
+                          <div><i class="fa-solid fa-star"></i><?= htmlspecialchars($row['star']) ?></div>
+                        </div>
+
+                        <?php if ($row['original_price'] > $row['price']): ?>
+                          <span class="text-muted text-decoration-line-through">$<?= htmlspecialchars($row['original_price']) ?></span>
+                        <?php endif; ?>
+                        $<?= htmlspecialchars($row['price']) ?>
+
+                      </div>
+                    </div>
+                    <div class="card-footer d-flex justify-content-between bg-light">
+                      <div class="text-center">
+                        <a class="btn btn-primary btn-sm" href="<?= WEBSITE_URL . "views/view_product.php?id=" . htmlspecialchars($row['product_id']) ?>"><?= __('View products') ?></a>
+                      </div>
+                    </div>
                   </div>
-
-                  <!-- Product price-->
-                  <span class="text-muted text-decoration-line-through">
-                    <?php
-                    if ($row['original_price'] > $row['price']) {
-                      echo "$" . htmlspecialchars($row['original_price']);
-                    };
-                    ?>
-                  </span>
-
-                  $<?php echo htmlspecialchars($row['price']); ?>
-
                 </div>
-              </div>
-              <!-- Product actions-->
-              <div class="card-footer d-flex justify-content-between bg-light">
-                <div class="text-center"><a class="btn btn-primary btn-sm" href="<?= WEBSITE_URL . "views/view_product.php?id=" ?><?php echo htmlspecialchars($row['product_id']); ?>"><?= __('View products') ?></a></div>
-              </div>
-
-            </div>
+              <?php endwhile; ?>
+            <?php else: ?>
+              <p>No products found.</p>
+            <?php endif; ?>
           </div>
-      <?php }
-      }
-      ?>
-
+        </div>
+      </section>
     </div>
   </div>
-</section>
-<!-- End Section -->
+</div>
+<!-- End Filters Sidebar -->
 
 <!-- Footer -->
 <?php include __DIR__ . ('/views/includes/footer.php'); ?>

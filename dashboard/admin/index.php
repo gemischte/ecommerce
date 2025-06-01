@@ -9,8 +9,6 @@ if (!$result) {
 }
 ?>
 
-
-
 <?php require_once __DIR__ . '/includes/header.php';?>
 
 <div class="container">

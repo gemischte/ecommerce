@@ -27,3 +27,6 @@ define('WEBSITE_NAME', 'Tempest Shopping');
 // Set website URLs
 define('WEBSITE_URL', 'http://localhost/Database/');
 define('ADMIN_URL', 'http://localhost/Database/dashboard/admin/');
+
+// API URLs
+$all_countries_list = "https://www.apicountries.com/countries";

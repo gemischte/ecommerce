@@ -33,15 +33,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['username'])) {
 if (isset($_GET['confirm']) && $_GET['confirm'] === 'true' && isset($_GET['username'])) {
     $username = $_GET['username'];
 
-    // Prepare the delete query
     $delete_account = "DELETE FROM user_accounts WHERE username = ?";
     $stmt = $conn->prepare($delete_account);
 
     if ($stmt) {
-        // Bind the parameters
+        
         $stmt->bind_param("s", $username);
 
-        // Execute the query
         $stmt->execute();
 
         if ($stmt->affected_rows > 0) {
@@ -76,12 +74,11 @@ if (isset($_GET['confirm']) && $_GET['confirm'] === 'true' && isset($_GET['usern
 
 <?php
     }
-    // Close the statement
+    
     $stmt->close();
 } else {
     echo "Failed to prepare SQL statement: " . $conn->error;
 }
-
 
 $conn->close();
 ?>

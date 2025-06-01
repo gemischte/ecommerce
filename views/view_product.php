@@ -44,9 +44,11 @@ if (isset($_GET['id'])) {
                             <span class="h4 me-2 text-primary">$<?= htmlspecialchars($row['price']); ?></span>
 
                             <?php
-                            if ($row['original_price'] < ['price'] && $row['original_price'] != 0) {
+                            if ($row['original_price'] > $row['price'] && $row['original_price'] != 0) {
                                 $discount = round((($row['original_price'] - $row['price']) / $row['original_price']) * 100);
                                 echo "<span class='badge bg-danger ms-2'>$discount % OFF</span>";
+                            } else {
+                                echo "<span class='d-none'></span>";
                             }
                             ?>
 

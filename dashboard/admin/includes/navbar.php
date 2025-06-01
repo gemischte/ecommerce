@@ -71,7 +71,7 @@
             </li>
         <?php else: ?>
             <li class="nav-item">
-                <a class="nav-link text-reset" href="#" rel="sponsored">Login</a>
+                <a class="nav-link text-reset" href="<?= ADMIN_URL . "views/login.php"?>" rel="sponsored">Login</a>
             </li>
         <?php endif; ?>
 
@@ -92,14 +92,10 @@
                 </button>
             </div>
             <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-            <?php
-            if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['logout'])) {
-                unset($_SESSION['user']);
-            }
-            ?>
+            
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                <form method="POST">
+                <form action="<?= ADMIN_URL . "auth/logout.php"?>" method="POST">
                     <button type="submit" class="btn btn-primary" name="logout">Logout</button>
                 </form>
             </div>

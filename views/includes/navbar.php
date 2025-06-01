@@ -9,24 +9,20 @@
                 <div>
                     <?php if (isset($_SESSION['user'])) : ?>
                         <li class="nav-item dropdown d-flex flex-row-reverse">
-                            <button class="btn btn-dark dropdown-toggle dropbtn " type="button" id="dropdownMenuButton"
-                                onclick="Dropdown()">
+                            <button class="btn btn-dark dropdown-toggle dropbtn " type="button" id="dropdownMenu" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="fa-solid fa-user"></i>
                                 <?= $_SESSION['user'] ?>
                             </button>
                             <ul class="dropdown-menu dropdown-content" id="dropdown-list">
-                                <div><a class="text-reset text-decoration-none" href="#"><?= __('Order History') ?></a></div>
-                                <div><a class="text-reset text-decoration-none"  href="<?= WEBSITE_URL ."auth/logout.php"?>" ><?= __('Logout') ?></a></div>
-                                <form action="<?= WEBSITE_URL ."auth/delete_account.php"?>" method="POST">
-                                    <input type="hidden" name="username" value="<?= $_SESSION['user'] ?>">
-                                    <button type="submit" class="btn btn-danger"><?= __('Delete Account') ?></button>
-                                </form>
+                                <div><a class="text-reset text-decoration-none" href="<?= WEBSITE_URL . "views/order_history.php" ?>"><?= __('Order History') ?></a></div>
+                                <div><a class="text-reset text-decoration-none" href="<?= WEBSITE_URL . "dashboard/user/views/profile.php" ?>"><?= __('Profile') ?></a></div>
+                                <div><a class="text-reset text-decoration-none" href="<?= WEBSITE_URL . "auth/logout.php" ?>"><?= __('Logout') ?></a></div>
                             </ul>
                         </li>
                     <?php else: ?>
-                        <a class="text-reset" href="<?= WEBSITE_URL ."views/login.php" ?>" rel="sponsored"><?= __('Login') ?></a>
+                        <a class="text-reset" href="<?= WEBSITE_URL . "views/login.php" ?>" rel="sponsored"><?= __('Login') ?></a>
                         <div class="vr mx-2"></div>
-                        <a class="text-reset" href="<?= WEBSITE_URL ."views/register.php" ?>"><?= __('Register') ?></a>
+                        <a class="text-reset" href="<?= WEBSITE_URL . "views/register.php" ?>"><?= __('Register') ?></a>
                     <?php endif; ?>
                 </div>
 
@@ -42,7 +38,7 @@
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="<?= WEBSITE_URL?>index.php"><?= __('Home') ?></a></li>
+                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="<?= WEBSITE_URL ?>index.php"><?= __('Home') ?></a></li>
 
                     <!-- Translation dropdown -->
                     <div class="dropdown">
@@ -62,11 +58,12 @@
                             ?>
                             <div><a class="text-reset text-decoration-none" href="<?= select_lang('en-us'); ?>"><?= __('English(USA)') ?></a></div>
                             <div><a class="text-reset text-decoration-none" href="<?= select_lang('zh-tw'); ?>"><?= __('Chinese(Traditional)') ?></a></div>
+                            <div><a class="text-reset text-decoration-none" href="<?= select_lang('zh-cn'); ?>"><?= __('Chinese(Simplified)') ?></a></div>
                         </ul>
                     </div>
 
                 </ul>
-                <form class="d-flex" action="<?= WEBSITE_URL?>views/cart.php">
+                <form class="d-flex" action="<?= WEBSITE_URL ?>views/cart.php">
                     <button class="btn btn-outline-dark" type="submit">
                         <i class="fa-solid fa-cart-shopping"></i>
                         <?= __('Cart') ?>
@@ -97,17 +94,14 @@
                             <?= $_SESSION['user'] ?>
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                            <div><a class="text-reset text-decoration-none" href="<?= WEBSITE_URL . "auth/logout.php" ?>"> <?= __('Logout') ?></a></div>
-                            <div><a class="text-reset text-decoration-none" href="#"><?= __('Order History') ?></a></div>
-                            <form action="delete_account.php" method="POST">
-                                <input type="hidden" name="username" value="<?= $_SESSION['user'] ?>">
-                                <button type="submit" class="btn btn-danger"><?= __('Delete Account') ?></button>
-                            </form>
+                            <div><a class="text-reset text-decoration-none" href="<?= WEBSITE_URL . "views/order_history.php" ?>"><?= __('Order History') ?></a></div>
+                            <div><a class="text-reset text-decoration-none" href="<?= WEBSITE_URL . "dashboard/user/views/profile.php" ?>"><?= __('Profile') ?></a></div>
+                            <div><a class="text-reset text-decoration-none" href="<?= WEBSITE_URL . "auth/logout.php" ?>"><?= __('Logout') ?></a></div>
                         </ul>
                     <?php else: ?>
-                        <a class="text-reset" href="<?= WEBSITE_URL ."views/login.php" ?>" rel="sponsored"><?= __('Login') ?></a>
+                        <a class="text-reset" href="<?= WEBSITE_URL . "views/login.php" ?>" rel="sponsored"><?= __('Login') ?></a>
                         <div class="vr mx-2"></div>
-                        <a class="text-reset" href="<?= WEBSITE_URL ."views/register.php" ?>"><?= __('Register') ?></a>
+                        <a class="text-reset" href="<?= WEBSITE_URL . "views/register.php" ?>"><?= __('Register') ?></a>
                     <?php endif; ?>
                 </div>
 

@@ -17,4 +17,5 @@
 
 <body>
   <?php include(__DIR__ . '/../../functions/includes/lang.php'); ?>
+  <?php include(__DIR__ . '/../../auth/auth.php'); ?>
   <?php include('navbar.php');?>
