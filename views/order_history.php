@@ -7,6 +7,7 @@ if (!$user_id) {
     exit();
 }
 
+$user_id = $_SESSION['user_id'];
 $sql = "SELECT 
 pd.product_name,
 pd.product_images,
@@ -14,11 +15,13 @@ pd.price,
 pd.brand,
 oi.payment_method AS pay,
 oi.orders_created_at AS date,
+cat.category_name AS cat_name,
 od.*
 FROM
 order_details AS od
 JOIN products AS pd ON od.product_id = pd.product_id
 JOIN orders_info AS oi ON od.orders_id = oi.orders_id
+JOIN category AS cat ON od.product_id = cat.product_id
 WHERE od.user_id = ?
 ORDER BY 
 od.product_id DESC, 
@@ -31,7 +34,7 @@ $stmt = $conn->prepare($sql);
 if (!$stmt) {
     die("SQL prepare failed: " . $conn->error);
 }
-$stmt->bind_param("i", $user_id);
+$stmt->bind_param("s", $user_id);
 $stmt->execute();
 $result = $stmt->get_result();
 
@@ -52,7 +55,8 @@ while ($row = $result->fetch_assoc()) {
         'product_images' => $row['product_images'],
         'brand' => $row['brand'],
         'quantity' => $row['quantity'],
-        'price' => $row['price']
+        'price' => $row['price'],
+        'cat_name' => $row['cat_name']
     ];
 }
 ?>
@@ -107,6 +111,7 @@ while ($row = $result->fetch_assoc()) {
 
                                             <td><?= htmlspecialchars($product['product_name']) ?>
                                                 <p class="small"><strong><?= __('Brand') ?>:</strong><?= htmlspecialchars($product['brand']) ?></p>
+                                                <p class="small"><strong><?= __('Category') ?>:</strong><?= htmlspecialchars($product['cat_name']) ?></p>
                                             </td>
 
                                             <td><?= htmlspecialchars($product['quantity']) ?></td>

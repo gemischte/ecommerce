@@ -20,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && $userid) {
     $stmt = $conn->prepare($edit_profile);
 
     if ($stmt) {
-        $stmt->bind_param("i", $userid);
+        $stmt->bind_param("s", $userid);
         $stmt->execute();
         $result = $stmt->get_result();
 
@@ -88,7 +88,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
 
     if ($stmt) {
         $stmt->bind_param(
-            "sssssssssi",
+            "ssssssssss",
             $phone,
             $country,
             $city,

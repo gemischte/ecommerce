@@ -36,7 +36,7 @@ if (isset($_GET['confirm']) && $_GET['confirm'] === 'true' && isset($_GET['useri
     $stmt = $conn->prepare($delete_user);
 
     if ($stmt) {
-        $stmt->bind_param("i", $userid);
+        $stmt->bind_param("s", $userid);
         $stmt->execute();
 
         if ($stmt->affected_rows > 0) {

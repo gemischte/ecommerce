@@ -48,21 +48,33 @@ function confirm_show_password() {
   }
 }
 
-document.querySelectorAll('.brand-checkbox').forEach(checkbox => {
-  checkbox.addEventListener('change', () => {
-    const checkedBrands = Array.from(document.querySelectorAll('.brand-checkbox:checked')).map(cb => cb.value);
+//Filters
+function fetchFilteredProducts() {
+  const checkedBrands = Array.from(document.querySelectorAll('.brand-checkbox:checked')).map(cb => cb.value);
+  const checkedCategories = Array.from(document.querySelectorAll('.category-checkbox:checked')).map(cb => cb.value);
 
-    fetch('functions/includes/filters.php', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: 'brands=' + encodeURIComponent(JSON.stringify(checkedBrands))
-    })
-    .then(response => response.text())
-    .then(html => {
-      document.getElementById('products-container').innerHTML = html;
-    })
-    .catch(err => {
-      console.error('Error fetching filtered products:', err);
-    });
+  const params = new URLSearchParams();
+  if (checkedBrands.length > 0) {
+    params.append('brands', JSON.stringify(checkedBrands));
+  }
+  if (checkedCategories.length > 0) {
+    params.append('categories', JSON.stringify(checkedCategories));
+  }
+
+  fetch('functions/includes/filters.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: params.toString()
+  })
+  .then(response => response.text())
+  .then(html => {
+    document.getElementById('products-container').innerHTML = html;
+  })
+  .catch(err => {
+    console.error('Error fetching filtered products:', err);
   });
+}
+
+document.querySelectorAll('.brand-checkbox, .category-checkbox').forEach(checkbox => {
+  checkbox.addEventListener('change', fetchFilteredProducts);
 });

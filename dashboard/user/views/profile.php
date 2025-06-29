@@ -24,7 +24,7 @@ if (isset($_SESSION['user_id'])) {
     WHERE up.user_id = ?";
 
     $stmt = $conn->prepare($profiles);
-    $stmt->bind_param("i", $user_id);
+    $stmt->bind_param("s", $user_id);
     $stmt->execute();
     $result = $stmt->get_result();
     $row = $result->fetch_assoc();

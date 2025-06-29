@@ -36,17 +36,12 @@ if (isset($_POST['checkout'])) {
       $user_id = $_SESSION['user_id'];
 
       $product_ids = implode(',', array_keys($_SESSION['cart']));
-      $sql = "SELECT
-      p.product_id AS p_id, 
-      p.price AS price
-      FROM products AS p
-      WHERE p.product_id IN ($product_ids)";
-
+      $sql = "SELECT product_id, price FROM products WHERE product_id IN ($product_ids)";
       $result = $conn->query($sql);
       $prices = [];
       if ($result) {
         while ($row = $result->fetch_assoc()) {
-          $prices[$row['p_id']] = $row['price'];
+          $prices[$row['product_id']] = $row['price'];
         }
       }
 
@@ -64,7 +59,7 @@ if (isset($_POST['checkout'])) {
         $total_price = $price * $quantity;
         $tax = $total_price * 0.05;
         $sub_total = $total_price + $tax;
-        $stmt->bind_param("siiid", $orders_id, $user_id, $product_id, $quantity, $sub_total);
+        $stmt->bind_param("ssiid", $orders_id, $user_id, $product_id, $quantity, $sub_total);
         $stmt->execute();
       }
     }
@@ -269,7 +264,7 @@ if (isset($_POST['checkout'])) {
           WHERE up.user_id = ?";
 
           $stmt = $conn->prepare($sql);
-          $stmt->bind_param("i", $user_id);
+          $stmt->bind_param("s", $user_id);
           $stmt->execute();
           $result = $stmt->get_result();
           $row = $result->fetch_assoc();

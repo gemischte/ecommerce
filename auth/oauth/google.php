@@ -1,18 +1,15 @@
 <?php
-/* Google OAuth 2.0 PHP Documentation:
-https://github.com/MusabDev/php-google-login */
-
 require_once __DIR__ . '/../../core/config.php';
 require __DIR__ . "/../../vendor/autoload.php";
+require __DIR__ . "/../../views/includes/assets.php";
+
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../../', '.env');
 $dotenv->load();
 
-// init configuration
 $clientID = $_ENV['GOOGLE_CLIENT_ID'];
 $clientSecret = $_ENV['GOOGLE_CLIENT_SECRET'];
 $redirectUrl = $_ENV['GOOGLE_REDIRECT_URL'];
 
-// create Client Request to access Google API
 $client = new Google\Client();
 $client->setClientId($clientID);
 $client->setClientSecret($clientSecret);
@@ -20,23 +17,88 @@ $client->setRedirectUri($redirectUrl);
 $client->addScope("email");
 $client->addScope("profile");
 
-// authenticate code from Google OAuth Flow
 if (isset($_GET['code'])) {
-  $token = $client->fetchAccessTokenWithAuthCode($_GET['code']);
-  $client->setAccessToken($token);
+	$token = $client->fetchAccessTokenWithAuthCode($_GET['code']);
+	$client->setAccessToken($token);
 
-  // get profile info
-  $google_oauth = new Google\Service\Oauth2($client);
-  $google_account_info = $google_oauth->userinfo->get();
-  $email =  $google_account_info->email;
-  $name =  $google_account_info->name;
-  $picture = $google_account_info->picture;
+	$google_oauth = new Google\Service\Oauth2($client);
+	$google_account_info = $google_oauth->userinfo->get();
+	$email = $google_account_info->email;
+	$name = $google_account_info->name;
 
-  // now you can use this profile info to create account in your website and make user logged in.
-  // echo "<img src='" . $picture . "' >Welcome Name:" . $name . " , You are registered using email: " . $email;
-  header("Location:" . WEBSITE_URL . "index.php");
+	$name_parts = explode(' ', $name);
+	$first_name = $name_parts[0] ?? '';
+	$last_name = $name_parts[1] ?? '';
+
+	$user_id = 'user_' . bin2hex(random_bytes(16));
+	$username = explode('@', $email)[0];
+	$account_registered_at = date('Y-m-d H:i:s');
+
+	// Check if the email has already been registered
+	$query = "SELECT * FROM user_accounts WHERE email = ?";
+	$stmt = $conn->prepare($query);
+	$stmt->bind_param("s", $email);
+	$stmt->execute();
+	$result = $stmt->get_result();
+
+	if ($result->num_rows > 0) {
+
+		$row = $result->fetch_assoc();
+
+		$set_time = date('Y-m-d H:i:s');
+		$login_time = "UPDATE user_accounts SET last_login_time = ? WHERE username = ?";
+		$update_stmt = $conn->prepare($login_time);
+		if ($update_stmt) {
+
+			$update_stmt->bind_param("ss", $set_time, $username);
+			$update_stmt->execute();
+		}
+
+		$_SESSION['user_id'] = $row['user_id'];
+		header("Location:" . WEBSITE_URL . "index.php");
+		exit();
+?>
+
+		<?php
+	} else {
+
+		$google_register = "INSERT INTO user_accounts (username, user_id, email, account_registered_at) 
+		VALUES (?, ?, ?, ?)";
+		$google_stmt = $conn->prepare($google_register);
+		$google_stmt->bind_param("ssss", $username, $user_id, $email, $account_registered_at);
+
+		if ($google_stmt->execute()) {
+
+			$google_profile = "INSERT INTO user_profiles (user_id,first_name, last_name) 
+			VALUES (?, ?, ?)";
+			$profile_stmt = $conn->prepare($google_profile);
+			$profile_stmt->bind_param("sss", $user_id, $first_name, $last_name);
+			$profile_stmt->execute();
+
+			// When registered is successful, auto login
+			$_SESSION['user'] = $username;
+			$_SESSION['user_id'] = $user_id;
+
+		?>
+			<script>
+				setTimeout(function() {
+					Swal.fire({
+						icon: "success",
+						title: "Nice to meet you!",
+						text: "Your Google account has been registered and logged in.",
+						showConfirmButton: false,
+						timer: 1500
+					}).then(() => {
+						window.location = "<?= WEBSITE_URL . "index.php"; ?>";
+					});
+				}, 100);
+			</script>
+<?php
+		} else {
+			die("Error: " . $google_stmt->error);
+		}
+	}
 } else {
-  echo "<a href='" . $client->createAuthUrl() . "'>Google Login</a>";
 }
 ?>
 
@@ -44,13 +106,13 @@ if (isset($_GET['code'])) {
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Google</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Google Auth</title>
 </head>
 
 <body>
-
+	<a href="<?= $client->createAuthUrl() ?>">Google Login</a>
 </body>
 
 </html>

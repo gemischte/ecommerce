@@ -134,7 +134,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     placeholder=""
                                     required
                                     pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,16}"
-                                    title="Password must be 6-16 characters long, with uppercase letters, lowercase letters, and numbers."
+                                    title="<?= __('Password must be 6-16 characters long, with uppercase letters, lowercase letters, and numbers.') ?>"
                                     autofocus />
                                 <label for="password">Password</label>
                                 <button type="button" class="btn btn-light position-absolute end-0 top-50 translate-middle-y me-2" onclick="showpassword()">
@@ -151,7 +151,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     placeholder=""
                                     required
                                     pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,16}"
-                                    title="Confirm Password" />
+                                    title="<?= __('Confirm Password') ?>" 
+                                    />
                                 <label for="confirmPassword">Confirm Password</label>
                                 <button type="button" class="btn btn-light position-absolute end-0 top-50 translate-middle-y me-2" onclick="confirm_show_password()">
                                     <i id="confirm_password_eye_icon" class="fa fa-eye"></i>

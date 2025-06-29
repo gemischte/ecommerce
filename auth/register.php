@@ -25,8 +25,8 @@ $register_account = "INSERT INTO user_accounts
 (username,user_id, email, password, account_registered_at) 
 VALUES (?, ?, ?,?,?)";
 
-// Randomly generates a number between 8 and 19 digits
-$user_id = rand(10000000, 9223372036854775807);
+$user_id = 'user_' . bin2hex(random_bytes(16));
+
 $stmt = $conn->prepare($register_account);
 
 if (!$stmt) {
@@ -42,8 +42,12 @@ $account_registered_at = date('Y-m-d H:i:s');
 $stmt->bind_param("sssss", $username, $user_id, $email, $password, $account_registered_at);
 
 //Check username or email is already registered
-$query = "SELECT 1 FROM user_accounts WHERE username = '$username' OR email = '$email'";
-$check_result = $conn->query($query);
+$query = "SELECT 1 FROM user_accounts WHERE username = ? OR email = ? ";
+$check_stmt = $conn->prepare($query);
+$check_stmt->bind_param("ss", $username, $email);
+$check_stmt->execute();
+$check_result = $check_stmt->get_result();
+
 if ($check_result->num_rows > 0) {
 ?>
 
@@ -72,6 +76,10 @@ if ($stmt->execute()) {
 	$stmt_details = $conn->prepare($profiles);
 	$stmt_details->bind_param("ssss", $user_id,$phone ,$first_name, $last_name);
 	$stmt_details->execute();
+
+	// When registered is successful, auto login
+	$_SESSION['user']= $username;
+	$_SESSION['user_id'] = $user_id;
 	
 ?>
 
@@ -84,7 +92,7 @@ if ($stmt->execute()) {
 				showConfirmButton: false,
 				timer: 1500
 			}).then(() => {
-				window.location = "<?= WEBSITE_URL . "views/login.php"; ?>";
+				window.location = "<?= WEBSITE_URL . "index.php"; ?>";
 			});
 		}, 100);
 	</script>

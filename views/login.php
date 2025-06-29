@@ -34,7 +34,7 @@ require_once __DIR__ . '/../views/includes/header.php';
                                         <div class="form-floating mb-3">
                                             <input
                                                 placeholder=""
-                                                title="Enter your username or email"
+                                                title="<?= __('Enter your username or email')?>"
                                                 type="text"
                                                 name="username"
                                                 id="username"
@@ -51,7 +51,7 @@ require_once __DIR__ . '/../views/includes/header.php';
                                         <div class="form-floating mb-3">
                                             <input class="form-control"
                                                 placeholder=""
-                                                title="Enter your password"
+                                                title="<?= __('Enter your password')?>"
                                                 type="password"
                                                 name="password"
                                                 id="password"

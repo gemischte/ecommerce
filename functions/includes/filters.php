@@ -1,21 +1,8 @@
 <?php
 require_once __DIR__ . '/../../core/config.php';
 
-if (isset($_POST['brands'])) {
-    $brands = json_decode($_POST['brands'], true);
-
-    if ($brands && is_array($brands) && count($brands) > 0) {
-        $placeholders = implode(',', array_fill(0, count($brands), '?'));
-        $sql = "SELECT product_id, product_name, original_price, description, brand, price, star, product_images FROM products WHERE brand IN ($placeholders)";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param(str_repeat('s', count($brands)), ...$brands);
-        $stmt->execute();
-        $result = $stmt->get_result();
-    } else {
-        $sql = "SELECT product_id, product_name, original_price, description, brand, price, star, product_images FROM products";
-        $result = $conn->query($sql);
-    }
-
+function render_products($result)
+{
     if ($result && $result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
             echo "<div class='col mb-5'>";
@@ -42,7 +29,74 @@ if (isset($_POST['brands'])) {
             echo "</div></div></div>";
         }
     } else {
-        echo "<div class='col-12'><p>No products found.</p></div>";
+        echo "<div class='col-12 text-danger'><p>No products found.</p></div>";
     }
-    exit;
 }
+
+function bind_params_dynamic($stmt, $params)
+{
+    $types = str_repeat('s', count($params));
+    $refs = [];
+    foreach ($params as $key => $value) {
+        $refs[$key] = &$params[$key];
+    }
+    array_unshift($refs, $types);
+    return call_user_func_array([$stmt, 'bind_param'], $refs);
+}
+
+// 取 POST 的 brands 和 categories（JSON 字串解碼）
+$brands = isset($_POST['brands']) ? json_decode($_POST['brands'], true) : [];
+$categories = isset($_POST['categories']) ? json_decode($_POST['categories'], true) : [];
+
+$sql = "SELECT DISTINCT 
+p.product_id, 
+p.product_name, 
+p.original_price, 
+p.description, 
+p.brand, 
+p.price, 
+p.star, 
+p.product_images
+FROM products p ";
+
+$params = [];
+$conditions = [];
+$joinCategory = false;
+
+// 如果有分類篩選，需要 JOIN category 表
+if (!empty($categories)) {
+    $joinCategory = true;
+    $sql .= "JOIN category c ON p.product_id = c.product_id ";
+    $placeholders_cat = implode(',', array_fill(0, count($categories), '?'));
+    $conditions[] = "c.category_name IN ($placeholders_cat)";
+    $params = array_merge($params, $categories);
+}
+
+// 如果有品牌篩選
+if (!empty($brands)) {
+    $placeholders_brand = implode(',', array_fill(0, count($brands), '?'));
+    $conditions[] = "p.brand IN ($placeholders_brand)";
+    $params = array_merge($params, $brands);
+}
+
+// 有篩選條件時，拼 WHERE
+if (!empty($conditions)) {
+    $sql .= "WHERE " . implode(' AND ', $conditions);
+}
+
+$stmt = $conn->prepare($sql);
+if (!$stmt) {
+    die("Prepare failed: " . $conn->error);
+}
+
+if (!empty($params)) {
+    if (!bind_params_dynamic($stmt, $params)) {
+        die("Binding parameters failed: " . $stmt->error);
+    }
+}
+
+$stmt->execute();
+$result = $stmt->get_result();
+
+render_products($result);
+exit;

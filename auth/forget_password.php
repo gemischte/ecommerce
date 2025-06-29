@@ -20,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (!empty($_POST['email']) && filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
         $email = htmlspecialchars(trim($_POST['email']));
-        $sql = "SELECT email FROM user_accounts WHERE email = ?";
+        $sql = "SELECT email,username FROM user_accounts WHERE email = ?";
         $stmt = $conn->prepare($sql);
 
         if ($stmt) {
@@ -29,10 +29,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $result = $stmt->get_result();
 
             if ($result->num_rows > 0) {
+                $row = $result->fetch_assoc();
                 $reset_password = "UPDATE user_accounts SET token = ?, token_expiry = ? WHERE email = ?";
                 $stmt = $conn->prepare($reset_password);
 
                 if ($stmt) {
+                    $username = $row['username'];
                     $stmt->bind_param("sss", $token, $token_expiry, $email);
                     $stmt->execute();
 
@@ -40,7 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $reset_url=WEBSITE_URL."auth/reset_password.php?token={$token}";
                     $mail->addAddress($email);
                     $mail->Subject = 'Reset password';
-                    $mail->Body = "<p>Hello {$email}</p> Click the link: <a href='$reset_url'>reset password</a>";
+                    $mail->Body = "<p>Hello {$username}</p> Click the link: <a href='$reset_url'>reset password</a>";
 
                     try {
                         $mail->send();

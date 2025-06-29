@@ -32,7 +32,7 @@ require_once __DIR__ . '/../views/includes/header.php';
                                         <input
                                             class="form-control"
                                             placeholder="e.g.Trevor_313"
-                                            title="4-32 characters, allows letters, numbers, and special characters."
+                                            title="<?= __('4-32 characters, allows letters, numbers, and special characters.')?>"
                                             type="text"
                                             name="username"
                                             id="username"
@@ -52,6 +52,7 @@ require_once __DIR__ . '/../views/includes/header.php';
                                             class="form-control"
                                             id="last_name"
                                             name="last_name"
+                                            title="<?= __('Real last name is required') ?>"
                                             placeholder="Enter list name"
                                             required>
                                         <label for="last_name" class="form-label">Last name</label>
@@ -66,6 +67,7 @@ require_once __DIR__ . '/../views/includes/header.php';
                                             class="form-control"
                                             id="first_name"
                                             name="first_name"
+                                            title="<?= __('Real first name is required') ?>"
                                             placeholder="Enter First name"
                                             required>
                                         <label for="first_name" class="form-label">First name</label>
@@ -80,6 +82,7 @@ require_once __DIR__ . '/../views/includes/header.php';
                                             placeholder=""
                                             type="text"
                                             name="phone"
+                                            title="<?= __('Real phone number is required') ?>"
                                             id="phone"
                                             required
                                             value="" />
@@ -93,7 +96,7 @@ require_once __DIR__ . '/../views/includes/header.php';
                                         <input
                                             class="form-control"
                                             placeholder="mail@example.com"
-                                            title="Enter a valid email address."
+                                            title="<?= __('Enter a valid email address')?>."
                                             type="text"
                                             name="email"
                                             id="email"
@@ -110,7 +113,7 @@ require_once __DIR__ . '/../views/includes/header.php';
                                         <input
                                             class="form-control"
                                             placeholder="e.g.Password123"
-                                            title="Password must be 6-16 characters long, with uppercase letters, lowercase letters, and numbers."
+                                            title="<?= __('Password must be 6-16 characters long, with uppercase letters, lowercase letters, and numbers.') ?>"
                                             type="password"
                                             name="password"
                                             id="password"
@@ -131,7 +134,7 @@ require_once __DIR__ . '/../views/includes/header.php';
                                     <div class="form-floating mb-3 position-relative">
                                         <input
                                             placeholder="e.g.Password123"
-                                            title="Enter Confirm Password"
+                                            title="<?= __('Confirm Password') ?>"
                                             type="password"
                                             name="confirmPassword"
                                             id="confirmPassword"

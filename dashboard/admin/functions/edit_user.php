@@ -9,7 +9,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['user_id'])) {
     $stmt = $conn->prepare($edit_user);
 
     if ($stmt) {
-        $stmt->bind_param("i", $userid);
+        $stmt->bind_param("s", $userid);
         $stmt->execute();
         $result = $stmt->get_result();
 

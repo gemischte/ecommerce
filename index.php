@@ -18,25 +18,25 @@ if (!$result) {
 <title>Tempest Shopping</title>
 
 <!-- Filters Sidebar -->
-<?php
-$brand = 'SELECT DISTINCT brand FROM products';
-$brand_result = $conn->query($brand);
-$brand = [];
-
-if ($brand_result->num_rows > 0) {
-  while ($row = $brand_result->fetch_assoc()) {
-    $brand[] = $row['brand'];
-  }
-}
-?>
-
 <div class="container py-5">
   <h4 class="mb-0"><i class="fa-solid fa-filter"></i> <?= __('Filters') ?></h4>
   <div class="row g-4">
     <div class="col-lg-3">
       <div class="filter-sidebar p-4 shadow-sm">
-        <h5 class="mb-4"><?= __('Brand') ?></h5>
 
+        <!-- Brand Filter -->
+        <h5 class="mb-4"><?= __('Brand') ?></h5>
+        <?php
+        $brand = 'SELECT DISTINCT brand FROM products';
+        $brand_result = $conn->query($brand);
+        $brand = [];
+
+        if ($brand_result->num_rows > 0) {
+          while ($row = $brand_result->fetch_assoc()) {
+            $brand[] = $row['brand'];
+          }
+        }
+        ?>
         <form id="filter-form">
           <?php foreach ($brand as $item): ?>
             <div class="form-check">
@@ -48,7 +48,30 @@ if ($brand_result->num_rows > 0) {
           <?php endforeach; ?>
         </form>
 
+        <!-- Category Filter -->
+        <h5 class="mb-4"><?= __('Category') ?></h5>
+        <?php
+        $category_sql = "SELECT DISTINCT category_name FROM category";
+        $category_result = $conn->query($category_sql);
+        $categories = [];
 
+        if ($category_result->num_rows > 0) {
+          while ($row = $category_result->fetch_assoc()) {
+            $categories[] = $row['category_name'];
+          }
+        }
+        ?>
+
+        <form id="category-filter-form">
+          <?php foreach ($categories as $cat): ?>
+            <div class="form-check">
+              <input class="form-check-input category-checkbox" type="checkbox" id="category_<?= htmlspecialchars($cat) ?>" name="categories[]" value="<?= htmlspecialchars($cat) ?>">
+              <label class="form-check-label" for="category_<?= htmlspecialchars($cat) ?>">
+                <?= htmlspecialchars($cat) ?>
+              </label>
+            </div>
+          <?php endforeach; ?>
+        </form>
 
       </div>
     </div>
