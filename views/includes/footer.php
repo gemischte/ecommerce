@@ -18,7 +18,7 @@ https://mdbootstrap.com/docs/standard/navigation/footer/
         <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
           <!-- Content -->
           <h6 class="text-uppercase fw-bold mb-4">
-            <i class="fas fa-gem me-3"></i>gem1schte
+            <i class="fas fa-gem me-3"></i>About Me
           </h6>
           <p>
             A beginner developer,now learning coding,I hope to get a good salary as I continue to grow my skills.
