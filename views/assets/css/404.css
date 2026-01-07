@@ -1,0 +1,17 @@
+.page-404 {
+  min-height: 60vh;
+}
+
+.page-404__code {
+  line-height: 1;
+}
+
+.page-404__title {
+  font-weight: 700;
+}
+
+.page-404__desc {
+  max-width: 720px;
+  margin-left: auto;
+  margin-right: auto;
+}
