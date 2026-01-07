@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 29, 2025 at 06:23 PM
+-- Generation Time: Jan 07, 2026 at 04:17 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `test`
+-- Database: `ecommerce`
 --
 
 -- --------------------------------------------------------
@@ -59,6 +59,276 @@ INSERT INTO `category` (`category_id`, `product_id`, `category_name`) VALUES
 (19, 93586, 'Computer Components'),
 (20, 95002, 'Computer Components'),
 (21, 78577, 'Virtual');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `countries`
+--
+
+CREATE TABLE `countries` (
+  `id` int(11) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `iso2` char(2) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `calling_codes` varchar(10) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `countries`
+--
+
+INSERT INTO `countries` (`id`, `name`, `iso2`, `created_at`, `calling_codes`) VALUES
+(1, 'Afghanistan', 'AF', '2026-01-01 18:03:26', '+93'),
+(2, 'Åland Islands', 'AX', '2026-01-01 18:03:26', '+358'),
+(3, 'Albania', 'AL', '2026-01-01 18:03:26', '+355'),
+(4, 'Algeria', 'DZ', '2026-01-01 18:03:26', '+213'),
+(5, 'American Samoa', 'AS', '2026-01-01 18:03:26', '+1'),
+(6, 'Andorra', 'AD', '2026-01-01 18:03:26', '+376'),
+(7, 'Angola', 'AO', '2026-01-01 18:03:26', '+244'),
+(8, 'Anguilla', 'AI', '2026-01-01 18:03:26', '+1'),
+(9, 'Antarctica', 'AQ', '2026-01-01 18:03:26', '+672'),
+(10, 'Antigua and Barbuda', 'AG', '2026-01-01 18:03:26', '+1'),
+(11, 'Argentina', 'AR', '2026-01-01 18:03:26', '+54'),
+(12, 'Armenia', 'AM', '2026-01-01 18:03:26', '+374'),
+(13, 'Aruba', 'AW', '2026-01-01 18:03:26', '+297'),
+(14, 'Australia', 'AU', '2026-01-01 18:03:26', '+61'),
+(15, 'Austria', 'AT', '2026-01-01 18:03:26', '+43'),
+(16, 'Azerbaijan', 'AZ', '2026-01-01 18:03:26', '+994'),
+(17, 'Bahamas', 'BS', '2026-01-01 18:03:26', '+1'),
+(18, 'Bahrain', 'BH', '2026-01-01 18:03:26', '+973'),
+(19, 'Bangladesh', 'BD', '2026-01-01 18:03:26', '+880'),
+(20, 'Barbados', 'BB', '2026-01-01 18:03:26', '+1'),
+(21, 'Belarus', 'BY', '2026-01-01 18:03:26', '+375'),
+(22, 'Belgium', 'BE', '2026-01-01 18:03:26', '+32'),
+(23, 'Belize', 'BZ', '2026-01-01 18:03:26', '+501'),
+(24, 'Benin', 'BJ', '2026-01-01 18:03:26', '+229'),
+(25, 'Bermuda', 'BM', '2026-01-01 18:03:26', '+1'),
+(26, 'Bhutan', 'BT', '2026-01-01 18:03:26', '+975'),
+(27, 'Bolivia (Plurinational State of)', 'BO', '2026-01-01 18:03:26', '+591'),
+(28, 'Bonaire, Sint Eustatius and Saba', 'BQ', '2026-01-01 18:03:26', '+599'),
+(29, 'Bosnia and Herzegovina', 'BA', '2026-01-01 18:03:26', '+387'),
+(30, 'Botswana', 'BW', '2026-01-01 18:03:26', '+267'),
+(31, 'Bouvet Island', 'BV', '2026-01-01 18:03:26', '+47'),
+(32, 'Brazil', 'BR', '2026-01-01 18:03:26', '+55'),
+(33, 'British Indian Ocean Territory', 'IO', '2026-01-01 18:03:26', '+246'),
+(34, 'United States Minor Outlying Islands', 'UM', '2026-01-01 18:03:26', '+246'),
+(35, 'Virgin Islands (British)', 'VG', '2026-01-01 18:03:26', '+1'),
+(36, 'Virgin Islands (U.S.)', 'VI', '2026-01-01 18:03:26', '+1 340'),
+(37, 'Brunei Darussalam', 'BN', '2026-01-01 18:03:26', '+673'),
+(38, 'Bulgaria', 'BG', '2026-01-01 18:03:26', '+359'),
+(39, 'Burkina Faso', 'BF', '2026-01-01 18:03:26', '+226'),
+(40, 'Burundi', 'BI', '2026-01-01 18:03:26', '+257'),
+(41, 'Cambodia', 'KH', '2026-01-01 18:03:26', '+855'),
+(42, 'Cameroon', 'CM', '2026-01-01 18:03:26', '+237'),
+(43, 'Canada', 'CA', '2026-01-01 18:03:26', '+1'),
+(44, 'Cabo Verde', 'CV', '2026-01-01 18:03:26', '+238'),
+(45, 'Cayman Islands', 'KY', '2026-01-01 18:03:26', '+1'),
+(46, 'Central African Republic', 'CF', '2026-01-01 18:03:26', '+236'),
+(47, 'Chad', 'TD', '2026-01-01 18:03:26', '+235'),
+(48, 'Chile', 'CL', '2026-01-01 18:03:26', '+56'),
+(49, 'China', 'CN', '2026-01-01 18:03:26', '+86'),
+(50, 'Christmas Island', 'CX', '2026-01-01 18:03:26', '+61'),
+(51, 'Cocos (Keeling) Islands', 'CC', '2026-01-01 18:03:26', '+61'),
+(52, 'Colombia', 'CO', '2026-01-01 18:03:26', '+57'),
+(53, 'Comoros', 'KM', '2026-01-01 18:03:26', '+269'),
+(54, 'Congo', 'CG', '2026-01-01 18:03:26', '+242'),
+(55, 'Congo (Democratic Republic of the)', 'CD', '2026-01-01 18:03:26', '+243'),
+(56, 'Cook Islands', 'CK', '2026-01-01 18:03:26', '+682'),
+(57, 'Costa Rica', 'CR', '2026-01-01 18:03:26', '+506'),
+(58, 'Croatia', 'HR', '2026-01-01 18:03:26', '+385'),
+(59, 'Cuba', 'CU', '2026-01-01 18:03:26', '+53'),
+(60, 'Curaçao', 'CW', '2026-01-01 18:03:26', '+599'),
+(61, 'Cyprus', 'CY', '2026-01-01 18:03:26', '+357'),
+(62, 'Czech Republic', 'CZ', '2026-01-01 18:03:26', '+420'),
+(63, 'Denmark', 'DK', '2026-01-01 18:03:26', '+45'),
+(64, 'Djibouti', 'DJ', '2026-01-01 18:03:26', '+253'),
+(65, 'Dominica', 'DM', '2026-01-01 18:03:26', '+1'),
+(66, 'Dominican Republic', 'DO', '2026-01-01 18:03:26', '+1'),
+(67, 'Ecuador', 'EC', '2026-01-01 18:03:26', '+593'),
+(68, 'Egypt', 'EG', '2026-01-01 18:03:26', '+20'),
+(69, 'El Salvador', 'SV', '2026-01-01 18:03:26', '+503'),
+(70, 'Equatorial Guinea', 'GQ', '2026-01-01 18:03:26', '+240'),
+(71, 'Eritrea', 'ER', '2026-01-01 18:03:26', '+291'),
+(72, 'Estonia', 'EE', '2026-01-01 18:03:26', '+372'),
+(73, 'Ethiopia', 'ET', '2026-01-01 18:03:26', '+251'),
+(74, 'Falkland Islands (Malvinas)', 'FK', '2026-01-01 18:03:26', '+500'),
+(75, 'Faroe Islands', 'FO', '2026-01-01 18:03:26', '+298'),
+(76, 'Fiji', 'FJ', '2026-01-01 18:03:26', '+679'),
+(77, 'Finland', 'FI', '2026-01-01 18:03:26', '+358'),
+(78, 'France', 'FR', '2026-01-01 18:03:26', '+33'),
+(79, 'French Guiana', 'GF', '2026-01-01 18:03:26', '+594'),
+(80, 'French Polynesia', 'PF', '2026-01-01 18:03:26', '+689'),
+(81, 'French Southern Territories', 'TF', '2026-01-01 18:03:26', '+262'),
+(82, 'Gabon', 'GA', '2026-01-01 18:03:26', '+241'),
+(83, 'Gambia', 'GM', '2026-01-01 18:03:26', '+220'),
+(84, 'Georgia', 'GE', '2026-01-01 18:03:26', '+995'),
+(85, 'Germany', 'DE', '2026-01-01 18:03:26', '+49'),
+(86, 'Ghana', 'GH', '2026-01-01 18:03:26', '+233'),
+(87, 'Gibraltar', 'GI', '2026-01-01 18:03:26', '+350'),
+(88, 'Greece', 'GR', '2026-01-01 18:03:26', '+30'),
+(89, 'Greenland', 'GL', '2026-01-01 18:03:26', '+299'),
+(90, 'Grenada', 'GD', '2026-01-01 18:03:26', '+1'),
+(91, 'Guadeloupe', 'GP', '2026-01-01 18:03:26', '+590'),
+(92, 'Guam', 'GU', '2026-01-01 18:03:26', '+1'),
+(93, 'Guatemala', 'GT', '2026-01-01 18:03:26', '+502'),
+(94, 'Guernsey', 'GG', '2026-01-01 18:03:26', '+44'),
+(95, 'Guinea', 'GN', '2026-01-01 18:03:26', '+224'),
+(96, 'Guinea-Bissau', 'GW', '2026-01-01 18:03:26', '+245'),
+(97, 'Guyana', 'GY', '2026-01-01 18:03:26', '+592'),
+(98, 'Haiti', 'HT', '2026-01-01 18:03:26', '+509'),
+(99, 'Heard Island and McDonald Islands', 'HM', '2026-01-01 18:03:26', '+672'),
+(100, 'Vatican City', 'VA', '2026-01-01 18:03:26', '+379'),
+(101, 'Honduras', 'HN', '2026-01-01 18:03:26', '+504'),
+(102, 'Hungary', 'HU', '2026-01-01 18:03:26', '+36'),
+(103, 'Hong Kong', 'HK', '2026-01-01 18:03:26', '+852'),
+(104, 'Iceland', 'IS', '2026-01-01 18:03:26', '+354'),
+(105, 'India', 'IN', '2026-01-01 18:03:26', '+91'),
+(106, 'Indonesia', 'ID', '2026-01-01 18:03:26', '+62'),
+(107, 'Ivory Coast', 'CI', '2026-01-01 18:03:26', '+225'),
+(108, 'Iran (Islamic Republic of)', 'IR', '2026-01-01 18:03:26', '+98'),
+(109, 'Iraq', 'IQ', '2026-01-01 18:03:26', '+964'),
+(110, 'Ireland', 'IE', '2026-01-01 18:03:26', '+353'),
+(111, 'Isle of Man', 'IM', '2026-01-01 18:03:26', '+44'),
+(112, 'Israel', 'IL', '2026-01-01 18:03:26', '+972'),
+(113, 'Italy', 'IT', '2026-01-01 18:03:26', '+39'),
+(114, 'Jamaica', 'JM', '2026-01-01 18:03:26', '+1'),
+(115, 'Japan', 'JP', '2026-01-01 18:03:26', '+81'),
+(116, 'Jersey', 'JE', '2026-01-01 18:03:26', '+44'),
+(117, 'Jordan', 'JO', '2026-01-01 18:03:26', '+962'),
+(118, 'Kazakhstan', 'KZ', '2026-01-01 18:03:26', '+76'),
+(119, 'Kenya', 'KE', '2026-01-01 18:03:26', '+254'),
+(120, 'Kiribati', 'KI', '2026-01-01 18:03:26', '+686'),
+(121, 'Kuwait', 'KW', '2026-01-01 18:03:26', '+965'),
+(122, 'Kyrgyzstan', 'KG', '2026-01-01 18:03:26', '+996'),
+(123, 'Lao People\'s Democratic Republic', 'LA', '2026-01-01 18:03:26', '+856'),
+(124, 'Latvia', 'LV', '2026-01-01 18:03:26', '+371'),
+(125, 'Lebanon', 'LB', '2026-01-01 18:03:26', '+961'),
+(126, 'Lesotho', 'LS', '2026-01-01 18:03:26', '+266'),
+(127, 'Liberia', 'LR', '2026-01-01 18:03:26', '+231'),
+(128, 'Libya', 'LY', '2026-01-01 18:03:26', '+218'),
+(129, 'Liechtenstein', 'LI', '2026-01-01 18:03:26', '+423'),
+(130, 'Lithuania', 'LT', '2026-01-01 18:03:26', '+370'),
+(131, 'Luxembourg', 'LU', '2026-01-01 18:03:26', '+352'),
+(132, 'Macao', 'MO', '2026-01-01 18:03:26', '+853'),
+(133, 'North Macedonia', 'MK', '2026-01-01 18:03:26', '+389'),
+(134, 'Madagascar', 'MG', '2026-01-01 18:03:26', '+261'),
+(135, 'Malawi', 'MW', '2026-01-01 18:03:26', '+265'),
+(136, 'Malaysia', 'MY', '2026-01-01 18:03:26', '+60'),
+(137, 'Maldives', 'MV', '2026-01-01 18:03:26', '+960'),
+(138, 'Mali', 'ML', '2026-01-01 18:03:26', '+223'),
+(139, 'Malta', 'MT', '2026-01-01 18:03:26', '+356'),
+(140, 'Marshall Islands', 'MH', '2026-01-01 18:03:26', '+692'),
+(141, 'Martinique', 'MQ', '2026-01-01 18:03:26', '+596'),
+(142, 'Mauritania', 'MR', '2026-01-01 18:03:26', '+222'),
+(143, 'Mauritius', 'MU', '2026-01-01 18:03:26', '+230'),
+(144, 'Mayotte', 'YT', '2026-01-01 18:03:26', '+262'),
+(145, 'Mexico', 'MX', '2026-01-01 18:03:26', '+52'),
+(146, 'Micronesia (Federated States of)', 'FM', '2026-01-01 18:03:26', '+691'),
+(147, 'Moldova (Republic of)', 'MD', '2026-01-01 18:03:26', '+373'),
+(148, 'Monaco', 'MC', '2026-01-01 18:03:26', '+377'),
+(149, 'Mongolia', 'MN', '2026-01-01 18:03:26', '+976'),
+(150, 'Montenegro', 'ME', '2026-01-01 18:03:26', '+382'),
+(151, 'Montserrat', 'MS', '2026-01-01 18:03:26', '+1'),
+(152, 'Morocco', 'MA', '2026-01-01 18:03:26', '+212'),
+(153, 'Mozambique', 'MZ', '2026-01-01 18:03:26', '+258'),
+(154, 'Myanmar', 'MM', '2026-01-01 18:03:26', '+95'),
+(155, 'Namibia', 'NA', '2026-01-01 18:03:26', '+264'),
+(156, 'Nauru', 'NR', '2026-01-01 18:03:26', '+674'),
+(157, 'Nepal', 'NP', '2026-01-01 18:03:26', '+977'),
+(158, 'Netherlands', 'NL', '2026-01-01 18:03:26', '+31'),
+(159, 'New Caledonia', 'NC', '2026-01-01 18:03:26', '+687'),
+(160, 'New Zealand', 'NZ', '2026-01-01 18:03:26', '+64'),
+(161, 'Nicaragua', 'NI', '2026-01-01 18:03:26', '+505'),
+(162, 'Niger', 'NE', '2026-01-01 18:03:26', '+227'),
+(163, 'Nigeria', 'NG', '2026-01-01 18:03:26', '+234'),
+(164, 'Niue', 'NU', '2026-01-01 18:03:26', '+683'),
+(165, 'Norfolk Island', 'NF', '2026-01-01 18:03:26', '+672'),
+(166, 'Korea (Democratic People\'s Republic of)', 'KP', '2026-01-01 18:03:26', '+850'),
+(167, 'Northern Mariana Islands', 'MP', '2026-01-01 18:03:26', '+1'),
+(168, 'Norway', 'NO', '2026-01-01 18:03:26', '+47'),
+(169, 'Oman', 'OM', '2026-01-01 18:03:26', '+968'),
+(170, 'Pakistan', 'PK', '2026-01-01 18:03:26', '+92'),
+(171, 'Palau', 'PW', '2026-01-01 18:03:26', '+680'),
+(172, 'Palestine, State of', 'PS', '2026-01-01 18:03:26', '+970'),
+(173, 'Panama', 'PA', '2026-01-01 18:03:26', '+507'),
+(174, 'Papua New Guinea', 'PG', '2026-01-01 18:03:26', '+675'),
+(175, 'Paraguay', 'PY', '2026-01-01 18:03:26', '+595'),
+(176, 'Peru', 'PE', '2026-01-01 18:03:26', '+51'),
+(177, 'Philippines', 'PH', '2026-01-01 18:03:26', '+63'),
+(178, 'Pitcairn', 'PN', '2026-01-01 18:03:26', '+64'),
+(179, 'Poland', 'PL', '2026-01-01 18:03:26', '+48'),
+(180, 'Portugal', 'PT', '2026-01-01 18:03:26', '+351'),
+(181, 'Puerto Rico', 'PR', '2026-01-01 18:03:26', '+1'),
+(182, 'Qatar', 'QA', '2026-01-01 18:03:26', '+974'),
+(183, 'Republic of Kosovo', 'XK', '2026-01-01 18:03:26', '+383'),
+(184, 'Réunion', 'RE', '2026-01-01 18:03:26', '+262'),
+(185, 'Romania', 'RO', '2026-01-01 18:03:26', '+40'),
+(186, 'Russian Federation', 'RU', '2026-01-01 18:03:26', '+7'),
+(187, 'Rwanda', 'RW', '2026-01-01 18:03:26', '+250'),
+(188, 'Saint Barthélemy', 'BL', '2026-01-01 18:03:26', '+590'),
+(189, 'Saint Helena, Ascension and Tristan da Cunha', 'SH', '2026-01-01 18:03:26', '+290'),
+(190, 'Saint Kitts and Nevis', 'KN', '2026-01-01 18:03:26', '+1'),
+(191, 'Saint Lucia', 'LC', '2026-01-01 18:03:26', '+1'),
+(192, 'Saint Martin (French part)', 'MF', '2026-01-01 18:03:26', '+590'),
+(193, 'Saint Pierre and Miquelon', 'PM', '2026-01-01 18:03:26', '+508'),
+(194, 'Saint Vincent and the Grenadines', 'VC', '2026-01-01 18:03:26', '+1'),
+(195, 'Samoa', 'WS', '2026-01-01 18:03:26', '+685'),
+(196, 'San Marino', 'SM', '2026-01-01 18:03:26', '+378'),
+(197, 'Sao Tome and Principe', 'ST', '2026-01-01 18:03:26', '+239'),
+(198, 'Saudi Arabia', 'SA', '2026-01-01 18:03:26', '+966'),
+(199, 'Senegal', 'SN', '2026-01-01 18:03:26', '+221'),
+(200, 'Serbia', 'RS', '2026-01-01 18:03:26', '+381'),
+(201, 'Seychelles', 'SC', '2026-01-01 18:03:26', '+248'),
+(202, 'Sierra Leone', 'SL', '2026-01-01 18:03:26', '+232'),
+(203, 'Singapore', 'SG', '2026-01-01 18:03:26', '+65'),
+(204, 'Sint Maarten (Dutch part)', 'SX', '2026-01-01 18:03:26', '+1'),
+(205, 'Slovakia', 'SK', '2026-01-01 18:03:26', '+421'),
+(206, 'Slovenia', 'SI', '2026-01-01 18:03:26', '+386'),
+(207, 'Solomon Islands', 'SB', '2026-01-01 18:03:26', '+677'),
+(208, 'Somalia', 'SO', '2026-01-01 18:03:26', '+252'),
+(209, 'South Africa', 'ZA', '2026-01-01 18:03:26', '+27'),
+(210, 'South Georgia and the South Sandwich Islands', 'GS', '2026-01-01 18:03:26', '+500'),
+(211, 'Korea (Republic of)', 'KR', '2026-01-01 18:03:26', '+82'),
+(212, 'Spain', 'ES', '2026-01-01 18:03:26', '+34'),
+(213, 'Sri Lanka', 'LK', '2026-01-01 18:03:26', '+94'),
+(214, 'Sudan', 'SD', '2026-01-01 18:03:26', '+249'),
+(215, 'South Sudan', 'SS', '2026-01-01 18:03:26', '+211'),
+(216, 'Suriname', 'SR', '2026-01-01 18:03:26', '+597'),
+(217, 'Svalbard and Jan Mayen', 'SJ', '2026-01-01 18:03:26', '+47'),
+(218, 'Swaziland', 'SZ', '2026-01-01 18:03:26', '+268'),
+(219, 'Sweden', 'SE', '2026-01-01 18:03:26', '+46'),
+(220, 'Switzerland', 'CH', '2026-01-01 18:03:26', '+41'),
+(221, 'Syrian Arab Republic', 'SY', '2026-01-01 18:03:26', '+963'),
+(222, 'Taiwan', 'TW', '2026-01-01 18:03:26', '+886'),
+(223, 'Tajikistan', 'TJ', '2026-01-01 18:03:26', '+992'),
+(224, 'Tanzania, United Republic of', 'TZ', '2026-01-01 18:03:26', '+255'),
+(225, 'Thailand', 'TH', '2026-01-01 18:03:26', '+66'),
+(226, 'Timor-Leste', 'TL', '2026-01-01 18:03:26', '+670'),
+(227, 'Togo', 'TG', '2026-01-01 18:03:26', '+228'),
+(228, 'Tokelau', 'TK', '2026-01-01 18:03:26', '+690'),
+(229, 'Tonga', 'TO', '2026-01-01 18:03:26', '+676'),
+(230, 'Trinidad and Tobago', 'TT', '2026-01-01 18:03:26', '+1'),
+(231, 'Tunisia', 'TN', '2026-01-01 18:03:26', '+216'),
+(232, 'Turkey', 'TR', '2026-01-01 18:03:26', '+90'),
+(233, 'Turkmenistan', 'TM', '2026-01-01 18:03:26', '+993'),
+(234, 'Turks and Caicos Islands', 'TC', '2026-01-01 18:03:26', '+1'),
+(235, 'Tuvalu', 'TV', '2026-01-01 18:03:26', '+688'),
+(236, 'Uganda', 'UG', '2026-01-01 18:03:26', '+256'),
+(237, 'Ukraine', 'UA', '2026-01-01 18:03:26', '+380'),
+(238, 'United Arab Emirates', 'AE', '2026-01-01 18:03:26', '+971'),
+(239, 'United Kingdom of Great Britain and Northern Ireland', 'GB', '2026-01-01 18:03:26', '+44'),
+(240, 'United States of America', 'US', '2026-01-01 18:03:26', '+1'),
+(241, 'Uruguay', 'UY', '2026-01-01 18:03:26', '+598'),
+(242, 'Uzbekistan', 'UZ', '2026-01-01 18:03:26', '+998'),
+(243, 'Vanuatu', 'VU', '2026-01-01 18:03:26', '+678'),
+(244, 'Venezuela (Bolivarian Republic of)', 'VE', '2026-01-01 18:03:26', '+58'),
+(245, 'Vietnam', 'VN', '2026-01-01 18:03:26', '+84'),
+(246, 'Wallis and Futuna', 'WF', '2026-01-01 18:03:26', '+681'),
+(247, 'Western Sahara', 'EH', '2026-01-01 18:03:26', '+212'),
+(248, 'Yemen', 'YE', '2026-01-01 18:03:26', '+967'),
+(249, 'Zambia', 'ZM', '2026-01-01 18:03:26', '+260'),
+(250, 'Zimbabwe', 'ZW', '2026-01-01 18:03:26', '+263');
 
 -- --------------------------------------------------------
 
@@ -175,8 +445,8 @@ CREATE TABLE `user_accounts` (
 --
 
 INSERT INTO `user_accounts` (`user_id`, `username`, `password`, `email`, `admin_role`, `token`, `token_expiry`, `account_registered_at`, `last_login_time`) VALUES
-('user_8ab6cd56729ec0d39df872d5eaf', 'Test456', '$2y$10$55029QOlQOPjQ4EGI8GISeGETUad.lsGAnmQ4qVoPzHrQJDAu7xw.', 'Test456@gmail.com', 0, NULL, NULL, '2025-06-04 16:21:45', '2025-06-06 17:41:07'),
-('user_a3f8b7c15d2e4e7a9f4c6b3a8d7e1c0b', 'Test123', '$2y$10$wsi0q/wuRyOZ6K9L2.UJ3OI320seI/D1Nj8v2t6yc0PgqPU05r.Wu', 'Test123@gmail.com', 1, '', NULL, '2024-12-28 14:41:01', '2025-06-29 15:30:10');
+('user_8ab6cd56729ec0d39df872d5eaf', 'Test456', '$2y$10$55029QOlQOPjQ4EGI8GISeGETUad.lsGAnmQ4qVoPzHrQJDAu7xw.', 'Test456@gmail.com', 0, '', NULL, '2025-06-04 16:21:45', '2026-01-04 01:23:24'),
+('user_a3f8b7c15d2e4e7a9f4c6b3a8d7e1c0b', 'Test123', '$2y$10$wsi0q/wuRyOZ6K9L2.UJ3OI320seI/D1Nj8v2t6yc0PgqPU05r.Wu', 'Test123@gmail.com', 1, '', NULL, '2024-12-28 14:41:01', '2026-01-07 16:11:17');
 
 -- --------------------------------------------------------
 
@@ -187,10 +457,11 @@ INSERT INTO `user_accounts` (`user_id`, `username`, `password`, `email`, `admin_
 CREATE TABLE `user_profiles` (
   `user_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `phone` varchar(20) DEFAULT NULL,
+  `calling_code` varchar(10) DEFAULT NULL,
   `first_name` varchar(50) NOT NULL,
   `last_name` varchar(50) NOT NULL,
   `birthday` date DEFAULT NULL,
-  `country` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `country` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `city` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `address` text CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `postal_code` varchar(20) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL
@@ -200,9 +471,9 @@ CREATE TABLE `user_profiles` (
 -- Dumping data for table `user_profiles`
 --
 
-INSERT INTO `user_profiles` (`user_id`, `phone`, `first_name`, `last_name`, `birthday`, `country`, `city`, `address`, `postal_code`) VALUES
-('user_8ab6cd56729ec0d39df872d5eaf', '+44 20 7946 0857', 'John', 'Doe', '2009-06-16', 'United Kingdom of Great Britain and Northern Irela', 'London', '12 Rosewood Avenue', 'SW1A 1AA'),
-('user_a3f8b7c15d2e4e7a9f4c6b3a8d7e1c0b', '+1 650-839-4726', 'Douglas', 'McGee', '1987-05-14', 'United States of America', 'Cupertino', 'one apple park way California', '95014');
+INSERT INTO `user_profiles` (`user_id`, `phone`, `calling_code`, `first_name`, `last_name`, `birthday`, `country`, `city`, `address`, `postal_code`) VALUES
+('user_8ab6cd56729ec0d39df872d5eaf', '20 7946 0857', '+44', 'John', 'Doe', '2009-06-16', 'United Kingdom of Great Britain and Northern Ireland', 'London', '12 Rosewood Avenue', 'SW1A 1AA'),
+('user_a3f8b7c15d2e4e7a9f4c6b3a8d7e1c0b', '650-839-4726', '+1', 'Douglas', 'McGee', '1987-05-14', 'United States of America', 'Cupertino', 'one apple park way California', '95014');
 
 --
 -- Indexes for dumped tables
@@ -214,6 +485,14 @@ INSERT INTO `user_profiles` (`user_id`, `phone`, `first_name`, `last_name`, `bir
 ALTER TABLE `category`
   ADD PRIMARY KEY (`category_id`),
   ADD KEY `product_id` (`product_id`);
+
+--
+-- Indexes for table `countries`
+--
+ALTER TABLE `countries`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `name` (`name`),
+  ADD UNIQUE KEY `iso2` (`iso2`);
 
 --
 -- Indexes for table `orders_info`
@@ -256,6 +535,12 @@ ALTER TABLE `user_profiles`
 --
 ALTER TABLE `category`
   MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+
+--
+-- AUTO_INCREMENT for table `countries`
+--
+ALTER TABLE `countries`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=251;
 
 --
 -- Constraints for dumped tables
