@@ -1,6 +1,10 @@
 <?php
-require_once __DIR__ . '/../core/config.php';
-require_once __DIR__ . '/../views/includes/assets.php';
+require_once __DIR__ . '/../core/init.php';
+
+if($_SERVER['REQUEST_METHOD']==='POST'){
+    // CSRF token validation
+    ver_csrf($_POST['csrf_token'] ?? '', "views/register.php", "register");
+}
 
 if ($_POST['password'] !== $_POST['confirmPassword']) {
 ?>
@@ -25,12 +29,13 @@ $register_account = "INSERT INTO user_accounts
 (username,user_id, email, password, account_registered_at) 
 VALUES (?, ?, ?,?,?)";
 
-$user_id = 'user_' . bin2hex(random_bytes(16));
+$user_id = create_uid();
 
 $stmt = $conn->prepare($register_account);
 
 if (!$stmt) {
-	die("Prepare failed: " . $conn->error); // Debugging
+	write_log("Prepare failed: " . $conn->error,'ERROR'); // Debugging
+	redirect_to(WEBSITE_URL . "views/404.php");
 }
 
 $username = $_POST['username'];
@@ -99,10 +104,9 @@ if ($stmt->execute()) {
 
 <?php
 } else {
-	echo "Error: " . $stmt->error;
+	write_log("Execute failed: " . $stmt->error,'ERROR');
 }
 
-// Close statement and connection
 $stmt->close();
 $conn->close();
 ?>

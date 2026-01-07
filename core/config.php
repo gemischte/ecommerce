@@ -1,33 +1,22 @@
 <?php
-// Check php version
-define('PHP_REQUIRED_VERSION', '5.4.0');
-if (version_compare(PHP_VERSION, PHP_REQUIRED_VERSION, '<')) {
-    die('This site requires PHP version ' . PHP_REQUIRED_VERSION . '. Your version is: ' . PHP_VERSION);
+require __DIR__ . '/../vendor/autoload.php';
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../', '.env');
+$dotenv->load();
+
+try{
+    $host = "localhost";
+    $db_user = "root";
+    $db_pass = $_ENV["DB_PASS"];
+    $db_name = "ecommerce";
+    $conn = new mysqli($host, $db_user, $db_pass, $db_name);
+}
+catch(mysqli_sql_exception $e){
+    error_log("Connection failed: " . $e->getMessage());
+    echo"This site crashed";
+    exit();
 }
 
-// Start session
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
-
-// Database connection
-$host = "localhost";
-$db_user = "root";
-$db_pass = "";
-$db_name = "test";
-$conn = new mysqli($host, $db_user, $db_pass, $db_name);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
-// Set website Information
+//Set web info
 define('WEBSITE_NAME', 'Tempest Shopping');
-// Set website URLs
-define('WEBSITE_URL', 'http://localhost/Database/');
-define('ADMIN_URL', 'http://localhost/Database/dashboard/admin/');
-
-// API URLs
-$all_countries_list = "https://www.apicountries.com/countries";
+define('WEBSITE_URL', 'http://localhost/ecommerce/');
+define('ADMIN_URL', 'http://localhost/ecommerce/dashboard/admin/');

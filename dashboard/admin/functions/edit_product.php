@@ -1,12 +1,12 @@
 <?php
-require_once __DIR__ . '/../../../core/config.php';
-require_once __DIR__ . '/../../../views/includes/assets.php';
+require_once __DIR__ . '/../../../core/init.php';
 
 $product_id = null;
 $product_names = $description = $price = $original_price = $stock = $brand = $images = "";
 
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['product_id'])) {
-    $product_id = $_POST['product_id'];
+if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['product_id'])) {
+
+    $product_id = $_GET['product_id'];
 
     $sql = "SELECT * FROM products WHERE product_id = ?";
     $stmt = $conn->prepare($sql);
@@ -44,13 +44,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['product_id'])) {
             exit();
         }
     } else {
-        echo "Error preparing statement: " . htmlspecialchars($conn->error);
+        write_log("Prepare failed: " . $conn->error, 'ERROR');
     }
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
 
+    // CSRF token validation
+    ver_csrf($_POST['csrf_token'] ?? '', "dashboard/admin/index.php", "edit product");
+
     // Validate and sanitize input data
+    $product_id = $_POST['product_id'] ?? $product_id;
     $product_names = $_POST['product_name'] ?? $product_names;
     $description = $_POST['description'] ?? $description;
     $brand = $_POST['brand'] ?? $brand;
@@ -93,6 +97,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
                 </script>
             <?php
                 exit();
+            } else {
+            ?>
+                <script>
+                    setTimeout(function() {
+                        swal.fire({
+                            icon: 'warning',
+                            title: 'Warning',
+                            text: 'Please change the product info',
+                            showConfirmButton: true
+                        }, 100)
+                    })
+                </script>
+            <?php
             }
         } else {
             ?>
@@ -136,16 +153,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
             <h2 class="mb-0">Edit Product</h2>
         </div>
 
-
         <div class="card-body">
             <form method="POST" action="edit_product.php" enctype="multipart/form-data">
                 <input type="hidden" name="product_id" value="<?= htmlspecialchars($product_id); ?>">
+                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrf_token()) ?>">
+
                 <div class="mb-3">
-                    <label for="name" class="form-label">Product Name</label>
+                    <label for="product_name" class="form-label">Product Name</label>
                     <input
                         type="text"
                         class="form-control"
-                        id="name"
+                        id="product_name"
                         value="<?= htmlspecialchars($product_names); ?>"
                         name="product_name"
                         placeholder="Enter product name"
@@ -249,13 +267,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
                     <button type="submit" name="submit" class="btn btn-success">Submit</button>
                 </div>
 
+            </form>
         </div>
 
-
-
-
-
-        </form>
     </div>
 
 </div>

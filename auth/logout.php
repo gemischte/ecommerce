@@ -1,6 +1,5 @@
 <?php
-require_once __DIR__ . '/../core/config.php';
-require_once __DIR__ . '/../views/includes/assets.php';
+require_once __DIR__ . '/../core/init.php';
 session_unset();
 session_destroy();
 ?>

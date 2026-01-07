@@ -1,15 +1,15 @@
 <?php
-require_once __DIR__ . '/../../core/config.php';
+require_once __DIR__ . '/../../core/init.php';
 
 $sql = 'SELECT product_id, product_name, brand, stock, original_price, description, price, star, product_images FROM products';
 $result = $conn->query($sql);
 
 if (!$result) {
-    die("Prepare failed: " . $conn->error); // Debugging
+    write_log("Prepare failed: " . $conn->error, 'ERROR'); // Debugging
 }
 ?>
 
-<?php require_once __DIR__ . '/includes/header.php';?>
+<?php require_once __DIR__ . '/includes/header.php'; ?>
 
 <div class="container">
     <div class="row">
@@ -69,7 +69,7 @@ if (!$result) {
                     <td> <img src="<?php echo htmlspecialchars($row['product_images']); ?>" class="rounded" width="100" /> </td>
                     <td><?php echo htmlspecialchars($row['product_name']); ?></td>
                     <td><?php echo htmlspecialchars($row['brand']) ?></td>
-                    
+
                     <td>
                         <?php
                             if ($row['original_price'] > 0) {
@@ -79,13 +79,13 @@ if (!$result) {
                             }
                         ?>
                     </td>
-                    
+
                     <td><?= htmlspecialchars($row['price']); ?></td>
                     <td><?= htmlspecialchars($row['stock']); ?></td>
 
                     <!-- Delete product -->
                     <td>
-                        <form action=<?= ADMIN_URL . "functions/delete_product.php?id=" . htmlspecialchars($row['product_id'])?> method='post' class='d-inline'>
+                        <form action=<?= ADMIN_URL . "functions/delete_product.php?id=" . htmlspecialchars($row['product_id']) ?> method='post' class='d-inline'>
                             <input type='hidden' name='product_id' value='<?= htmlspecialchars($row['product_id']); ?>'>
                             <button type='submit' name='submit' class='btn btn-danger'><i class="fa-solid fa-trash"></i></button>
                         </form>
@@ -93,7 +93,7 @@ if (!$result) {
 
                     <!-- Edit product -->
                     <td>
-                        <form action=<?= ADMIN_URL . "functions/edit_product.php?id=" . htmlspecialchars($row['product_id'])?> method="post" class="d-d-inline">
+                        <form action=<?= ADMIN_URL . "functions/edit_product.php?id=" . htmlspecialchars($row['product_id']) ?> method="GET" class="d-d-inline">
                             <input type="hidden" name='product_id' value='<?= htmlspecialchars($row['product_id']); ?>'>
                             <button type="submit" name='submit' class="btn btn-secondary"><i class="fa-solid fa-pen-to-square"></i></button>
                         </form>
@@ -116,4 +116,4 @@ if (!$result) {
 
 </div>
 
-<?php require_once __DIR__ . '/includes/footer.php';?>
+<?php require_once __DIR__ . '/includes/footer.php'; ?>

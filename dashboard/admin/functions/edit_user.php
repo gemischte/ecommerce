@@ -1,9 +1,9 @@
 <?php
-require_once __DIR__ . '/../../../core/config.php';
-require_once __DIR__ . '/../../../views/includes/assets.php';
+require_once __DIR__ . '/../../../core/init.php';
 
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['user_id'])) {
-    $userid = $_POST['user_id'];
+if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['user_id'])) {
+
+    $userid = $_GET['user_id'];
 
     $edit_user = "SELECT * FROM user_accounts WHERE user_id = ?";
     $stmt = $conn->prepare($edit_user);
@@ -38,13 +38,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['user_id'])) {
             exit();
         }
     } else {
-        echo "Error preparing statement: " . htmlspecialchars($conn->error);
+        write_log("Prepare failed: " . $conn->error, 'ERROR');
     }
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
 
+    // CSRF token validation
+    ver_csrf($_POST['csrf_token'] ?? '', "dashboard/admin/views/user_accounts.php", "edit user");
+
     // Validate and sanitize input data
+    $userid = $_POST['user_id'] ?? $userid;
     $name = $_POST['username'] ?? $name;
     $email = $_POST['email'] ?? $email;
     $token = $_POST['token'] ?? $token;
@@ -80,6 +84,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
                 </script>
             <?php
                 exit();
+            } else {
+            ?>
+                <script>
+                    setTimeout(function() {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Warning',
+                            text: 'Please change the user info',
+                            showConfirmButton: true
+                        })
+                    }, 100);
+                </script>
+            <?php
             }
         } else {
             ?>
@@ -116,7 +133,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
     </div>
 </div>
 
-
 <div class="container py-5">
     <div class="card shadow-lg">
         <div class="card-header bg-primary text-white text-center">
@@ -126,6 +142,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
         <div class="card-body">
             <form method="POST" action="edit_user.php" enctype="multipart/form-data">
                 <input type="hidden" name="user_id" value="<?= htmlspecialchars($userid); ?>">
+                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrf_token()) ?>">
 
                 <div class="mb-3">
                     <label for="userid" class="form-label">ID</label>

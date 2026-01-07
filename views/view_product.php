@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../core/config.php';
+require_once __DIR__ . '/../core/init.php';
 
 if (isset($_GET['id'])) {
     $product_id = $_GET['id'];
@@ -67,9 +67,10 @@ if (isset($_GET['id'])) {
                                 <p><?= htmlspecialchars($row['description']); ?></p>
                             </div>
 
-                            <!-- Add to Cart Form -->
+                            <!-- Add to Cart  -->
                             <form action="<?= WEBSITE_URL . "views/cart.php" ?>" method="post">
                                 <input type="hidden" name="product_id" value="<?= htmlspecialchars($row['product_id']) ?>">
+                                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrf_token()) ?>">
                                 <label class="me-2"><?= __('Quantity') ?>:</label>
                                 <select name="quantity" id="quantity">
                                     <option value="1">1</option>
@@ -103,15 +104,11 @@ if (isset($_GET['id'])) {
         <?php include __DIR__ . ('/../views/includes/footer.php'); ?>
 <?php
     } else {
-        echo "
-        <strong>Product not found.</strong>
-        <br>
-        <a href='" . WEBSITE_URL . "index.php'>Continue Shopping.</a>
-        ";
+        redirect_to(WEBSITE_URL . "views/404.php");
     }
     $stmt->close();
 } else {
-    echo "No product selected.";
+    redirect_to(WEBSITE_URL . "views/404.php");
 }
 
 $conn->close();

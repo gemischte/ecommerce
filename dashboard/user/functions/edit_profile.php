@@ -1,13 +1,11 @@
 <?php
-require_once __DIR__ . '/../../../core/config.php';
-require_once __DIR__ . '/../../../views/includes/assets.php';
+require_once __DIR__ . '/../../../core/init.php';
 
 //all country list
-$countries_data = file_get_contents($all_countries_list);
-$countries = json_decode($countries_data, true);
+$countries = all_countries();
 
 $userid = $_GET['uid'] ?? $_POST['user_id'] ?? null;
-$phone = $email = $country = $city = $address = $postal_code = $last_name = $first_name = $birthday = "";
+$phone = $call_code = $email = $country = $city = $address = $postal_code = $last_name = $first_name = $birthday = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "GET" && $userid) {
 
@@ -26,6 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && $userid) {
 
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
+            $call_code = $row['calling_code'];
             $phone = $row['phone'];
             $email = $row['email'];
             $country = $row['country'];
@@ -54,13 +53,17 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && $userid) {
             exit();
         }
     } else {
-        echo "Error preparing statement: " . htmlspecialchars($conn->error);
+        write_log("Error preparing statement: " . $conn->error, 'ERROR');
     }
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
 
+    // CSRF token validation
+    ver_csrf($_POST['csrf_token'] ?? '', "dashboard/user/views/profile.php", "edit profile");
+
     // Validate and sanitize input data
+    $call_code = $_POST['calling_code'] ?? '';
     $phone = $_POST['phone'] ?? $phone;
     $email = $_POST['email'] ?? $email;
     $country = $_POST['country'] ?? $country;
@@ -74,7 +77,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
     $update = "UPDATE 
     user_profiles AS up
     JOIN user_accounts AS ua ON up.user_id = ua.user_id
-    SET up.phone = ?, 
+    SET up.calling_code = ?,
+    up.phone = ?, 
     up.country = ?,
     up.city = ?, 
     up.address = ?, 
@@ -88,7 +92,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
 
     if ($stmt) {
         $stmt->bind_param(
-            "ssssssssss",
+            "sssssssssss",
+            $call_code,
             $phone,
             $country,
             $city,
@@ -118,6 +123,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
                 </script>
             <?php
                 exit();
+            } else {
+            ?>
+                <script>
+                    setTimeout(function() {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Warning',
+                            text: 'Please change the profile info',
+                            showConfirmButton: true
+                        })
+                    }, 100)
+                </script>
+            <?php
             }
         } else {
             ?>
@@ -151,7 +169,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
         <div class="card-body">
             <form method="POST" action="edit_profile.php" enctype="multipart/form-data">
                 <input type="hidden" name="user_id" value="<?= htmlspecialchars($userid); ?>">
-
+                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrf_token()) ?>">
                 <div class="row">
 
                     <div class="col-md-6 mb-3">
@@ -180,7 +198,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
 
                 <div class="row">
                     <div class="col-md-6 mb-3">
-                        <label for="name" class="form-label"><?= __('Phone') ?></label>
+                        <label for="calling_code" class="form-label"><?= __('Phone') ?></label>
+
+                        <select name="calling_code" id="calling_code" class="form-select">
+                            <?php
+                            $selectedCode = htmlspecialchars($call_code);
+                            foreach ($countries as $c) {
+                                $call_code = htmlspecialchars($c['calling_codes']);
+                                $country_name = htmlspecialchars($c['name']);
+                                $selected = ($call_code === $selectedCode) ? 'selected' : '';
+                                echo "<option value='$call_code'$selected>$country_name | $call_code</option>";
+                            }
+                            ?>
+                        </select>
+
                         <input
                             type="text"
                             class="form-control"
@@ -191,7 +222,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
                     </div>
 
                     <div class="col-md-6 mb-3">
-                        <label for="name" class="form-label"><?= __('email') ?></label>
+                        <label for="email" class="form-label"><?= __('email') ?></label>
                         <input
                             type="text"
                             class="form-control"
@@ -223,11 +254,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
                             required>
                             <option value="">Choose...</option>
                             <?php
-                            $selectedCountry = htmlspecialchars($row['country']);
-                            foreach ($countries as $country) {
-                                $country_name = htmlspecialchars($country['name']);
+                            $selectedCountry = htmlspecialchars($country);
+                            foreach ($countries as $ctry) {
+                                $country_name = htmlspecialchars($ctry['name']);
                                 $selected = ($country_name === $selectedCountry) ? 'selected' : '';
-                                // echo "<option value='" . htmlspecialchars($country['name']) . "'>" . htmlspecialchars($country['name']) . "</option>";
                                 echo "<option value='$country_name'$selected>$country_name</option>";
                             }
                             ?>
@@ -246,7 +276,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
                     </div>
 
                     <div class="col-md-6 mb-3">
-                        <label for="name" class="form-label"><?= __('Address') ?></label>
+                        <label for="address" class="form-label"><?= __('Address') ?></label>
                         <input
                             type="text"
                             class="form-control"
@@ -257,7 +287,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
                     </div>
 
                     <div class="col-md-6 mb-3">
-                        <label for="name" class="form-label"><?= __('postal code') ?></label>
+                        <label for="postal_code" class="form-label"><?= __('postal code') ?></label>
                         <input
                             type="text"
                             class="form-control"

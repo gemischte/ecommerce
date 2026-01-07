@@ -1,9 +1,12 @@
 <?php
-require_once __DIR__ . '/../core/config.php';
-require_once __DIR__ . '/../views/includes/assets.php';
+require_once __DIR__ . '/../core/init.php';
 require_once __DIR__ . '/../functions/includes/mailer.php';
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
+
+    // CSRF token validation
+    ver_csrf($_POST['csrf_token'] ?? '', "views/login.php", "login");
+
     // Ensure that the form fields exist
     if (isset($_POST['username']) && isset($_POST['password'])) {
         $username = $_POST['username'];
@@ -30,15 +33,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     $login_time = "UPDATE user_accounts SET last_login_time = ? WHERE username = ?";
                     $update_stmt = $conn->prepare($login_time);
                     if ($update_stmt) {
-                        
+
                         $update_stmt->bind_param("ss", $set_time, $username);
                         $update_stmt->execute();
-                        
+
                         // Store the session data
                         $_SESSION['user'] = $username;
                         $_SESSION['user_id'] = $row['user_id'];
-                        header("Location:" . WEBSITE_URL . "index.php");
-                        exit();
+                        redirect_to(WEBSITE_URL . "index.php");
                     }
                 } else {
 ?>
@@ -81,10 +83,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             $stmt->close();
         } else {
-            echo "Failed to prepare statement: " . $conn->error;
+            write_log("Failed to prepare statement: " . $conn->error,'ERROR');
+            redirect_to(WEBSITE_URL . "views/404.php");
         }
     } else {
-        echo "Please enter a username and password!";
+        write_log("Username or password not set in POST request",'WARNING');
+        redirect_to(WEBSITE_URL . "views/login.php");
     }
 }
 

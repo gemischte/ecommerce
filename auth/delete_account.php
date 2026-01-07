@@ -1,10 +1,19 @@
 <?php
-require_once __DIR__ . '/../core/config.php';
-require_once __DIR__ . '/../views/includes/assets.php';
+require_once __DIR__ . '/../core/init.php';
 
-if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['username'])) {
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['username']) && empty($_POST['confirm'])) {
     $username = $_POST['username'];
+
+    // CSRF token validation
+    ver_csrf($_POST['csrf_token'] ?? '', "dashboard/user/views/profile.php", "delete account");
+
 ?>
+
+    <form id="delete" method="POST" action="delete_account.php">
+        <input type="hidden" name="confirm" value="true">
+        <input type="hidden" name="username" value="<?= htmlspecialchars($username) ?>">
+        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrf_token()) ?>">
+    </form>
 
     <script>
         setTimeout(function() {
@@ -18,7 +27,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['username'])) {
                 confirmButtonText: 'Yes, Delete My Account!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    window.location.href = 'delete_account.php?confirm=true&username=' + ('<?= $username ?>');
+                    document.getElementById('delete').submit();
+                    // window.location.href = 'delete_account.php?confirm=true&username=' + ('<?= $username ?>');
                 } else {
                     window.history.back();
                 }
@@ -29,15 +39,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['username'])) {
     exit();
 }
 
-// Check if there is a delete confirmation request
-if (isset($_GET['confirm']) && $_GET['confirm'] === 'true' && isset($_GET['username'])) {
-    $username = $_GET['username'];
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm']) && $_POST['confirm'] === 'true' && isset($_POST['username'])) {
+
+    // CSRF token validation
+    ver_csrf($_POST['csrf_token'] ?? '', "dashboard/user/views/profile.php", "delete account");
+
+    $username = $_POST['username'];
 
     $delete_account = "DELETE FROM user_accounts WHERE username = ?";
     $stmt = $conn->prepare($delete_account);
 
     if ($stmt) {
-        
+
         $stmt->bind_param("s", $username);
 
         $stmt->execute();
@@ -60,12 +73,12 @@ if (isset($_GET['confirm']) && $_GET['confirm'] === 'true' && isset($_GET['usern
             </script>
 
         <?php
-            // Unset the session variable if the deleted account is the current user
             if (isset($_SESSION['user']) && $_SESSION['user'] === $username) {
                 unset($_SESSION['user']);
             }
         }
     } else {
+        write_log("Failed to prepare SQL statement: " . $conn->error);
         ?>
 
         <script>
@@ -74,11 +87,8 @@ if (isset($_GET['confirm']) && $_GET['confirm'] === 'true' && isset($_GET['usern
 
 <?php
     }
-    
-    $stmt->close();
-} else {
-    echo "Failed to prepare SQL statement: " . $conn->error;
-}
 
-$conn->close();
+    $stmt->close();
+    $conn->close();
+}
 ?>

@@ -1,8 +1,11 @@
 <?php
-require_once __DIR__ . '/../../../core/config.php';
-require_once __DIR__ . '/../../../views/includes/assets.php';
+require_once __DIR__ . '/../../../core/init.php';
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    
+    // CSRF token validation
+    ver_csrf($_POST['csrf_token'] ?? '', "dashboard/admin/views/login.php", "admin login");
+
     if (isset($_POST['username']) && isset($_POST['password'])) {
         $username = $_POST['username'];
         $password = $_POST['password'];
@@ -22,14 +25,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                 if (password_verify($password, $row['password'])) {
 
-                    // Check if the user is an admin(admin_role = 1)
+                    // Check if the user is an admin
                     if ($row['admin_role'] == 1) {
                         $_SESSION['user'] = $username;
                         $_SESSION['user_id'] = $row['user_id'];
                         $_SESSION['admin_role'] = $row['admin_role'];
-
-                        header("Location: " . ADMIN_URL . "index.php");
-                        exit();
+                        
+                        redirect_to(ADMIN_URL . "index.php");
+                        
                     } else {
 ?>
                         <script>

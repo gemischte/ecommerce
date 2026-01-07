@@ -1,8 +1,10 @@
 <?php
-require_once __DIR__ . '/../core/config.php';
-require_once __DIR__ . '/../views/includes/assets.php';
+require_once __DIR__ . '/../core/init.php';
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_GET['token'])) {
+
+    // CSRF token validation
+    ver_csrf($_POST['csrf_token'] ?? '', "auth/reset_password.php", "reset password");
 
     if (!empty($_POST['password']) && !empty($_POST['confirmPassword'])) {
         $password = $_POST['password'];
@@ -47,7 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                                 text: 'Your password has been successfully reset!',
                                                 showConfirmButton: true,
                                             }).then(() => {
-                                                window.location = '<?= WEBSITE_URL . 'views/login.php'?>';
+                                                window.location = '<?= WEBSITE_URL . 'views/login.php' ?>';
                                             });
                                         }, 100);
                                     </script>
@@ -109,12 +111,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 ?>
 
-<?php include __DIR__ . ('/../views/includes/header.php');?>
+<?php include __DIR__ . ('/../views/includes/header.php'); ?>
 
 <title>Reset Password</title>
 
 <section class="py-3 py-md-5 py-xl-8 was-validated">
     <form method="post">
+        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrf_token()) ?>">
         <div class="container">
 
             <div class="text-center mb-5">
@@ -151,8 +154,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     placeholder=""
                                     required
                                     pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,16}"
-                                    title="<?= __('Confirm Password') ?>" 
-                                    />
+                                    title="<?= __('Confirm Password') ?>" />
                                 <label for="confirmPassword">Confirm Password</label>
                                 <button type="button" class="btn btn-light position-absolute end-0 top-50 translate-middle-y me-2" onclick="confirm_show_password()">
                                     <i id="confirm_password_eye_icon" class="fa fa-eye"></i>
@@ -175,7 +177,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </section>
 
 <!-- Footer -->
-<?php include __DIR__ . ('/../views/includes/footer.php');?>
+<?php include __DIR__ . ('/../views/includes/footer.php'); ?>
 
 </body>
 

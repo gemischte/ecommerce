@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../../core/config.php';
+require_once __DIR__ . '/../../core/init.php';
 
 function render_products($result)
 {
@@ -44,7 +44,6 @@ function bind_params_dynamic($stmt, $params)
     return call_user_func_array([$stmt, 'bind_param'], $refs);
 }
 
-// 取 POST 的 brands 和 categories（JSON 字串解碼）
 $brands = isset($_POST['brands']) ? json_decode($_POST['brands'], true) : [];
 $categories = isset($_POST['categories']) ? json_decode($_POST['categories'], true) : [];
 
@@ -63,7 +62,7 @@ $params = [];
 $conditions = [];
 $joinCategory = false;
 
-// 如果有分類篩選，需要 JOIN category 表
+// Category filter requires extra join
 if (!empty($categories)) {
     $joinCategory = true;
     $sql .= "JOIN category c ON p.product_id = c.product_id ";
@@ -72,14 +71,12 @@ if (!empty($categories)) {
     $params = array_merge($params, $categories);
 }
 
-// 如果有品牌篩選
 if (!empty($brands)) {
     $placeholders_brand = implode(',', array_fill(0, count($brands), '?'));
     $conditions[] = "p.brand IN ($placeholders_brand)";
     $params = array_merge($params, $brands);
 }
 
-// 有篩選條件時，拼 WHERE
 if (!empty($conditions)) {
     $sql .= "WHERE " . implode(' AND ', $conditions);
 }

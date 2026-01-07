@@ -19,14 +19,14 @@ try {
     $mail->isSMTP();                                            //Send using SMTP
     $mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
     $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
-    $mail->Username   = $_ENV['SMTP_account'];                     //SMTP username
-    $mail->Password   =  $_ENV['SMTP_pwd'];                               //SMTP password
+    $mail->Username   = $_ENV['SMTP_ACCOUNT'];                     //SMTP username
+    $mail->Password   =  $_ENV['SMTP_PWD'];                               //SMTP password
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
     $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
 
     //Recipients
-    $mail->setFrom($_ENV['SMTP_Recipients'], $_ENV['SMTP_name']);
-    $mail->addBCC ($_ENV['SMTP_Recipients']); 
+    $mail->setFrom($_ENV['SMTP_RECIPIENTS'], $_ENV['SMTP_NAME']);
+    $mail->addBCC ($_ENV['SMTP_RECIPIENTS']); 
 
     //Content
     $mail->isHTML(true);                                  //Set email format to HTML

@@ -1,48 +1,25 @@
 <?php
-require_once __DIR__ . '/../core/config.php';
+require_once __DIR__ . '/../core/init.php';
 
 if (!isset($_SESSION['cart'])) {
     $_SESSION['cart'] = array();
 }
 
-// Add product to Cart
+if($_SERVER['REQUEST_METHOD']==='POST'){
+    // CSRF token validation
+    ver_csrf($_POST['csrf_token'] ?? '', "views/cart.php", "cart");
+}
+
 if (isset($_POST['add_to_cart'])) {
-    $product_id = filter_var($_POST['product_id'], FILTER_SANITIZE_NUMBER_INT);
-    $quantity = filter_var($_POST['quantity'], FILTER_SANITIZE_NUMBER_INT);
-
-    if ($product_id > 0 && $quantity > 0) {
-        if (isset($_SESSION['cart'][$product_id])) {
-            $_SESSION['cart'][$product_id] += $quantity;
-
-            //limit the maximum purchase quantity to 5
-            if ($_SESSION['cart'][$product_id] > 5) {
-                $_SESSION['cart'][$product_id] = 5;
-            }
-        } else {
-            $_SESSION['cart'][$product_id] = $quantity;
-        }
-    }
+    add_product_to_cart($_POST['product_id'], $_POST['quantity']);
 }
 
-// Remove product from cart
 if (isset($_POST['remove_from_cart'])) {
-    $product_id = filter_var($_POST['product_id'], FILTER_SANITIZE_NUMBER_INT);
-    unset($_SESSION['cart'][$product_id]);
+    remove_cart_product($_POST['product_id']);
 }
 
-// delete quantity
 if (isset($_POST['delete_quantity'])) {
-    $product_id = filter_var($_POST['product_id'], FILTER_SANITIZE_NUMBER_INT);
-    $quantity = filter_var($_POST['quantity'], FILTER_SANITIZE_NUMBER_INT);
-
-    if ($product_id > 0 && $quantity > 0 && isset($_SESSION['cart'][$product_id])) {
-        $_SESSION['cart'][$product_id] -= $quantity;
-    }
-
-    //when cart quantity is 0, remove product from cart
-    if ($_SESSION['cart'][$product_id] <= 0) {
-        unset($_SESSION['cart'][$product_id]);
-    }
+    delete_cart_qty($_POST['product_id'], $_POST['quantity']);
 }
 ?>
 
@@ -93,6 +70,7 @@ if (isset($_POST['delete_quantity'])) {
                                         <form method="POST">
                                             <div class='input-group'>
                                                 <input type="hidden" name="product_id" value="<?= $product_id ?>">
+                                                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrf_token()) ?>">
                                                 <input type="hidden" name="quantity" value="1">
                                                 <button class='btn btn-outline-secondary btn-sm' name="delete_quantity" value='-1' type='submit'>-</button>
                                                 <input style='max-width:100px' type='text' class='form-control form-control-sm text-center quantity-input' value='<?= $quantity ?>'>
@@ -105,6 +83,7 @@ if (isset($_POST['delete_quantity'])) {
                                         <p class='fw-bold'>$ <?= $total_price ?></p>
                                         <form action='cart.php' method='POST'>
                                             <input type='hidden' name='product_id' value='<?= $product_id ?>'>
+                                            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrf_token()) ?>">
                                             <button type='submit' name='remove_from_cart' class='btn btn-sm btn-danger'>
                                                 <i class='fa-solid fa-trash'></i>
                                             </button>
@@ -122,7 +101,7 @@ if (isset($_POST['delete_quantity'])) {
 
             <?php
                 } else {
-                    echo "<p>Error: " . $conn->error . "</p>";
+                    write_log("Prepare failed: " . $conn->error, 'ERROR'); // Debugging
                 }
             } else {
                 echo "<p style='user-select: none;' class='fs-1 text-center  text-danger'>" . __('Your cart is empty') . "</p>";
@@ -140,15 +119,18 @@ if (isset($_POST['delete_quantity'])) {
                             <h5 class="card-title"><?= __('Cart Summary') ?></h5>
                             <?php
                             $subtotal = 0;
+                            $tax = 0;
+                            $total = 0;
                             foreach ($_SESSION['cart'] as $product_id => $quantity) {
                                 $sql = "SELECT price FROM products WHERE product_id = $product_id";
                                 $result = $conn->query($sql);
                                 if ($result && $row = $result->fetch_assoc()) {
-                                    $subtotal += $row['price'] * $quantity;
+                                    $totals = calc_cart_totals($row['price'], $quantity);
+                                    $subtotal += $totals['subtotal'];
+                                    $tax += $totals['tax'];
+                                    $total += $totals['total'];
                                 }
                             }
-                            $tax = $subtotal * 0.05;
-                            $total = $subtotal + $tax;
                             ?>
                             <div class="d-flex justify-content-between">
                                 <span><?= __('Subtotal') ?></span>
@@ -165,6 +147,7 @@ if (isset($_POST['delete_quantity'])) {
                             </div>
 
                             <form action=<?= WEBSITE_URL . "views/checkout.php" ?> method="post">
+                                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrf_token()) ?>">
                                 <button class="btn btn-primary w-100 mt-3"><?= __('Proceed to Checkout') ?></button>
                             </form>
 

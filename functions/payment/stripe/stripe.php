@@ -1,11 +1,13 @@
 <?php
-// Start session
-if (session_status() === PHP_SESSION_NONE) {
-  session_start();
+require_once __DIR__ . '/../../../core/init.php';
+require __DIR__ . "../../../../vendor/autoload.php";
+
+if($_SERVER["REQUEST_METHOD"] === "POST"){
+
+    // CSRF token validation
+    ver_csrf($_POST['csrf_token'] ?? '', "views/checkout.php", "stripe pay meyhod");
 }
 
-require_once __DIR__ . '/../../../core/config.php';
-require __DIR__ . "../../../../vendor/autoload.php";
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '../../../../', '.env');
 $dotenv->load();
 $stripe_secret_key = $_ENV['STRIPE_SECRET_KEY'];
@@ -18,6 +20,7 @@ foreach ($_SESSION['cart'] as $product_id => $quantity) {
   $stmt->bind_param("i", $product_id);
   $stmt->execute();
   $result = $stmt->get_result();
+  update_product_stock($product_id, $quantity);
 
   if ($result->num_rows > 0) {
     $row = $result->fetch_assoc();

@@ -1,10 +1,6 @@
 <!-- Ui Source code From: 
  https://github.com/StartBootstrap/startbootstrap-sb-admin-2.git -->
-<?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -17,7 +13,7 @@ if (session_status() === PHP_SESSION_NONE) {
     <meta name="author" content="">
 
     <title>Admin Page</title>
-    <link rel="icon" href="<?= WEBSITE_URL?>/image/favicon.ico">
+    <link rel="icon" href="<?= WEBSITE_URL?>/images/favicon.ico">
 
     <!-- Custom fonts for this template-->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet" type="text/css">

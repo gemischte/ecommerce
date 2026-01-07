@@ -1,10 +1,18 @@
 <?php
-require_once __DIR__ . '/../../../core/config.php';
-require_once __DIR__ . '/../../../views/includes/assets.php';
+require_once __DIR__ . '/../../../core/init.php';
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['user_id']) && isset($_POST['submit'])) {
     $userid = $_POST['user_id'];
+
+    // CSRF token validation
+    ver_csrf($_POST['csrf_token'] ?? '', "dashboard/admin/views/user_accounts.php", "delete user");
 ?>
+
+    <form id="delete" method="POST" action="delete_user.php">
+        <input type="hidden" name="confirm" value="true">
+        <input type="hidden" name="userid" value="<?= htmlspecialchars($userid) ?>">
+        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrf_token()) ?>">
+    </form>
 
     <script>
         setTimeout(function() {
@@ -18,7 +26,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
                 confirmButtonText: 'OK'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    window.location.href = 'delete_user.php?confirm=true&userid=<?= $userid;?>';
+                    document.getElementById('delete').submit();
+                    // window.location.href = 'delete_user.php?confirm=true&userid=<?= $userid; ?>';
                 } else {
                     window.history.back();
                 }
@@ -30,8 +39,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
     exit();
 }
 
-if (isset($_GET['confirm']) && $_GET['confirm'] === 'true' && isset($_GET['userid'])) {
-    $userid = $_GET['userid'];
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm']) && $_POST['confirm'] === 'true' && isset($_POST['userid'])) {
+
+    // CSRF token validation
+    ver_csrf($_POST['csrf_token'] ?? '', "dashboard/admin/views/user_accounts.php", "delete user");
+
+    $userid = $_POST['userid'];
     $delete_user = "DELETE FROM user_accounts WHERE user_id = ?";
     $stmt = $conn->prepare($delete_user);
 
@@ -51,7 +64,7 @@ if (isset($_GET['confirm']) && $_GET['confirm'] === 'true' && isset($_GET['useri
                         showConfirmButton: false,
                         timer: 1500
                     }).then(() => {
-                        window.location.href = "<?= ADMIN_URL . 'views/user_accounts.php';?>";
+                        window.location.href = "<?= ADMIN_URL . 'views/user_accounts.php'; ?>";
                     });
                 }, 100);
             </script>
@@ -69,15 +82,14 @@ if (isset($_GET['confirm']) && $_GET['confirm'] === 'true' && isset($_GET['useri
                         showConfirmButton: false,
                         timer: 1500
                     }).then(() => {
-                        window.location.href = "<?= ADMIN_URL . 'views/user_accounts.php';?>";
+                        window.location.href = "<?= ADMIN_URL . 'views/user_accounts.php'; ?>";
                     });
                 }, 100);
             </script>
 <?php
         }
+        $stmt->close();
     }
-
-    $stmt->close();
 }
 
 $conn->close();

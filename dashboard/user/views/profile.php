@@ -1,10 +1,9 @@
 <?php
-include __DIR__ . '/../../../core/config.php';
+include __DIR__ . '/../../../core/init.php';
 
 $user_id = $_SESSION['user_id'];
 if (!$user_id) {
-    header("Location:" . WEBSITE_URL . "views/login.php");
-    exit();
+    redirect_to(WEBSITE_URL . "views/login.php");
 }
 
 if (isset($_SESSION['user_id'])) {
@@ -12,6 +11,7 @@ if (isset($_SESSION['user_id'])) {
     $profiles = "SELECT 
     up.first_name AS f_name, 
     up.last_name AS l_name,
+    up.calling_code AS call_code,
     up.phone AS phone, 
     up.birthday AS birthday,
     up.country AS ctry,
@@ -53,6 +53,7 @@ if (isset($_SESSION['user_id'])) {
 
                                         <form action="<?= WEBSITE_URL . "auth/delete_account.php" ?>" method="POST" class="mt-3">
                                             <input type="hidden" name="username" value="<?= $_SESSION['user'] ?>">
+                                            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrf_token()) ?>">
                                             <button type="submit" class="btn btn-danger w-100"><?= __('Delete Account') ?></button>
                                         </form>
                                     </div>
@@ -121,7 +122,7 @@ if (isset($_SESSION['user_id'])) {
                                                     class="form-control"
                                                     name="phone"
                                                     id="phone"
-                                                    value="<?= htmlspecialchars($row['phone']) ?>"
+                                                    value="<?= htmlspecialchars($row['call_code'] . " ". $row['phone']) ?>"
                                                     disabled>
                                                 </div>
 

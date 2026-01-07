@@ -1,10 +1,9 @@
 <?php
-require_once __DIR__ . '/../core/config.php';
+require_once __DIR__ . '/../core/init.php';
 
 $user_id = $_SESSION['user_id'];
 if (!$user_id) {
-    header("Location: login.php");
-    exit();
+    redirect_to("login.php");
 }
 
 $user_id = $_SESSION['user_id'];
@@ -32,7 +31,7 @@ oi.orders_created_at DESC
 
 $stmt = $conn->prepare($sql);
 if (!$stmt) {
-    die("SQL prepare failed: " . $conn->error);
+    write_log("SQL prepare failed: " . $conn->error,'ERROR');
 }
 $stmt->bind_param("s", $user_id);
 $stmt->execute();
@@ -83,7 +82,7 @@ while ($row = $result->fetch_assoc()) {
                     <div class="card-header bg-light">
                         <strong><?= __('Order Id') ?>:</strong> <?= htmlspecialchars($order['order_id']) ?>
                         <span class="ms-3"><strong><?= __('Payment method') ?>:</strong> <?= htmlspecialchars($order['pay']) ?></span>
-                        <span class="ms-3"><strong><?= __('Total') ?>:</strong> <?= htmlspecialchars(number_format($sub_total, 2)) ?></span>
+                        <span class="ms-3"><strong><?= __('Total') ?>:</strong> <?= htmlspecialchars(number_format($total_price, 2)) ?></span>
                         <span class="ms-3"><strong><?= __('Date') ?>:</strong> <?= htmlspecialchars($order['date']) ?></span>
                     </div>
 

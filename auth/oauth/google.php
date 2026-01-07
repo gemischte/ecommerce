@@ -1,7 +1,6 @@
 <?php
-require_once __DIR__ . '/../../core/config.php';
+require_once __DIR__ . '/../../core/init.php';
 require __DIR__ . "/../../vendor/autoload.php";
-require __DIR__ . "/../../views/includes/assets.php";
 
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../../', '.env');
 $dotenv->load();
@@ -30,7 +29,7 @@ if (isset($_GET['code'])) {
 	$first_name = $name_parts[0] ?? '';
 	$last_name = $name_parts[1] ?? '';
 
-	$user_id = 'user_' . bin2hex(random_bytes(16));
+	$user_id = create_uid();
 	$username = explode('@', $email)[0];
 	$account_registered_at = date('Y-m-d H:i:s');
 
@@ -55,8 +54,8 @@ if (isset($_GET['code'])) {
 		}
 
 		$_SESSION['user_id'] = $row['user_id'];
-		header("Location:" . WEBSITE_URL . "index.php");
-		exit();
+		redirect_to(WEBSITE_URL . "index.php");
+		
 ?>
 
 		<?php
@@ -95,7 +94,7 @@ if (isset($_GET['code'])) {
 			</script>
 <?php
 		} else {
-			die("Error: " . $google_stmt->error);
+			write_log("Error: " . $google_stmt->error);
 		}
 	}
 } else {

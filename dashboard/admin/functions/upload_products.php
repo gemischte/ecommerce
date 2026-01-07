@@ -1,8 +1,11 @@
 <?Php
-require_once __DIR__ . '/../../../core/config.php';
-require_once __DIR__ . '/../../../views/includes/assets.php';
+require_once __DIR__ . '/../../../core/init.php';
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
+
+    // CSRF token validation
+    ver_csrf($_POST['csrf_token'] ?? '', "dashboard/admin/functions/upload_products.php", "upload products");
+
     if (
         isset($_POST['product_name']) &&
         isset($_POST['description']) &&
@@ -83,7 +86,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             $stmt->close();
         } else {
-            echo "SQL prepare failed: " . $conn->error;
+            write_log("SQL prepare failed: " . $conn->error, 'ERROR');
         }
     }
 }
@@ -112,6 +115,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         <div class="card-body">
             <form method="POST" action="upload_products.php" enctype="multipart/form-data">
+                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrf_token()) ?>">
 
                 <div class="mb-3">
                     <label for="name" class="form-label">Product Name</label>
@@ -246,10 +250,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 </div>
 
         </div>
-
-
-
-
 
         </form>
     </div>

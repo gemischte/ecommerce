@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../core/config.php';
+require_once __DIR__ . '/../core/init.php';
 require_once __DIR__ . '/../views/includes/header.php';
 ?>
 
@@ -23,16 +23,16 @@ require_once __DIR__ . '/../views/includes/header.php';
                     <div class="col-12 col-lg-5">
 
                         <form class="form-horizontal was-validated" method="POST" action="<?= WEBSITE_URL . "auth/register.php" ?>">
+                            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrf_token()) ?>">
 
                             <div class="row gy-3 overflow-hidden">
 
-                                <!-- username table -->
                                 <div class="col-12">
                                     <div class="form-floating mb-3">
                                         <input
                                             class="form-control"
                                             placeholder="e.g.Trevor_313"
-                                            title="<?= __('4-32 characters, allows letters, numbers, and special characters.')?>"
+                                            title="<?= __('4-32 characters, allows letters, numbers, and special characters.') ?>"
                                             type="text"
                                             name="username"
                                             id="username"
@@ -44,7 +44,6 @@ require_once __DIR__ . '/../views/includes/header.php';
                                     </div>
                                 </div>
 
-                                <!-- Last name table -->
                                 <div class="col-sm-6">
                                     <div class="form-floating mb-3">
                                         <input
@@ -59,7 +58,6 @@ require_once __DIR__ . '/../views/includes/header.php';
                                     </div>
                                 </div>
 
-                                <!-- First name table -->
                                 <div class="col-sm-6">
                                     <div class="form-floating mb-3">
                                         <input
@@ -74,29 +72,44 @@ require_once __DIR__ . '/../views/includes/header.php';
                                     </div>
                                 </div>
 
-                                <!-- Phone table -->
+                                <div class="col-12">
+                                    <div class="form-floating mb-3">
+                                        <select class="form-select" name="calling_code" id="calling_code">
+                                            <?php
+                                            $countries = all_countries();
+                                            foreach ($countries as $c) {
+                                                $call_code = htmlspecialchars($c['calling_codes']);
+                                                $ctry_name = htmlspecialchars($c['name']);
+                                                echo "<option value='$call_code'$selected>$ctry_name | $call_code</option>";
+                                            }
+                                            ?>
+                                        </select>
+                                        <label for="calling_code">Calling code</label>
+                                    </div>
+                                </div>
+
                                 <div class="col-12">
                                     <div class="form-floating mb-3">
                                         <input
                                             class="form-control"
                                             placeholder=""
-                                            type="text"
+                                            type="number"
                                             name="phone"
                                             title="<?= __('Real phone number is required') ?>"
                                             id="phone"
                                             required
+                                            pattern="[0-9]{6,15}"
                                             value="" />
                                         <label for="phone" class="form-label">Phone</label>
                                     </div>
                                 </div>
 
-                                <!-- Email table -->
                                 <div class="col-12">
                                     <div class="form-floating mb-3">
                                         <input
                                             class="form-control"
                                             placeholder="mail@example.com"
-                                            title="<?= __('Enter a valid email address')?>."
+                                            title="<?= __('Enter a valid email address') ?>."
                                             type="text"
                                             name="email"
                                             id="email"
@@ -107,7 +120,6 @@ require_once __DIR__ . '/../views/includes/header.php';
                                     </div>
                                 </div>
 
-                                <!-- password table -->
                                 <div class="col-12">
                                     <div class="form-floating mb-3 position-relative">
                                         <input
@@ -129,7 +141,6 @@ require_once __DIR__ . '/../views/includes/header.php';
                                     </div>
                                 </div>
 
-                                <!-- Confirm password table -->
                                 <div class="col-12">
                                     <div class="form-floating mb-3 position-relative">
                                         <input
@@ -150,7 +161,6 @@ require_once __DIR__ . '/../views/includes/header.php';
                                     </div>
                                 </div>
 
-                                <!-- Terms of Service -->
                                 <div class="form-check mb-3">
                                     <input class="for-check-input" type="checkbox" id="tos_agree" required
                                         value="Y" name="tos_agree" />
@@ -158,7 +168,6 @@ require_once __DIR__ . '/../views/includes/header.php';
                                     <a href="tos.php" class="clickable text-decoration-none"><?= __('Terms of Service.') ?></a>
                                 </div>
 
-                                <!-- Log in button -->
                                 <div class="col-12">
                                     <div class="d-grid">
                                         <button class="btn btn-primary btn-lg" type="submit"><?= __('Register') ?></button>

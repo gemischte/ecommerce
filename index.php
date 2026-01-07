@@ -1,15 +1,11 @@
-<!-- UI Source: startbootstrap-shop-homepage
- (https://github.com/StartBootstrap/startbootstrap-shop-homepage) 
- -->
-
 <?php
-require_once __DIR__ . '/core/config.php';
+require_once __DIR__ . '/core/init.php';
 
 $sql = 'SELECT product_id, product_name, original_price,description,brand,price, star,product_images FROM products';
 $result = $conn->query($sql);
 
 if (!$result) {
-  die("Prepare failed: " . $conn->error); // Debugging
+  write_log("Prepare failed: " . $conn->error,'ERROR'); // Debugging
 }
 ?>
 
@@ -37,6 +33,7 @@ if (!$result) {
           }
         }
         ?>
+        
         <form id="filter-form">
           <?php foreach ($brand as $item): ?>
             <div class="form-check">
@@ -117,7 +114,11 @@ if (!$result) {
                 </div>
               <?php endwhile; ?>
             <?php else: ?>
-              <p>No products found.</p>
+              
+              <script>
+                window.location.href = 'views/404.php';
+              </script>
+
             <?php endif; ?>
           </div>
         </div>

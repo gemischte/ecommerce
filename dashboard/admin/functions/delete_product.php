@@ -1,6 +1,5 @@
 <?php
-require_once __DIR__ . '/../../../core/config.php';
-require_once __DIR__ . '/../../../views/includes/assets.php';
+require_once __DIR__ . '/../../../core/init.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
     $product_id = $_POST['product_id'];
@@ -36,7 +35,9 @@ if (isset($_GET['confirm']) && $_GET['confirm'] === 'true' && isset($_GET['produ
 
     if ($stmt) {
         $stmt->bind_param("i", $product_id);
-        $stmt->execute();
+        if(!$stmt->execute()){
+          write_log("Delete failed: " . $stmt->error, 'ERROR');  
+        }
 
         if ($stmt->affected_rows > 0) {
     ?>

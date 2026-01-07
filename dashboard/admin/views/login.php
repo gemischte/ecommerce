@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../../../core/config.php';
+require_once __DIR__ . '/../../../core/init.php';
 
 ?>
 
@@ -26,9 +26,10 @@ require_once __DIR__ . '/../../../core/config.php';
                                 <div class="text-center">
                                     <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
                                 </div>
-                                
-                                <form class="user was-validated" method="POST" action="<?= ADMIN_URL . 'auth/login.php' ?>">
 
+                                <form class="user was-validated" method="POST" action="<?= ADMIN_URL . 'auth/login.php' ?>">
+                                    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrf_token()) ?>">
+                                    
                                     <div class="form-group">
                                         <input type="text"
                                             name="username"

@@ -2,16 +2,18 @@
 https://bootstrapbrain.com/component/bootstrap-free-forgot-password-form-snippet/#code 
 -->
 <?php
-require_once __DIR__ . '/../core/config.php';
-require_once __DIR__ . '/../views/includes/assets.php';
+require_once __DIR__ . '/../core/init.php';
 require_once __DIR__ . '/../functions/includes/mailer.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    // generate a unique random token of length 32
+    // CSRF token validation
+    ver_csrf($_POST['csrf_token'] ?? '', "auth/forget_password.php", "forget password");
+
+    //32 length token
     $token = bin2hex(random_bytes(32));
 
-    //limit 30 minutes
+    // 30 minutes
     $token_expiry = date("Y-m-d H:i:s", time() + 60 * 30);
 
     //Clean expiry token
@@ -38,8 +40,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $stmt->bind_param("sss", $token, $token_expiry, $email);
                     $stmt->execute();
 
-                    //Send mail link
-                    $reset_url=WEBSITE_URL."auth/reset_password.php?token={$token}";
+                    //Send mail
+                    $reset_url = WEBSITE_URL . "auth/reset_password.php?token={$token}";
                     $mail->addAddress($email);
                     $mail->Subject = 'Reset password';
                     $mail->Body = "<p>Hello {$username}</p> Click the link: <a href='$reset_url'>reset password</a>";
@@ -47,7 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     try {
                         $mail->send();
                     } catch (Exception $e) {
-                        echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+                        write_log("Message could not be sent: " . $mail->ErrorInfo, 'ERROR');
                     }
 ?>
 
@@ -89,6 +91,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <section class="py-3 py-md-5 py-xl-8 was-validated">
     <form method="post">
+        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrf_token()) ?>">
 
         <div class="container">
 
@@ -132,11 +135,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <div class="col-12">
                                     <div class="row justify-content-between">
                                         <div class="col-6">
-                                            <a href="<?= WEBSITE_URL . '/views/login.php'?>" class="link-secondary text-decoration-none"><?= __('Login') ?></a>
+                                            <a href="<?= WEBSITE_URL . '/views/login.php' ?>" class="link-secondary text-decoration-none"><?= __('Login') ?></a>
                                         </div>
                                         <div class="col-6">
                                             <div class="text-end">
-                                                <a href="<?= WEBSITE_URL . '/views/register.php'?>" class="link-secondary text-decoration-none"><?= __('Register') ?></a>
+                                                <a href="<?= WEBSITE_URL . '/views/register.php' ?>" class="link-secondary text-decoration-none"><?= __('Register') ?></a>
                                             </div>
                                         </div>
                                     </div>

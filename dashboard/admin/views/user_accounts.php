@@ -1,10 +1,10 @@
 <?php
-require_once __DIR__ . '/../../../core/config.php';
+require_once __DIR__ . '/../../../core/init.php';
 $user_account = "SELECT user_id ,username,email,token,token_expiry FROM user_accounts";
 $result = $conn->query($user_account);
 
 if (!$result) {
-    die("Prepare failed: " . $conn->error); // Debugging
+    write_log("Prepare failed: " . $conn->error, 'ERROR'); // Debugging
 }
 ?>
 
@@ -14,7 +14,7 @@ if (!$result) {
     <div class="row">
         <div class="col-md-12">
 
-            <a href="<?= ADMIN_URL . 'index.php';?>">
+            <a href="<?= ADMIN_URL . 'index.php'; ?>">
                 <i class="material-symbols-rounded opacity-5">Dashboard</a>
             /User Account Management</i>
 
@@ -68,13 +68,14 @@ if (!$result) {
                             <td>
                                 <form action="<?= ADMIN_URL . "functions/delete_user.php?id=" . htmlspecialchars($row['user_id']) ?>" method="post" class="d-inline">
                                     <input type="hidden" name="user_id" value="<?= htmlspecialchars($row['user_id']); ?>">
+                                    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrf_token()) ?>">
                                     <button type="submit" name="submit" class="btn btn-danger"><i class="fa-solid fa-trash"></i></button>
                                 </form>
                             </td>
 
                             <!-- Edit user -->
                             <td>
-                                <form action="<?= ADMIN_URL . "functions/edit_user.php?id=" . htmlspecialchars($row['user_id']) ?>" method="post" class="d-inline">
+                                <form action="<?= ADMIN_URL . "functions/edit_user.php?id=" . htmlspecialchars($row['user_id']) ?>" method="GET" class="d-inline">
                                     <input type="hidden" name="user_id" value="<?= htmlspecialchars($row['user_id']); ?>">
                                     <button type="submit" name="submit" class="btn btn-secondary"><i class="fa-solid fa-pen-to-square"></i></button>
                                 </form>
