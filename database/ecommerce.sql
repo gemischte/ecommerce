@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 07, 2026 at 04:17 PM
+-- Generation Time: Jan 09, 2026 at 11:08 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -351,7 +351,7 @@ CREATE TABLE `orders_info` (
 --
 
 INSERT INTO `orders_info` (`orders_id`, `country`, `city`, `address`, `postal_code`, `orders_created_at`, `payment_method`) VALUES
-('ORD-2025-06-683c10bf4f591-9e44f01d', 'United States of America', 'Cupertino', 'one apple park way California', '95014', '2025-06-01 10:35:11', 'Credit Card');
+('ORD-2026-01-6961186712315-9b672ef4', 'United States of America', 'Cupertino', 'one apple park way California', '95014', '2026-01-09 23:01:59', 'Credit Card');
 
 -- --------------------------------------------------------
 
@@ -364,7 +364,7 @@ CREATE TABLE `order_details` (
   `orders_id` varchar(50) NOT NULL,
   `product_id` int(11) NOT NULL,
   `quantity` int(11) NOT NULL,
-  `price` int(11) NOT NULL
+  `price` decimal(10,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
@@ -372,10 +372,7 @@ CREATE TABLE `order_details` (
 --
 
 INSERT INTO `order_details` (`user_id`, `orders_id`, `product_id`, `quantity`, `price`) VALUES
-('user_a3f8b7c15d2e4e7a9f4c6b3a8d7e1c0b', 'ORD-2025-06-683c10bf4f591-9e44f01d', 12462, 4, 105),
-('user_a3f8b7c15d2e4e7a9f4c6b3a8d7e1c0b', 'ORD-2025-06-683c10bf4f591-9e44f01d', 16933, 5, 7088),
-('user_a3f8b7c15d2e4e7a9f4c6b3a8d7e1c0b', 'ORD-2025-06-683c10bf4f591-9e44f01d', 38910, 1, 410),
-('user_a3f8b7c15d2e4e7a9f4c6b3a8d7e1c0b', 'ORD-2025-06-683c10bf4f591-9e44f01d', 93038, 3, 3150);
+('user_a3f8b7c15d2e4e7a9f4c6b3a8d7e1c0b', 'ORD-2026-01-6961186712315-9b672ef4', 12462, 2, 26.25);
 
 -- --------------------------------------------------------
 
@@ -400,7 +397,7 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`product_id`, `product_name`, `product_images`, `description`, `brand`, `original_price`, `price`, `stock`, `star`) VALUES
-(12462, 'Durex KY Jelly 100g Water-based Lubricant', 'https://ukdirectbd.com/wp-content/uploads/2022/08/ddd.png', 'It is a moist, colourless, odourless and non-greasy water-based gel that reduces friction to help protect you from intimate discomfort.', 'Durex', 30.00, 25.00, 300, 4.5),
+(12462, 'Durex KY Jelly 100g Water-based Lubricant', 'https://ukdirectbd.com/wp-content/uploads/2022/08/ddd.png', 'It is a moist, colourless, odourless and non-greasy water-based gel that reduces friction to help protect you from intimate discomfort.', 'Durex', 30.00, 25.00, 299, 4.5),
 (16933, 'Apple Watch Series 10', 'https://http2.mlstatic.com/D_NQ_NP_929358-MLA80684151617_112024-O.webp', 'Apple Watch Series 10. Our thinnest watch with our biggest display. Health insights including sleep apnea notifications. Our fastest-charging watch.', 'Apple', 1500.00, 1350.00, 429, 4.0),
 (17865, 'Essentials Linear Duffel Bag Medium', 'https://m.media-amazon.com/images/I/71NTdyIuaRL.jpg', 'Ideal for gym trips and weekend getaways. This adidas duffel bag has a sturdy base to protect your things.', 'Adidas', 45.00, 39.00, 164, 4.0),
 (27643, 'Adicolor Classics 3-Stripes Tee', 'https://m.media-amazon.com/images/I/71HYdxu4IkL.jpg', 'Meet your new favorite tee. This classic adidas t-shirt boasts a slim fit and a contrast hem for some refined vintage vibes.', 'Adidas', 65.00, 50.00, 848, 3.7),
