@@ -72,10 +72,8 @@ while ($row = $result->fetch_assoc()) {
                 <?php
                 $total_price = 0;
                 foreach ($order['products'] as $product) {
-                    $total_price += $product['price'];
+                    $total_price += $product['price']*$product['quantity'];
                 }
-                $order_tax = $total_price * 0.05;
-                $sub_total = $total_price + $order_tax;
                 ?>
                 <div class="card mb-4">
 
@@ -117,9 +115,7 @@ while ($row = $result->fetch_assoc()) {
 
                                             <td>
                                                 <?php
-                                                $price = ($product['price']);
-                                                $tax = $price * 0.05;
-                                                $sub_total = $price + $tax;
+                                                $sub_total = $product['price']*$product['quantity'];
                                                 echo htmlspecialchars(number_format($sub_total, 2));
                                                 ?>
                                             </td>
