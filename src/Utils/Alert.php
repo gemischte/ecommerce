@@ -26,10 +26,12 @@ class Alert
 
         echo <<<JS
         <script>
-        setTimeout(function() {
+        setTimeout(function() 
+        {
             const config = {$jscode};
             Swal.fire(config).then((result)=>{
-                if(result.isConfirmed||result.dismiss === Swal.DismissReason.timer){
+                if(result.isConfirmed)
+                {
                     if(config.submitId){
                         document.getElementById(config.submitId)?.submit();
                     }
@@ -37,7 +39,17 @@ class Alert
                         window.location.href = config.redirect;
                     }
                 }
-                else{
+                else if(result.dismiss === Swal.DismissReason.timer)
+                {
+                    if (config.redirect && !config.submitId){
+                        window.location.href = config.redirect;
+                    }
+                    else{
+                        window.history.back();
+                    }
+                }
+                else if(result.dismiss === Swal.DismissReason.cancel)
+                {
                     if(config.cancelRedirect){
                         window.location.href = config.cancelRedirect;
                     }
@@ -77,6 +89,14 @@ class Alert
             $extra['timer'] = 2000;
         }
         self::alert("success",$title,$text, $redirect, $extra);
+    }
+
+    public static function question($title, $text, $redirect = null, $extra = [])
+    {
+        if(!isset($extra['timer'])){
+            $extra['timer'] = 5000;
+        }
+        self::alert("question", $title, $text, $redirect, $extra);
     }
 
     public static function error($title, $text, $redirect = null, $extra = [])

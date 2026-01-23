@@ -20,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['username']) && empty(
     
     <?php
     Alert::warning(
-        "Are you sure",
+        "Warning",
         "This cannot be undone.",
         null,
         ["showCancelButton" => true, "submitId" => "delete_account?username=" . $username]

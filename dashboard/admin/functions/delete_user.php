@@ -19,10 +19,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['user_id']) && isset($
 
     <?php
     Alert::warning(
-        "Are you sure",
+        "Warning",
         "This cannot be undone.",
         null,
-        ["timer" => null, "showCancelButton" => true, "submitId" => "delete_user_account?id=" . $userid]
+        ["showCancelButton" => true, "submitId" => "delete_user_account?id=" . $userid]
     );
     exit();
 }

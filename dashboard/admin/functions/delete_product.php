@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['product_id']) && empt
 
     <?php
     Alert::warning(
-        "Are you sure",
+        "Warning",
         "This cannot be undone.",
         null,
         ["showCancelButton" => true, "submitId" => "delete_product?id=" . $product_id]
