@@ -1,6 +1,11 @@
 <?php
+
 require_once __DIR__ . '/../../../core/init.php';
-$user_account = "SELECT user_id ,username,email,token,token_expiry FROM user_accounts";
+
+use App\Security\Csrf;
+
+$user_account = "SELECT user_id ,username,email,token,token_expiry 
+FROM user_accounts";
 $result = $conn->query($user_account);
 
 if (!$result) {
@@ -68,7 +73,7 @@ if (!$result) {
                             <td>
                                 <form action="<?= ADMIN_URL . "functions/delete_user.php?id=" . htmlspecialchars($row['user_id']) ?>" method="post" class="d-inline">
                                     <input type="hidden" name="user_id" value="<?= htmlspecialchars($row['user_id']); ?>">
-                                    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrf_token()) ?>">
+                                    <?= csrf::csrf_field() ?>
                                     <button type="submit" name="submit" class="btn btn-danger"><i class="fa-solid fa-trash"></i></button>
                                 </form>
                             </td>

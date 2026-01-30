@@ -1,13 +1,14 @@
 <?Php
 
-use App\Utils\Alert;
-
 require_once __DIR__ . '/../../../core/init.php';
+
+use App\Security\Csrf;
+use App\Utils\Alert;
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     // CSRF token validation
-    ver_csrf($_POST['csrf_token'] ?? '', "dashboard/admin/functions/upload_products.php", "upload products");
+    Csrf::ver_csrf($_POST['csrf_token'] ?? '', "dashboard/admin/functions/upload_products.php", "upload products");
 
     if (
         isset($_POST['product_name']) &&
@@ -94,7 +95,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         <div class="card-body">
             <form method="POST" action="upload_products.php" enctype="multipart/form-data">
-                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrf_token()) ?>">
+                <?= csrf::csrf_field() ?>
 
                 <div class="mb-3">
                     <label for="name" class="form-label">Product Name</label>

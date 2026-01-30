@@ -1,12 +1,13 @@
 <?php
 
-use App\Utils\Alert;
-
 require_once __DIR__ . '/../core/init.php';
+
+use App\Security\Csrf;
+use App\Utils\Alert;
 
 if($_SERVER['REQUEST_METHOD']==='POST'){
     // CSRF token validation
-    ver_csrf($_POST['csrf_token'] ?? '', "views/register.php", "register");
+    Csrf::ver_csrf($_POST['csrf_token'] ?? '', "views/register.php", "register");
 }
 
 if ($_POST['password'] !== $_POST['confirmPassword']) {

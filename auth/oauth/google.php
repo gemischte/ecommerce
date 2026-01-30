@@ -1,9 +1,9 @@
 <?php
 
-use App\Utils\Alert;
-
 require_once __DIR__ . '/../../core/init.php';
 require __DIR__ . "/../../vendor/autoload.php";
+
+use App\Utils\Alert;
 
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../../', '.env');
 $dotenv->load();

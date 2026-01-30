@@ -3,15 +3,16 @@ https://bootstrapbrain.com/component/bootstrap-free-forgot-password-form-snippet
 -->
 <?php
 
-use App\Utils\Alert;
-
 require_once __DIR__ . '/../core/init.php';
-require_once __DIR__ . '/../functions/mailer.php';
+
+use App\Security\Csrf;
+use App\Utils\Alert;
+use App\Services\Mail;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // CSRF token validation
-    ver_csrf($_POST['csrf_token'] ?? '', "auth/forget_password.php", "forget password");
+    Csrf::ver_csrf($_POST['csrf_token'] ?? '', "auth/forget_password.php", "forget password");
 
     //32 length token
     $token = bin2hex(random_bytes(32));
@@ -20,7 +21,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $token_expiry = date("Y-m-d H:i:s", time() + 60 * 30);
 
     //Clean expiry token
-    $cleanup_expiry_token = "UPDATE user_accounts SET token = NULL, token_expiry = NULL WHERE token_expiry <= NOW()";
+    $cleanup_expiry_token = "UPDATE user_accounts SET token = NULL, 
+    token_expiry = NULL WHERE token_expiry <= NOW()";
     $conn->query($cleanup_expiry_token);
 
     if (!empty($_POST['email']) && filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
@@ -35,7 +37,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             if ($result->num_rows > 0) {
                 $row = $result->fetch_assoc();
-                $reset_password = "UPDATE user_accounts SET token = ?, token_expiry = ? WHERE email = ?";
+                $reset_password = "UPDATE user_accounts SET token = ?, 
+                token_expiry = ? WHERE email = ?";
                 $stmt = $conn->prepare($reset_password);
 
                 if ($stmt) {
@@ -45,15 +48,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                     //Send mail
                     $reset_url = WEBSITE_URL . "auth/reset_password.php?token={$token}";
-                    $mail->addAddress($email);
-                    $mail->Subject = 'Reset password';
-                    $mail->Body = "<p>Hello {$username}</p> Click the link: <a href='$reset_url'>reset password</a>";
-
-                    try {
-                        $mail->send();
-                    } catch (Exception $e) {
-                        write_log("Message could not be sent: " . $mail->ErrorInfo, 'ERROR');
-                    }
+                    Mail::send($email, "Reset password", "<p>Hello {$username}</p> Click the link: <a href='$reset_url'>reset password</a>");
                     Alert::success("Success","An email has been sent to $email,with instructions to reset your password.");
                 }
             } else {
@@ -70,7 +65,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <section class="py-3 py-md-5 py-xl-8 was-validated">
     <form method="post">
-        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrf_token()) ?>">
+        <?= csrf::csrf_field() ?>
 
         <div class="container">
 

@@ -1,6 +1,9 @@
 <?php
+
 require_once __DIR__ . '/../core/init.php';
 require_once __DIR__ . '/../views/includes/header.php';
+
+use App\Security\Csrf;
 ?>
 
 <title>Register</title>
@@ -23,7 +26,7 @@ require_once __DIR__ . '/../views/includes/header.php';
                     <div class="col-12 col-lg-5">
 
                         <form class="form-horizontal was-validated" method="POST" action="<?= WEBSITE_URL . "auth/register.php" ?>">
-                            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrf_token()) ?>">
+                            <?= csrf::csrf_field() ?>
 
                             <div class="row gy-3 overflow-hidden">
 
@@ -76,7 +79,7 @@ require_once __DIR__ . '/../views/includes/header.php';
                                     <div class="form-floating mb-3">
                                         <select class="form-select" name="calling_code" id="calling_code">
                                             <?php
-                                            $countries = all_countries();
+                                            $countries = all_countries($conn);
                                             foreach ($countries as $c) {
                                                 $call_code = htmlspecialchars($c['calling_codes']);
                                                 $ctry_name = htmlspecialchars($c['name']);

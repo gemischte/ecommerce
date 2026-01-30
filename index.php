@@ -1,7 +1,8 @@
 <?php
 require_once __DIR__ . '/core/init.php';
 
-$sql = 'SELECT product_id, product_name, original_price,description,brand,price, star,product_images FROM products';
+$sql = 'SELECT product_id, product_name, original_price, 
+description, brand,price, star, product_images FROM products';
 $result = $conn->query($sql);
 
 if (!$result) {

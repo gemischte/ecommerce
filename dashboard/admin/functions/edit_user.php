@@ -1,8 +1,9 @@
 <?php
 
-use App\Utils\Alert;
-
 require_once __DIR__ . '/../../../core/init.php';
+
+use App\Security\Csrf;
+use App\Utils\Alert;
 
 if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['user_id'])) {
 
@@ -35,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['user_id'])) {
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
 
     // CSRF token validation
-    ver_csrf($_POST['csrf_token'] ?? '', "dashboard/admin/views/user_accounts.php", "edit user");
+    Csrf::ver_csrf($_POST['csrf_token'] ?? '', "dashboard/admin/views/user_accounts.php", "edit user");
 
     // Validate and sanitize input data
     $userid = $_POST['user_id'] ?? $userid;
@@ -44,7 +45,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
     $token = $_POST['token'] ?? $token;
     $token_expiry = $_POST['token_expiry'] ?? $token_expiry;
 
-    $update = "UPDATE user_accounts SET username = ?, email = ?, token = ?, token_expiry = ? WHERE user_id = ?";
+    $update = "UPDATE user_accounts SET username = ?, 
+    email = ?, token = ?, token_expiry = ? WHERE user_id = ?";
     $stmt = $conn->prepare($update);
 
     if ($stmt) {
@@ -96,7 +98,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
         <div class="card-body">
             <form method="POST" action="edit_user.php" enctype="multipart/form-data">
                 <input type="hidden" name="user_id" value="<?= htmlspecialchars($userid); ?>">
-                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrf_token()) ?>">
+                <?= csrf::csrf_field() ?>
 
                 <div class="mb-3">
                     <label for="userid" class="form-label">ID</label>

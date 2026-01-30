@@ -1,26 +1,29 @@
 <?php
-
-use App\Utils\Alert;
-
 require_once __DIR__ . '/../core/init.php';
-require_once __DIR__ . '/../functions/mailer.php';
+
+use App\Security\Csrf;
+use App\Utils\Alert;
+use App\Services\CartService;
+use App\Services\Mail;
+
+$CartService = new CartService($conn);
 
 //all country list
-$countries = all_countries();
+$countries = all_countries($conn);
 
 if (isset($_POST['remove_from_cart'])) {
 
     // CSRF token validation
-    ver_csrf($_POST['csrf_token'] ?? '', "views/checkout.php", "checkout");
+    Csrf::ver_csrf($_POST['csrf_token'] ?? '', "views/checkout.php", "checkout");
 
-    remove_cart_product($_POST['product_id']);
+    $CartService->remove_cart_product($_POST['product_id']);
 }
 
 if (isset($_POST['checkout'])) {
 
     // CSRF token validation
-    ver_csrf($_POST['csrf_token'] ?? '', "views/checkout.php", "checkout");
-    
+    Csrf::ver_csrf($_POST['csrf_token'] ?? '', "views/checkout.php", "checkout");
+
     $orders_id = 'ORD' . '-' . date("Y") . '-' . date("m") . '-' . uniqid() . '-' . bin2hex(random_bytes(4));
     $country = $_POST['country'];
     $city = $_POST['city'];
@@ -61,24 +64,28 @@ if (isset($_POST['checkout'])) {
             $tax = 0;
             foreach ($_SESSION['cart'] as $product_id => $quantity) {
                 $price = isset($prices[$product_id]) ? $prices[$product_id] : 0;
-                $totals = calc_cart_totals($price, $quantity);
+                $totals = $CartService->calc_cart_totals($price, $quantity);
                 $sub_total = $totals['total'];
                 $stmt->bind_param("ssiid", $orders_id, $user_id, $product_id, $quantity, $sub_total);
                 $stmt->execute();
-                update_product_stock($product_id, $quantity);
+                $CartService->update_product_stock($product_id, $quantity);
             }
         }
 
         if ($stmt->affected_rows > 0) {
             unset($_SESSION['cart']);
-            Alert::success("Payment successfully", 
-            "Your order has been placed successfully.",
-            WEBSITE_URL . "index.php");
+            Alert::success(
+                "Payment successfully",
+                "Your order has been placed successfully.",
+                WEBSITE_URL . "index.php"
+            );
             exit();
-        } 
-        else {
-            Alert::error("Oops...", "Order placed failed!", 
-            WEBSITE_URL . "index.php");
+        } else {
+            Alert::error(
+                "Oops...",
+                "Order placed failed!",
+                WEBSITE_URL . "index.php"
+            );
             exit();
         }
         # code...
@@ -145,7 +152,7 @@ if (isset($_POST['checkout'])) {
                                         $price = $row['price'];
                                         $product_images = $row['product_images'];
                                         $quantity = $_SESSION['cart'][$product_id];
-                                        $totals = calc_cart_totals($price, $quantity);
+                                        $totals = $CartService->calc_cart_totals($price, $quantity);
                                         $sub_total += $totals['total'];
                                         $total_tax += $totals['tax'];
                                         $total_price = $totals['subtotal'];
@@ -177,7 +184,7 @@ if (isset($_POST['checkout'])) {
 
                                                     <form action='checkout.php' method='post' class='d-inline'>
                                                         <input type='hidden' name='product_id' value='<?= $product_id ?>'>
-                                                        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrf_token()) ?>">
+                                                        <?= csrf::csrf_field() ?>
                                                         <button type='submit' name='remove_from_cart' class='btn btn-danger'><i class='fa-solid fa-trash'></i></button>
                                                     </form>
 
@@ -257,7 +264,7 @@ if (isset($_POST['checkout'])) {
                 <div class="col-md-7 col-lg-8">
                     <h4 class="mb-3"><?= __('Billing address') ?></h4>
                     <form class="needs-validation" method="post">
-                        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrf_token()) ?>">
+                        <?= csrf::csrf_field() ?>
 
                         <div class="row g-3">
 
@@ -323,16 +330,13 @@ if (isset($_POST['checkout'])) {
                                 $pdfContent = $mpdf->Output('', 'S');
 
                                 if (!empty($_POST['email']) && filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
-                                    $mail->addAddress($email);
-                                    $mail->Subject = "Order Confirmation";
-                                    $mail->Body = "The is your order confirmation. Please find the attached PDF for details.";
-                                    $mail->addStringAttachment($pdfContent, 'order.pdf');
-
-                                    try {
-                                        $mail->send();
-                                    } catch (Exception $e) {
-                                        echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
-                                    }
+                                    Mail::send(
+                                        $email,
+                                        "Order Confirmation",
+                                        "The is your order confirmation. Please find the attached PDF for details.",
+                                        $pdfContent,
+                                        "order.pdf"
+                                    );
                                 }
                             }
                             ?>
@@ -427,8 +431,8 @@ if (isset($_POST['checkout'])) {
                         <button class="w-100 btn btn-primary btn-lg" type="submit" name="checkout"><?= __('Continue to checkout') ?></button>
                     </form>
 
-                    <form action="<?= WEBSITE_URL ?>functions/payment/stripe/stripe.php" method="POST">
-                        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrf_token()) ?>">
+                    <form action="<?= WEBSITE_URL ?>src/Payments/Stripe/StripeGateway.php" method="POST">
+                        <?= csrf::csrf_field() ?>
                         <button class="btn btn-lg btn-dark">
                             <i class="fa-solid fa-credit-card"></i>
                             <span class="ms-2 fs-6"><?= __('Debit Card or Credit Card') ?></span>

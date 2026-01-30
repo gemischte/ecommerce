@@ -1,5 +1,8 @@
 <?php
+
 require_once __DIR__ . '/../core/init.php';
+
+use App\Security\Csrf;
 
 if (isset($_GET['id'])) {
     $product_id = $_GET['id'];
@@ -70,7 +73,7 @@ if (isset($_GET['id'])) {
                             <!-- Add to Cart  -->
                             <form action="<?= WEBSITE_URL . "views/cart.php" ?>" method="post">
                                 <input type="hidden" name="product_id" value="<?= htmlspecialchars($row['product_id']) ?>">
-                                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrf_token()) ?>">
+                                <?= csrf::csrf_field() ?>
                                 <label class="me-2"><?= __('Quantity') ?>:</label>
                                 <select name="quantity" id="quantity">
                                     <option value="1">1</option>

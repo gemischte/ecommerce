@@ -1,14 +1,14 @@
 <?php
 
-use App\Utils\Alert;
-
 require_once __DIR__ . '/../core/init.php';
-require_once __DIR__ . '/../functions/mailer.php';
+
+use App\Security\Csrf;
+use App\Utils\Alert;
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     // CSRF token validation
-    ver_csrf($_POST['csrf_token'] ?? '', "views/login.php", "login");
+    Csrf::ver_csrf($_POST['csrf_token'] ?? '', "views/login.php", "login");
 
     // Ensure that the form fields exist
     if (isset($_POST['username']) && isset($_POST['password'])) {
