@@ -61,7 +61,7 @@ function fetchFilteredProducts() {
     params.append('categories', JSON.stringify(checkedCategories));
   }
 
-  fetch('functions/filters.php', {
+    fetch('src/Utils/Filter.php', {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body: params.toString()
