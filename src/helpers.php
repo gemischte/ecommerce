@@ -3,11 +3,6 @@ require_once __DIR__ . '/Utils/Helper.php';
 
 use Utils\Helper;
 
-function create_uid()
-{
-    return Helper::create_uid();
-}
-
 function write_log($error_msg, $level = 'INFO')
 {
     Helper::write_log($error_msg, $level);

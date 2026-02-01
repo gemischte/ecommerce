@@ -4,6 +4,7 @@ require_once __DIR__ . '/../../core/init.php';
 require __DIR__ . "/../../vendor/autoload.php";
 
 use App\Utils\Alert;
+use Utils\Helper;
 
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../../', '.env');
 $dotenv->load();
@@ -32,7 +33,7 @@ if (isset($_GET['code'])) {
 	$first_name = $name_parts[0] ?? '';
 	$last_name = $name_parts[1] ?? '';
 
-	$user_id = create_uid();
+	$user_id = Helper::create_uid();
 	$username = explode('@', $email)[0];
 	$account_registered_at = date('Y-m-d H:i:s');
 

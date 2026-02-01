@@ -4,6 +4,7 @@ require_once __DIR__ . '/../core/init.php';
 
 use App\Security\Csrf;
 use App\Utils\Alert;
+use Utils\Helper;
 
 if($_SERVER['REQUEST_METHOD']==='POST'){
     // CSRF token validation
@@ -20,7 +21,7 @@ $register_account = "INSERT INTO user_accounts
 (username,user_id, email, password, account_registered_at) 
 VALUES (?, ?, ?,?,?)";
 
-$user_id = create_uid();
+$user_id = Helper::create_uid();
 
 $stmt = $conn->prepare($register_account);
 
