@@ -3,10 +3,10 @@ require_once __DIR__ . '/Utils/Helper.php';
 
 use Utils\Helper;
 
-function select_lang($lang)
-{
-    return Helper::select_lang($lang);
-}
+// function select_lang($lang)
+// {
+//     return Helper::select_lang($lang);
+// }
 
 // function all_countries(mysqli $conn)
 // {

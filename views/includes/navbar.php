@@ -1,3 +1,7 @@
+<?php
+
+use Utils\Helper;
+?>
 <nav class="navbar navbar-expand-lg px-3 mb-3 bg-light">
 
     <div class="container-fluid">
@@ -36,9 +40,9 @@
                             <?= __('Language') ?>
                         </button>
                         <ul class="dropdown-menu bg-white" aria-labelledby="lang_dropdown">
-                            <li><a class="text-reset text-decoration-none" href="<?= select_lang('en-us'); ?>"><?= __('English(USA)') ?></a></li>
-                            <li><a class="text-reset text-decoration-none" href="<?= select_lang('zh-tw'); ?>"><?= __('Chinese(Traditional)') ?></a></li>
-                            <li><a class="text-reset text-decoration-none" href="<?= select_lang('zh-cn'); ?>"><?= __('Chinese(Simplified)') ?></a></li>
+                            <li><a class="text-reset text-decoration-none" href="<?= Helper::select_lang('en-us'); ?>"><?= __('English(USA)') ?></a></li>
+                            <li><a class="text-reset text-decoration-none" href="<?= Helper::select_lang('zh-tw'); ?>"><?= __('Chinese(Traditional)') ?></a></li>
+                            <li><a class="text-reset text-decoration-none" href="<?= Helper::select_lang('zh-cn'); ?>"><?= __('Chinese(Simplified)') ?></a></li>
                         </ul>
                     </li>
 
@@ -85,7 +89,6 @@
                 </ul>
 
             </div>
-
 
         </div>
 
