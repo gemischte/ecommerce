@@ -13,7 +13,7 @@ class Lang
             $_SESSION['lang'] = $_GET['lang'];
         }
         
-        $_SESSION['lang'] = $_SESSION['lang'] ?? 'EN-US';
+        $_SESSION['lang'] = $_SESSION['lang'] ?? 'en-us';
         $file = __DIR__ . "/../../languages/" . $_SESSION['lang'] . ".php";
         if(file_exists($file))
         {
