@@ -3,7 +3,7 @@
 require_once __DIR__ . '/../../../core/init.php';
 
 use App\Security\Csrf;
-use Utils\Helper;
+use App\Utils\Helper;
 
 $user_account = "SELECT user_id ,username,email,token,token_expiry 
 FROM user_accounts";

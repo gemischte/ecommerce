@@ -1,11 +1,11 @@
 <?php
 
-namespace Utils\Filter;
-
-use mysqli;
-use Utils\Helper;
+namespace App\Utils\Filter;
 
 require_once __DIR__ . '/../../core/init.php';
+
+use mysqli;
+use App\Utils\Helper;
 
 class Filter
 {

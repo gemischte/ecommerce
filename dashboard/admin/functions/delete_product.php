@@ -4,7 +4,7 @@ require_once __DIR__ . '/../../../core/init.php';
 
 use App\Security\Csrf;
 use App\Utils\Alert;
-use Utils\Helper;
+use App\Utils\Helper;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['product_id']) && empty($_POST['confirm'])) {
     $product_id = $_POST['product_id'];

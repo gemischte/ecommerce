@@ -2,8 +2,8 @@
 
 require_once __DIR__ . '/core/init.php';
 
-use Utils\Helper;
-use Utils\Lang;
+use App\Utils\Helper;
+use App\Utils\Lang;
 
 $sql = 'SELECT product_id, product_name, original_price, 
 description, brand,price, star, product_images FROM products';

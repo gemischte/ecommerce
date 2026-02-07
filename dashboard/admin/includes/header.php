@@ -13,7 +13,7 @@
     <meta name="author" content="">
 
     <title>Admin Page</title>
-    <link rel="icon" href="<?= WEBSITE_URL?>public/assets/images/favicon.ico">
+    <link rel="icon" href="<?= WEBSITE_URL ?>public/assets/images/favicon.ico">
 
     <!-- Custom fonts for this template-->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet" type="text/css">
@@ -22,15 +22,16 @@
         rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="<?= ADMIN_URL?>/assets/css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="<?= ADMIN_URL ?>/assets/css/sb-admin-2.min.css" rel="stylesheet">
 
 </head>
+
 <body id="page-top">
 
-<?php include_once __DIR__ . '/../auth/auth.php'; ?>
+    <?php require_once __DIR__ . '/../auth/auth.php'; ?>
 
-<div id="wrapper">
-<?php include('sidebar.php');?>
+    <div id="wrapper">
+        <?php require_once __DIR__ . '/sidebar.php'; ?>
 
-<div id="content-wrapper" class="d-flex flex-column">
-<?php include('navbar.php');?>
+        <div id="content-wrapper" class="d-flex flex-column">
+            <?php require_once __DIR__ . '/navbar.php'; ?>

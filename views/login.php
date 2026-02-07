@@ -8,7 +8,7 @@ require_once __DIR__ . '/../core/init.php';
 require_once __DIR__ . '/../views/includes/header.php';
 
 use App\Security\Csrf;
-use Utils\Lang;
+use App\Utils\Lang;
 
 ?>
 

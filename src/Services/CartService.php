@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use mysqli;
-use Utils\Helper;
+use App\Utils\Helper;
 
 class CartService
 {

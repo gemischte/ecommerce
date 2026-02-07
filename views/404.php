@@ -3,7 +3,7 @@
 require_once __DIR__ . '/../core/init.php';
 require_once __DIR__ . '/includes/header.php';
 
-use Utils\Lang;
+use App\Utils\Lang;
 ?>
 
 <title>404 Not Found</title>
