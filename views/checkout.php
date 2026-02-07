@@ -5,8 +5,8 @@ use App\Security\Csrf;
 use App\Utils\Alert;
 use App\Services\CartService;
 use App\Services\Mail;
-use Utils\Helper;
-use Utils\Lang;
+use App\Utils\Helper;
+use App\Utils\Lang;
 
 $CartService = new CartService($conn);
 

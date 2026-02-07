@@ -4,8 +4,8 @@ require_once __DIR__ . '/../../../core/init.php';
 
 use App\Security\Csrf;
 use App\Utils\Alert;
-use Utils\Helper;
-use Utils\Lang;
+use App\Utils\Helper;
+use App\Utils\Lang;
 
 //all country list
 $countries = Helper::all_countries($conn);

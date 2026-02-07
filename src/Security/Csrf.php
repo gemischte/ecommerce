@@ -2,7 +2,7 @@
 
 namespace App\Security;
 
-use Utils\Helper;
+use App\Utils\Helper;
 
 class Csrf
 {
@@ -26,7 +26,7 @@ class Csrf
         if (!isset($_SESSION['csrf_token']) || !hash_equals($token, $_SESSION['csrf_token']))
             {
                 Helper::write_log("CSRF validation failed in $fail_doc", 'WARNING');
-                redirect_to(WEBSITE_URL . $fail_url);
+                Helper::redirect_to(WEBSITE_URL . $fail_url);
             }
             // unset($_SESSION['csrf_token']);
     }

@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/../core/init.php';
 
-use Utils\Helper;
+use App\Utils\Helper;
 
 $current_page = basename($_SERVER['PHP_SELF']);
 $allowed_pages = [

@@ -13,4 +13,3 @@ if (session_status() === PHP_SESSION_NONE) {
 
 require_once __DIR__ . '/../src/Utils/Lang.php';
 require_once __DIR__ . '/../views/includes/assets.php';
-require_once __DIR__ . '/../src/helpers.php';

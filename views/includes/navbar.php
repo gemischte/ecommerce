@@ -1,7 +1,8 @@
 <?php
 
-use Utils\Helper;
-use Utils\Lang;
+
+use App\Utils\Helper;
+use App\Utils\Lang;
 
 Lang::init();
 

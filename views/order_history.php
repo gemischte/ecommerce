@@ -2,8 +2,8 @@
 
 require_once __DIR__ . '/../core/init.php';
 
-use Utils\Helper;
-use Utils\Lang;
+use App\Utils\Helper;
+use App\Utils\Lang;
 
 $user_id = $_SESSION['user_id'];
 if (!$user_id) {

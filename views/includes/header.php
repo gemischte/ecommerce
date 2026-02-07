@@ -13,5 +13,5 @@
 </head>
 
 <body>
-    <?php include(__DIR__ . '/../../auth/auth.php'); ?>
-    <?php include('navbar.php'); ?>
+    <?php require_once __DIR__ . '/../../auth/auth.php'; ?>
+    <?php require_once __DIR__ . '/navbar.php'; ?>

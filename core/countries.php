@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/init.php';
 
-use Utils\Helper;
+use App\Utils\Helper;
 
 $countries = file_get_contents(__DIR__ . '/../data/countries.json');
 $data = json_decode($countries, true);
