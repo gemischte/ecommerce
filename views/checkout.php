@@ -81,19 +81,23 @@ if (isset($_POST['checkout'])) {
                 "Your order has been placed successfully.",
                 WEBSITE_URL . "index.php"
             );
-            exit();
+            
         } else {
             Alert::error(
                 "Oops...",
                 "Order placed failed!",
                 WEBSITE_URL . "index.php"
             );
-            exit();
         }
         # code...
     } 
     else {
         Helper::write_log("Error: " . $conn->error, 'ERROR');
+    }
+
+    if (isset($_SESSION['Swalfire'])) {
+        Alert::Swalfire($_SESSION['Swalfire']);
+        unset($_SESSION['Swalfire']);
     }
 }
 
