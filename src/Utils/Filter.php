@@ -5,7 +5,7 @@ namespace App\Utils\Filter;
 require_once __DIR__ . '/../../core/init.php';
 
 use mysqli;
-use App\Utils\Helper;
+use App\Utils\Logger;
 
 class Filter
 {
@@ -108,17 +108,35 @@ class ProductFilterService
 
         $stmt = $this->conn->prepare($sql);
         if (!$stmt) {
-            Helper::write_log("Prepare failed: " . $this->conn->error);
+            Logger::error("Prepare failed", [
+                'sql' => $sql,
+                'error' => $this->conn->error ?: 'Unknown mysqli error',
+                'param_count' => count($params)
+            ]);
+            exit;
         }
 
         if (!empty($params))
         {
-            if (Filter::bind_params_dynamic($stmt, $params)) {
-                Helper::write_log("Binding parameters failed: " . $stmt->error);
+            if (!Filter::bind_params_dynamic($stmt, $params)) {
+                Logger::error("Bind failed", [
+                    'sql' => $sql,
+                    'error' => $stmt->error ?: 'Unknown stmt error',
+                    'param_count' => count($params)
+                ]);
+                exit;
             }
         }
 
-        $stmt->execute();
+        if (!$stmt->execute()) {
+            Logger::error("Execute failed", [
+                'sql' => $sql,
+                'error' => $stmt->error ?: 'Unknown stmt error',
+                'param_count' => count($params)
+            ]);
+            exit;
+        }
+
         $result = $stmt->get_result();
         Filter::render_products($result);
         exit;
