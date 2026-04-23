@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/../core/init.php';
+require_once __DIR__ . '/../../../core/init.php';
 
 use App\Security\Csrf;
 use App\Utils\Alert;

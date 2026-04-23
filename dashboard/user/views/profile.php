@@ -56,7 +56,7 @@ if (isset($_SESSION['user_id'])) {
                                         <a class="nav-link active" href="#"><i class="fas fa-user me-2"></i><?= Lang::__('Personal Information') ?></a>
                                         <a class="nav-link" href="#"><i class="fas fa-lock me-2"></i><?= Lang::__('Security') ?></a>
 
-                                        <form action="<?= WEBSITE_URL . "auth/delete_account.php" ?>" method="POST" class="mt-3">
+                                        <form action="<?= WEBSITE_URL . "dashboard/user/functions/delete_account.php" ?>" method="POST" class="mt-3">
                                             <input type="hidden" name="username" value="<?= $_SESSION['user'] ?>">
                                             <?= csrf::csrf_field() ?>
                                             <button type="submit" class="btn btn-danger w-100"><?= Lang::__('Delete Account') ?></button>
