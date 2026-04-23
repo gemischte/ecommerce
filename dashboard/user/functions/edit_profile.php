@@ -6,6 +6,7 @@ use App\Security\Csrf;
 use App\Utils\Alert;
 use App\Utils\Helper;
 use App\Utils\Lang;
+use App\Utils\Logger;
 
 //all country list
 $countries = Helper::all_countries($conn);
@@ -40,15 +41,20 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && $userid) {
             $first_name = $row['first_name'];
             $last_name = $row['last_name'];
             $birthday = $row['birthday'];
-        } 
-        else {
-            Alert::error("Oops...", "Account not found.",
-            WEBSITE_URL . "dashboard/user/views/profile.php");
+        } else {
+            Alert::error(
+                "Oops...",
+                "Account not found.",
+                WEBSITE_URL . "dashboard/user/views/profile.php"
+            );
             exit();
         }
-    } 
-    else {
-        Helper::write_log("Error preparing statement: " . $conn->error, 'ERROR');
+    } else {
+        Logger::error("Edit profile prepare failed", [
+            'sql' => $edit_profile,
+            'error' => $conn->error ?: 'Unknown mysqli error',
+            'user_ref' => isset($userid) ? substr((string)$userid, 0, 8) . '...' : null
+        ]);
     }
 }
 
@@ -102,15 +108,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
         );
         if ($stmt->execute()) {
             if ($stmt->affected_rows > 0) {
-                Alert::success("Success", "Your profile has been successfully updated!",
-                WEBSITE_URL . "dashboard/user/views/profile.php");
+                Alert::success(
+                    "Success",
+                    "Your profile has been successfully updated!",
+                    WEBSITE_URL . "dashboard/user/views/profile.php"
+                );
                 exit();
             } else {
                 Alert::warning("Warning", "Please change the profile info.");
             }
         } else {
-            Alert::error("Error", "Failed to edit the profile. Please try again.",
-            WEBSITE_URL . "dashboard/user/views/profile.php");
+            Alert::error(
+                "Error",
+                "Failed to edit the profile. Please try again.",
+                WEBSITE_URL . "dashboard/user/views/profile.php"
+            );
             exit();
         }
     };

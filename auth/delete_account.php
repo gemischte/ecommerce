@@ -4,7 +4,7 @@ require_once __DIR__ . '/../core/init.php';
 
 use App\Security\Csrf;
 use App\Utils\Alert;
-use App\Utils\Helper;
+use App\Utils\Logger;
 
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['username']) && empty($_POST['confirm'])) {
     $username = $_POST['username'];
@@ -19,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['username']) && empty(
         <input type="hidden" name="username" value="<?= htmlspecialchars($username) ?>">
         <?= csrf::csrf_field() ?>
     </form>
-    
+
     <?php
     Alert::warning(
         "Warning",
@@ -58,8 +58,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm']) && $_POST[
             }
         }
     } else {
-        Helper::write_log("Failed to prepare SQL statement: " . $conn->error);
-        ?>
+        Logger::error("Delete account prepare failed", [
+            'sql' => $delete_account,
+            'error' => $conn->error ?: 'Unknown mysqli error',
+        ]);
+    ?>
 
         <script>
             window.history.back();
