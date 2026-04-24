@@ -1,11 +1,11 @@
 //https://github.com/mattboldt/typed.js
 document.addEventListener('DOMContentLoaded', function () {
-  new Typed('#Register_Section_Title', {
-    strings: ['Already have an account? ^100.', 'Now.'],
-    typeSpeed: 50,
-    cursorChar: '_',
-    loop: true,
-  });
+    new Typed('#Register_Section_Title', {
+        strings: ['Already have an account? ^100.', 'Now.'],
+        typeSpeed: 50,
+        cursorChar: '_',
+        loop: true,
+    });
 });
 
 //Showpassword
@@ -31,81 +31,85 @@ function showpassword() {
 //Show confirm password
 let ConfirmVisible = false;
 function confirm_show_password() {
-  const passwordLabel = document.getElementById("confirmPassword");
-  const confirm_password_eye_icon = document.getElementById("confirm_password_eye_icon");
+    const passwordLabel = document.getElementById("confirmPassword");
+    const confirm_password_eye_icon = document.getElementById("confirm_password_eye_icon");
 
-  if (ConfirmVisible) {
-    confirm_password_eye_icon.classList.remove('fa-eye-slash');
-    confirm_password_eye_icon.classList.add('fa-eye');
-    passwordLabel.type = 'password';
-    ConfirmVisible = false;
-  }
-  else{
-    confirm_password_eye_icon.classList.remove('fa-eye');
-    confirm_password_eye_icon.classList.add('fa-eye-slash');
-    passwordLabel.type = 'text';
-    ConfirmVisible = true;
-  }
+    if (ConfirmVisible) {
+        confirm_password_eye_icon.classList.remove('fa-eye-slash');
+        confirm_password_eye_icon.classList.add('fa-eye');
+        passwordLabel.type = 'password';
+        ConfirmVisible = false;
+    }
+    else {
+        confirm_password_eye_icon.classList.remove('fa-eye');
+        confirm_password_eye_icon.classList.add('fa-eye-slash');
+        passwordLabel.type = 'text';
+        ConfirmVisible = true;
+    }
 }
 
 //Filters
 function fetchFilteredProducts() {
-  const checkedBrands = Array.from(document.querySelectorAll('.brand-checkbox:checked')).map(cb => cb.value);
-  const checkedCategories = Array.from(document.querySelectorAll('.category-checkbox:checked')).map(cb => cb.value);
+    const checkedBrands = Array.from(document.querySelectorAll('.brand-checkbox:checked')).map(cb => cb.value);
+    const checkedCategories = Array.from(document.querySelectorAll('.category-checkbox:checked')).map(cb => cb.value);
 
-  const params = new URLSearchParams();
-  if (checkedBrands.length > 0) {
-    params.append('brands', JSON.stringify(checkedBrands));
-  }
-  if (checkedCategories.length > 0) {
-    params.append('categories', JSON.stringify(checkedCategories));
-  }
+    const params = new URLSearchParams();
+    if (checkedBrands.length > 0) {
+        params.append('brands', JSON.stringify(checkedBrands));
+    }
+    if (checkedCategories.length > 0) {
+        params.append('categories', JSON.stringify(checkedCategories));
+    }
 
     fetch('src/Utils/Filter.php', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: params.toString()
-  })
-  .then(response => response.text())
-  .then(html => {
-    document.getElementById('products-container').innerHTML = html;
-  })
-  .catch(err => {
-    console.error('Error fetching filtered products:', err);
-  });
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: params.toString()
+    })
+        .then(response => response.text())
+        .then(html => {
+            document.getElementById('products-container').innerHTML = html;
+        })
+        .catch(err => {
+            console.error('Error fetching filtered products:', err);
+        });
 }
 
 document.querySelectorAll('.brand-checkbox, .category-checkbox').forEach(checkbox => {
-  checkbox.addEventListener('change', fetchFilteredProducts);
+    checkbox.addEventListener('change', fetchFilteredProducts);
 });
 
 //SwalAlert2
-function waitSwal(callback)
-{
-    const interval = setInterval(()=>{
-        if (typeof Swal !== 'undefined' && typeof Swal.fire === 'function'){
+function waitSwal(callback) {
+    const interval = setInterval(() => {
+        if (typeof Swal !== 'undefined' && typeof Swal.fire === 'function') {
             clearInterval(interval);
             callback();
         }
     }, 50);
 }
 
-function showSwalAlert(config)
-{
+function showSwalAlert(config) {
     waitSwal(() => {
         Swal.fire(config).then((result) => {
-            if (result.isConfirmed)
-            {
+            if (result.isConfirmed) {
                 if (config.submitId) {
-                    document.getElementById(config.submitId)?.submit();
+                    const form = document.getElementById(config.submitId);
+                    const confirmBtn = config.confirmSubmitId
+                        ? document.getElementById(config.confirmSubmitId)
+                        : null;
+                    if (form && confirmBtn && typeof form.requestSubmit === 'function') {
+                        form.requestSubmit(confirmBtn);
+                    } else {
+                        form?.submit();
+                    }
                 }
                 else if (config.redirect) {
                     window.location.href = config.redirect;
                 }
             }
 
-            else if (result.dismiss === Swal.DismissReason.timer)
-            {
+            else if (result.dismiss === Swal.DismissReason.timer) {
                 if (config.redirect && !config.submitId) {
                     window.location.href = config.redirect;
                 }
@@ -114,16 +118,15 @@ function showSwalAlert(config)
                 }
             }
 
-            else if (result.dismiss === Swal.DismissReason.cancel)
-            {
-                if (cancel.cancelRedirect) {
+            else if (result.dismiss === Swal.DismissReason.cancel) {
+                if (config.cancel && config.cancel.cancelRedirect) {
                     window.location.href = config.cancel.cancelRedirect;
                 }
                 else {
                     window.history.back();
                 }
             }
-            
+
         });
     });
 }
