@@ -2,63 +2,50 @@
 
 namespace App\Utils;
 
-/**
- * @method static void debug(string $msg, array $context = [])
- * @method static void info(string $msg, array $context = [])
- * @method static void warning(string $msg, array $context = [])
- * @method static void error(string $msg, array $context = [])
- * @method static void notice(string $msg, array $context = [])
- * @method static void critical(string $msg, array $context = [])
- * @method static void alert(string $msg, array $context = [])
- * @method static void emergency(string $msg, array $context = [])
- */
-
 class Logger
 {
-    private const METHOD_LEVEL_MAP = [
-        'debug' => 'DEBUG',
-        'info' => 'INFO',
-        'warning' => 'WARNING',
-        'error' => 'ERROR',
-        'critical' => 'CRITICAL',
-        'alert' => 'ALERT',
-        'emergency' => 'EMERGENCY',
-        'notice' => 'NOTICE',
-    ];
-
     private static $logDir = __DIR__ . '/../../storage/logs/';
 
-    public static function __callStatic($name, $arguments): void
+    public static function debug(string $msg, array $context = []): void
     {
-        $level = strtolower($name);
-        if (!isset(self::METHOD_LEVEL_MAP[$level])) {
-            throw new \InvalidArgumentException("Invalid log level: $name");
-        }
-
-        [$msg, $context] = self::normalizeArguments($arguments);
-
-        self::log(self::METHOD_LEVEL_MAP[$level], $msg, $context);
+        self::log('DEBUG', $msg, $context);
     }
 
-    private static function normalizeArguments(array $arguments): array
+    public static function info(string $msg, array $context = []): void
     {
-        $msg = $arguments[0] ?? null;
-        if (!is_string($msg) || trim($msg) === '') {
-            throw new \InvalidArgumentException("Log message must be a non-empty string");
-        }
-
-        $context = $arguments[1] ?? [];
-        if (!is_array($context)) {
-            throw new \InvalidArgumentException("Context must be an array");
-        }
-
-        if (count($arguments) > 2) {
-            $context['_extra_args'] = array_slice($arguments, 2);
-        }
-
-        return [$msg, $context];
+        self::log('INFO', $msg, $context);
     }
 
+    public static function warning(string $msg, array $context = []): void
+    {
+        self::log('WARNING', $msg, $context);
+    }
+
+    public static function error(string $msg, array $context = []): void
+    {
+        self::log('ERROR', $msg, $context);
+    }
+
+    public static function critical(string $msg, array $context = []): void
+    {
+        self::log('CRITICAL', $msg, $context);
+    }
+
+    public static function alert(string $msg, array $context = []): void
+    {
+        self::log('ALERT', $msg, $context);
+    }
+
+    public static function emergency(string $msg, array $context = []): void
+    {
+        self::log('EMERGENCY', $msg, $context);
+    }
+
+    public static function notice(string $msg, array $context = []): void
+    {
+        self::log('NOTICE', $msg, $context);
+    }
+    
     private static function log(string $level, string $msg, array $context): void
     {
         $level = strtoupper($level);
