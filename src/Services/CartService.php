@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use mysqli;
-use App\Utils\Helper;
+use App\Utils\Logger;
 
 class CartService
 {
@@ -89,13 +89,13 @@ class CartService
         $update = "UPDATE products SET stock = stock - ? WHERE product_id = ? AND stock >= ?";
         $stmt = $this->conn->prepare($update);
         if (!$stmt) {
-            Helper::write_log("Prepare failed:" . $this->conn->error, 'ERROR');
+            Logger::error("Prepare failed:" . $this->conn->error);
             return;
         }
         $stmt->bind_param('iii', $purchase_qty, $product_id, $purchase_qty);
         $stmt->execute();
         if (!$stmt) {
-            Helper::write_log("Execute failed:" . $stmt->error, 'ERROR');
+            Logger::error("Execute failed:" . $stmt->error);
             return;
         }
     }

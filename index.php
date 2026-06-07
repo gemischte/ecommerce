@@ -2,15 +2,15 @@
 
 require_once __DIR__ . '/core/init.php';
 
-use App\Utils\Helper;
 use App\Utils\Lang;
+use App\Utils\Logger;
 
 $sql = 'SELECT product_id, product_name, original_price, 
 description, brand,price, star, product_images FROM products';
 $result = $conn->query($sql);
 
 if (!$result) {
-  Helper::write_log("Prepare failed: " . $conn->error,'ERROR');
+    Logger::error("Prepare failed: " . $conn->error);
 }
 ?>
 

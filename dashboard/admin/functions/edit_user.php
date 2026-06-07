@@ -4,7 +4,7 @@ require_once __DIR__ . '/../../../core/init.php';
 
 use App\Security\Csrf;
 use App\Utils\Alert;
-use App\Utils\Helper;
+use App\Utils\Logger;
 
 if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['user_id'])) {
 
@@ -31,7 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['user_id'])) {
         }
     } 
     else {
-        Helper::write_log("Prepare failed: " . $conn->error, 'ERROR');
+        Logger::error("Prepare failed: " . $conn->error);
     }
 }
 
