@@ -1,14 +1,21 @@
-<!-- UI source
-https://bootstrapbrain.com/component/login-page-template-using-bootstrap-5/#code
--->
-
 <?php
+
+/**
+ * UI source
+ * @link https://bootstrapbrain.com/component/login-page-template-using-bootstrap-5/#code
+ */
 
 require_once __DIR__ . '/../core/init.php';
 require_once __DIR__ . '/../views/includes/header.php';
 
 use App\Security\Csrf;
+use App\Utils\Alert;
 use App\Utils\Lang;
+
+if (isset($_SESSION['Swalfire'])) {
+    Alert::Swalfire($_SESSION['Swalfire']);
+    unset($_SESSION['Swalfire']);
+}
 
 ?>
 
@@ -85,7 +92,7 @@ use App\Utils\Lang;
                                         </div>
                                         <div class="col-6">
                                             <div class="text-end">
-                                                <a href="<?= WEBSITE_URL . "auth/forget_password.php" ?>"
+                                                <a href="<?= WEBSITE_URL . "views/forgot_password.php" ?>"
                                                     class="link-secondary text-decoration-none"><?= Lang::__('Forgot password?') ?>
                                                 </a>
                                             </div>

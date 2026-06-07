@@ -3,9 +3,17 @@
 namespace App\Security;
 
 use App\Utils\Helper;
+use App\Utils\Logger;
 
 class Csrf
 {
+    private static function isValidToken($token): bool
+    {
+        return is_string($token) &&
+            strlen($token) === 64 &&
+            ctype_xdigit($token);
+    }
+
     /**
      * Generate a CSRF token and store it in the session if it does not exist.
      * 
@@ -13,9 +21,18 @@ class Csrf
      */
     public static function csrf_token(): string
     {
-        if (empty($_SESSION['csrf_token'])) {
-            $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+        if (!self::isValidToken($_SESSION['csrf_token'] ?? null)) {
+            try {
+                $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+            } catch (\Exception $e) {
+                Logger::error("Failed to generate CSRF token", [
+                    'error' => $e->getMessage(),
+                    'code' => $e->getCode()
+                ]);
+                throw new \RuntimeException('Unable to generate CSRF token', 0, $e);
+            }
         }
+
         return $_SESSION['csrf_token'];
     }
 
@@ -27,7 +44,10 @@ class Csrf
      */
     public static function verify_token(?string $token): bool
     {
-        if (!isset($_SESSION['csrf_token']) || !is_string($_SESSION['csrf_token']) || $token === null){
+        if (
+            !self::isValidToken($_SESSION['csrf_token'] ?? null) ||
+            !self::isValidToken($token)
+        ) {
             return false;
         }
         return hash_equals($_SESSION['csrf_token'], $token);
@@ -43,9 +63,23 @@ class Csrf
      */
     public static function ver_csrf(?string $token, ?string $fail_url = null, string $fail_doc = ""): void
     {
-        if (!self::verify_token($token))
-        {
-            Helper::write_log("CSRF validation failed in $fail_doc", 'WARNING');
+        if (!self::verify_token($token)) {
+
+            $ip = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
+            if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+                $maskedIp = preg_replace('/\.\d+$/', '.xxx', $ip);
+            } elseif (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
+                $maskedIp = substr($ip, 0, 12) . '...';
+            } else {
+                $maskedIp = 'unknown';
+            }
+
+            Logger::warning('CSRF validation failed', [
+                'fail_doc' => $fail_doc,
+                'fail_url' => $fail_url,
+                'token_ref' => $token !== null ? substr(hash('sha256', $token), 0, 12) : null, // Log a hash reference of the token instead of the token itself
+                'ip' => $maskedIp,
+            ]);
             Helper::redirect_to(WEBSITE_URL . ($fail_url ?? ''));
         }
     }
@@ -58,7 +92,7 @@ class Csrf
     public static function csrf_field(): string
     {
         $token = self::csrf_token();
-        return '<input type="hidden" name="csrf_token" value="'. 
-        htmlspecialchars($token, ENT_QUOTES, 'UTF-8') .'">';
+        return '<input type="hidden" name="csrf_token" value="' .
+            htmlspecialchars($token, ENT_QUOTES, 'UTF-8') . '">';
     }
 }

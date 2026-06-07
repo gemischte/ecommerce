@@ -2,9 +2,9 @@
 
 require_once __DIR__ . '/../core/init.php';
 
-use App\Utils\Alert;
+use App\Utils\Helper;
 
 session_unset();
 session_destroy();
-Alert::success("Success", "Logout successful", WEBSITE_URL . "views/login.php");
+Helper::redirect_to(WEBSITE_URL . "index.php");
 ?>

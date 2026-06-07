@@ -1,0 +1,12 @@
+.git
+.gitignore
+.vscode
+.env
+.env.*
+build/
+coverage/
+storage/logs
+*.log
+vendor
+.DS_Store
+Thumbs.db

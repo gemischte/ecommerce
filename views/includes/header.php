@@ -8,6 +8,7 @@
     <meta name="author" content="" />
     <link rel="icon" href="<?= WEBSITE_URL ?>public/assets/images/favicon.ico">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <link rel="stylesheet" href="<?= WEBSITE_URL ?>public/assets/css/style.css">
     <link rel="stylesheet" href="<?= WEBSITE_URL ?>public/assets/css/bootstrap.min.css">
 </head>

@@ -8,7 +8,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
 $allowed_pages = [
     'login.php',
     'register.php',
-    'forget_password.php',
+    'forgot_password.php',
     'reset_password.php',
     'index.php',
     '404.php'

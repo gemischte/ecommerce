@@ -47,18 +47,5 @@ final class HelperTest extends TestCase
         $countries = Helper::all_countries($conn);
         $this->assertSame($expected, $countries);
     }
-
-    public function testWriteLogCreatesFileAndWritesMessage(): void
-    {
-        $msg = "Test-" . uniqid("", true);
-        Helper::write_log($msg, "DEBUG");
-        $date = date("Y-m");
-        $file = dirname(__DIR__) . "/storage/logs/" . $date . ".txt";
-
-        $this->assertFileExists($file);
-        $contents = file_get_contents($file);
-        $this->assertNotFalse($contents);
-        $this->assertStringContainsString($msg, $contents);
-        $this->assertStringContainsString("DEBUG", $contents);
-    }
+    
 }

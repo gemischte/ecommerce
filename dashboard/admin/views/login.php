@@ -61,7 +61,7 @@ use App\Security\Csrf;
                                 <hr>
 
                                 <div class="text-center">
-                                    <a class="small text-reset text-decoration-none" href="<?= WEBSITE_URL . 'auth/forget_password.php' ?>">Forgot Password?</a>
+                                    <a class="small text-reset text-decoration-none" href="<?= WEBSITE_URL . 'auth/forgot_password.php' ?>">Forgot Password?</a>
                                 </div>
 
                             </div>

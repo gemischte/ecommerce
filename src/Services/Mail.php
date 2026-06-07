@@ -9,7 +9,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 use Dotenv\Dotenv;
-use App\Utils\Helper;
+use App\Utils\Logger;
 
 //Load Composer's autoloader
 $dotenv = Dotenv::createImmutable(__DIR__ . '/../../', '.env');
@@ -42,29 +42,29 @@ class Mail
             //Content
             $this->mail->isHTML(true);                                  //Set email format to HTML
 
-        } 
-        catch (Exception $e) {
-            Helper::write_log("Message could not be sent. Mailer Error: {$this->mail->ErrorInfo}", 'Error');
+        } catch (Exception $e) {
+            Logger::error("PHPMailer initialization or SMTP setup failed", [
+                'error' => $this->mail->ErrorInfo ?: $e->getMessage() ?: 'Unknown PHPMailer error',
+            ]);
         }
     }
 
     private function sendEmail($to, $subject, $body, $attachment = null, $filename = null)
     {
-        try
-        {
+        try {
             $this->mail->clearAddresses();
-            $this->mail->clearAttachments();            
+            $this->mail->clearAttachments();
             $this->mail->addAddress($to);
             $this->mail->Subject = $subject;
             $this->mail->Body = $body;
-            if ($attachment!==null){
-                $this->mail->addStringAttachment ($attachment, $filename);
+            if ($attachment !== null) {
+                $this->mail->addStringAttachment($attachment, $filename);
             }
             return $this->mail->send();
-        }
-        catch (Exception $e)
-        {
-            Helper::write_log("Mailer Error:{$this->mail->ErrorInfo}",'Error');
+        } catch (Exception $e) {
+            Logger::error("Failed to send email", [
+                'error' => $this->mail->ErrorInfo ?: $e->getMessage(),
+            ]);
             return false;
         }
     }

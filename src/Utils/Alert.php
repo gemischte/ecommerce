@@ -23,44 +23,7 @@ class Alert
         ];
         $config = array_merge($default, $option);
         $jscode = json_encode($config, JSON_UNESCAPED_UNICODE|JSON_HEX_TAG);
-
-        echo <<<JS
-        <script>
-        setTimeout(function() 
-        {
-            const config = {$jscode};
-            Swal.fire(config).then((result)=>{
-                if(result.isConfirmed)
-                {
-                    if(config.submitId){
-                        document.getElementById(config.submitId)?.submit();
-                    }
-                    else if(config.redirect){
-                        window.location.href = config.redirect;
-                    }
-                }
-                else if(result.dismiss === Swal.DismissReason.timer)
-                {
-                    if (config.redirect && !config.submitId){
-                        window.location.href = config.redirect;
-                    }
-                    else{
-                        window.history.back();
-                    }
-                }
-                else if(result.dismiss === Swal.DismissReason.cancel)
-                {
-                    if(config.cancelRedirect){
-                        window.location.href = config.cancelRedirect;
-                    }
-                    else{
-                        window.history.back();
-                    }
-                }
-            });
-        }, 100);
-        </script>
-        JS;
+        echo '<script id="swal-config" type="application/json">' . $jscode . '</script>';
     }
     
     public static function alert($icon, $title = '', $text = '', $redirect = null, $extra = [])
@@ -71,8 +34,8 @@ class Alert
             'text' => $text,
             'redirect' => $redirect,
         ],$extra);
-
-        self::Swalfire($params);
+        
+        $_SESSION['Swalfire'] = $params;
     }
 
     public static function info($title, $text, $redirect = null, $extra = [])

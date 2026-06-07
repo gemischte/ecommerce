@@ -3,12 +3,18 @@
 include __DIR__ . '/../../../core/init.php';
 
 use App\Security\Csrf;
+use App\Utils\Alert;
 use App\Utils\Helper;
 use App\Utils\Lang;
 
 $user_id = $_SESSION['user_id'];
 if (!$user_id) {
     Helper::redirect_to(WEBSITE_URL . "views/login.php");
+}
+
+if (isset($_SESSION['Swalfire'])) {
+    Alert::Swalfire($_SESSION['Swalfire']);
+    unset($_SESSION['Swalfire']);
 }
 
 if (isset($_SESSION['user_id'])) {
@@ -48,7 +54,7 @@ if (isset($_SESSION['user_id'])) {
             <div class="col-12">
                 <div class="card border-0 shadow-sm">
                     <div class="card-body p-0">
-                        <div class="row g-0">
+                        <div class="row g-0 w-100 m-0 align-items-start">
                             <!-- Sidebar -->
                             <div class="col-lg-3 border-end">
                                 <div class="p-4">
@@ -56,11 +62,27 @@ if (isset($_SESSION['user_id'])) {
                                         <a class="nav-link active" href="#"><i class="fas fa-user me-2"></i><?= Lang::__('Personal Information') ?></a>
                                         <a class="nav-link" href="#"><i class="fas fa-lock me-2"></i><?= Lang::__('Security') ?></a>
 
-                                        <form action="<?= WEBSITE_URL . "auth/delete_account.php" ?>" method="POST" class="mt-3">
-                                            <input type="hidden" name="username" value="<?= $_SESSION['user'] ?>">
-                                            <?= csrf::csrf_field() ?>
-                                            <button type="submit" class="btn btn-danger w-100"><?= Lang::__('Delete Account') ?></button>
+                                        <form
+                                            id="delete_account?username=<?= htmlspecialchars($_SESSION['user'] ?? '', ENT_QUOTES, 'UTF-8') ?>"
+                                            method="post"
+                                            action="<?= WEBSITE_URL . "dashboard/user/functions/delete_account.php?username=" . rawurlencode($_SESSION['user'] ?? '') ?>"
+                                            class="mt-3">
+                                            <?= Csrf::csrf_field() ?>
+                                            <input type="hidden" name="username" value="<?= htmlspecialchars($_SESSION['user'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+                                            <button
+                                                type="submit"
+                                                class="btn btn-danger w-100">
+                                                <?= Lang::__('Delete Account') ?>
+                                            </button>
+                                            <button
+                                                type="submit"
+                                                id="delete-account-confirm-submit"
+                                                name="confirm"
+                                                value="true"
+                                                hidden
+                                                aria-hidden="true"></button>
                                         </form>
+
                                     </div>
                                 </div>
                             </div>
@@ -72,107 +94,104 @@ if (isset($_SESSION['user_id'])) {
                                     <div class="mb-4">
                                         <h5 class="mb-4"><?= Lang::__('Personal Information') ?></h5>
 
-                                        <form method="post">
-                                            <input type="hidden" name="user_id" value="<?= htmlspecialchars($user_id); ?>">
-
                                             <div class="row g-3">
                                                 <div class="col-md-6">
                                                     <label class="form-label"><?= Lang::__('First name') ?></label>
                                                     <input
-                                                    type="text"
-                                                    class="form-control"
-                                                    name="first_name"
-                                                    id="first_name"
-                                                    value="<?= htmlspecialchars($row['f_name']) ?>"
-                                                    disabled>
+                                                        type="text"
+                                                        class="form-control"
+                                                        name="first_name"
+                                                        id="first_name"
+                                                        value="<?= htmlspecialchars($row['f_name']) ?>"
+                                                        disabled>
                                                 </div>
 
                                                 <div class="col-md-6">
                                                     <label class="form-label"><?= Lang::__('Last name') ?></label>
                                                     <input
-                                                    type="text"
-                                                    class="form-control"
-                                                    name="last_name"
-                                                    id="last_name"
-                                                    value="<?= htmlspecialchars($row['l_name']) ?>"
-                                                    disabled>
+                                                        type="text"
+                                                        class="form-control"
+                                                        name="last_name"
+                                                        id="last_name"
+                                                        value="<?= htmlspecialchars($row['l_name']) ?>"
+                                                        disabled>
                                                 </div>
 
                                                 <div class="col-md-6">
                                                     <label class="form-label"><?= Lang::__('Birthday') ?></label>
                                                     <input
-                                                    type="text"
-                                                    class="form-control"
-                                                    name="birthday"
-                                                    id="birthday" 
-                                                    value="<?= htmlspecialchars($row['birthday']) ?>"
-                                                    disabled>
+                                                        type="text"
+                                                        class="form-control"
+                                                        name="birthday"
+                                                        id="birthday"
+                                                        value="<?= htmlspecialchars($row['birthday']) ?>"
+                                                        disabled>
                                                 </div>
 
                                                 <div class="col-md-6">
                                                     <label class="form-label"><?= Lang::__('Email') ?></label>
                                                     <input
-                                                    type="email"
-                                                    class="form-control"
-                                                    name="email"
-                                                    id="email"
-                                                    value="<?= htmlspecialchars($row['email']) ?>"
-                                                    disabled>
+                                                        type="email"
+                                                        class="form-control"
+                                                        name="email"
+                                                        id="email"
+                                                        value="<?= htmlspecialchars($row['email']) ?>"
+                                                        disabled>
                                                 </div>
 
                                                 <div class="col-md-6">
                                                     <label class="form-label"><?= Lang::__('Phone') ?></label>
                                                     <input
-                                                    type="tel"
-                                                    class="form-control"
-                                                    name="phone"
-                                                    id="phone"
-                                                    value="<?= htmlspecialchars($row['call_code'] . " ". $row['phone']) ?>"
-                                                    disabled>
+                                                        type="tel"
+                                                        class="form-control"
+                                                        name="phone"
+                                                        id="phone"
+                                                        value="<?= htmlspecialchars($row['call_code'] . " " . $row['phone']) ?>"
+                                                        disabled>
                                                 </div>
 
                                                 <div class="col-md-6">
                                                     <label class="form-label"><?= Lang::__('Country') ?></label>
                                                     <input
-                                                    type="text"
-                                                    class="form-control"
-                                                    name="country"
-                                                    id="country"
-                                                    value="<?= htmlspecialchars($row['ctry']) ?>"
-                                                    disabled>
+                                                        type="text"
+                                                        class="form-control"
+                                                        name="country"
+                                                        id="country"
+                                                        value="<?= htmlspecialchars($row['ctry']) ?>"
+                                                        disabled>
                                                 </div>
 
                                                 <div class="col-md-6">
                                                     <label class="form-label"><?= Lang::__('city') ?></label>
                                                     <input
-                                                    type="text"
-                                                    class="form-control"
-                                                    name="city"
-                                                    id="city"
-                                                    value="<?= htmlspecialchars($row['city']) ?>"
-                                                    disabled>
+                                                        type="text"
+                                                        class="form-control"
+                                                        name="city"
+                                                        id="city"
+                                                        value="<?= htmlspecialchars($row['city']) ?>"
+                                                        disabled>
                                                 </div>
 
                                                 <div class="col-md-6">
                                                     <label class="form-label"><?= Lang::__('Address') ?></label>
                                                     <input
-                                                    type="text"
-                                                    class="form-control"
-                                                    name="address"
-                                                    id="address"
-                                                    value="<?= htmlspecialchars($row['address']) ?>"
-                                                    disabled>
+                                                        type="text"
+                                                        class="form-control"
+                                                        name="address"
+                                                        id="address"
+                                                        value="<?= htmlspecialchars($row['address']) ?>"
+                                                        disabled>
                                                 </div>
 
                                                 <div class="col-md-6">
                                                     <label class="form-label"><?= Lang::__('postal code') ?></label>
                                                     <input
-                                                    type="text"
-                                                    class="form-control"
-                                                    name="postal_code"
-                                                    id="postal_code"
-                                                    value="<?= htmlspecialchars($row['p_code']) ?>"
-                                                    disabled>
+                                                        type="text"
+                                                        class="form-control"
+                                                        name="postal_code"
+                                                        id="postal_code"
+                                                        value="<?= htmlspecialchars($row['p_code']) ?>"
+                                                        disabled>
                                                 </div>
 
                                                 <div class="col-12">
@@ -182,10 +201,11 @@ if (isset($_SESSION['user_id'])) {
                                                 </div>
 
                                             </div>
-                                        </form>
+
                                     </div>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
