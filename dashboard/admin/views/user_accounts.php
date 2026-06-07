@@ -3,14 +3,14 @@
 require_once __DIR__ . '/../../../core/init.php';
 
 use App\Security\Csrf;
-use App\Utils\Helper;
+use App\Utils\Logger;
 
 $user_account = "SELECT user_id ,username,email,token,token_expiry 
 FROM user_accounts";
 $result = $conn->query($user_account);
 
 if (!$result) {
-    Helper::write_log("Prepare failed: " . $conn->error, 'ERROR');
+    Logger::error("Prepare failed: " . $conn->error);
 }
 ?>
 

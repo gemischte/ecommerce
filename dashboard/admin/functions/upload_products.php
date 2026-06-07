@@ -4,7 +4,7 @@ require_once __DIR__ . '/../../../core/init.php';
 
 use App\Security\Csrf;
 use App\Utils\Alert;
-use App\Utils\Helper;
+use App\Utils\Logger;
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
@@ -69,7 +69,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $stmt->close();
         } 
         else {
-            Helper::write_log("SQL prepare failed: " . $conn->error, 'ERROR');
+            Logger::error("SQL prepare failed: " . $conn->error);
         }
     }
 }

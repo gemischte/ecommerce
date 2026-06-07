@@ -4,8 +4,8 @@ require_once __DIR__ . '/../core/init.php';
 
 use App\Security\Csrf;
 use App\Services\CartService;
-use App\Utils\Helper;
 use App\Utils\Lang;
+use App\Utils\Logger;
 
 $CartService = new CartService($conn);
 
@@ -106,7 +106,7 @@ if (isset($_POST['delete_quantity'])) {
             <?php
                 } 
                 else {
-                    Helper::write_log("Prepare failed: " . $conn->error, 'ERROR');
+                    Logger::error("Prepare failed: " . $conn->error);
                 }
             } else {
                 echo "<p style='user-select: none;' class='fs-1 text-center  text-danger'>" . Lang::__('Your cart is empty') . "</p>";

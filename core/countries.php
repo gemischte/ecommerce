@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/init.php';
 
-use App\Utils\Helper;
+use App\Utils\Logger;
 
 $countries = file_get_contents(__DIR__ . '/../data/countries.json');
 $data = json_decode($countries, true);
@@ -11,7 +11,7 @@ $countries = "INSERT INTO countries (id,name,iso2,created_at,calling_codes)
 VALUES(?,?,?,?,?)";
 $stmt = $conn->prepare($countries);
 if(!$stmt){
-    Helper::write_log("Prepare failed: " . $conn->error, 'ERROR');
+    Logger::error("Prepare failed: " . $conn->error);
 }
 
 $id = $name = $iso2 = $created_at = $calling_codes = "";
@@ -26,7 +26,7 @@ foreach ($data as $country)
     $iso2 = $country["alpha2Code"];
     $calling_codes = '+' . $country["callingCodes"][0];
     if(!$stmt->execute()){
-        Helper::write_log("Execute failed:" . $stmt->error, 'ERROR');
+        Logger::error("Execute failed:" . $stmt->error);
     }
 
 }

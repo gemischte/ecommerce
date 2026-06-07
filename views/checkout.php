@@ -7,6 +7,7 @@ use App\Services\CartService;
 use App\Services\Mail;
 use App\Utils\Helper;
 use App\Utils\Lang;
+use App\Utils\Logger;
 
 $CartService = new CartService($conn);
 
@@ -59,7 +60,7 @@ if (isset($_POST['checkout'])) {
 
             $stmt = $conn->prepare($order_details);
             if (!$stmt) {
-                Helper::write_log("Prepare failed: " . $conn->error, 'ERROR');
+                Logger::error("Prepare failed: " . $conn->error);
             }
 
             $total_price = 0;
@@ -92,7 +93,7 @@ if (isset($_POST['checkout'])) {
         # code...
     } 
     else {
-        Helper::write_log("Error: " . $conn->error, 'ERROR');
+        Logger::error("Error: " . $conn->error);
     }
 
     if (isset($_SESSION['Swalfire'])) {
