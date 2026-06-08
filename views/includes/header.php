@@ -1,3 +1,5 @@
+<?php require_once __DIR__ . '/../../auth/auth.php'; ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -14,5 +16,4 @@
 </head>
 
 <body>
-    <?php require_once __DIR__ . '/../../auth/auth.php'; ?>
     <?php require_once __DIR__ . '/navbar.php'; ?>
