@@ -18,7 +18,7 @@ if (isset($_SESSION['Swalfire'])) {
 
 ?>
 
-<?php require_once __DIR__ . '../../views/includes/header.php'; ?>
+<?php require_once __DIR__ . '/../views/includes/header.php'; ?>
 
 <title>Forgot Password</title>
 

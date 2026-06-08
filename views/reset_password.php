@@ -13,12 +13,12 @@ if (isset($_SESSION['Swalfire'])) {
 
 ?>
 
-<?php require_once __DIR__ . '../../views/includes/header.php'; ?>
+<?php require_once __DIR__ . '/../views/includes/header.php'; ?>
 
 <title>Reset Password</title>
 
 <section class="py-3 py-md-5 py-xl-8 was-validated">
-    <form method="POST" action="<?= WEBSITE_URL . "auth/reset_password.php?token=".urldecode($_GET['token'] ?? ''); ?>">
+    <form method="POST" action="<?= WEBSITE_URL . "auth/reset_password.php?token=" . urldecode($_GET['token'] ?? ''); ?>">
         <?= Csrf::csrf_field() ?>
         <div class="container">
 

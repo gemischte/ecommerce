@@ -6,7 +6,9 @@ use App\Security\Csrf;
 use App\Utils\Helper;
 use App\Utils\Lang;
 
-if (isset($_GET['id'])) {
+if (!isset($_GET['id'])) { 
+    Helper::redirect_to(WEBSITE_URL . "views/404.php");
+}
     $product_id = $_GET['id'];
 
     $query = "SELECT * FROM products WHERE product_id = ?";
@@ -15,11 +17,14 @@ if (isset($_GET['id'])) {
     $stmt->execute();
     $result = $stmt->get_result();
 
-    if ($result->num_rows > 0) {
-        $row = $result->fetch_assoc();
-?>
+    if ($result->num_rows === 0) {
+        Helper::redirect_to(WEBSITE_URL . "views/404.php");
+    }
+    $row = $result->fetch_assoc();
+    $stmt->close();
 
-        <?php include __DIR__ . ('/../views/includes/header.php'); ?>
+    require_once __DIR__ . '/../views/includes/header.php';
+?>
 
         <title>View Product</title>
 
@@ -107,18 +112,6 @@ if (isset($_GET['id'])) {
 
         <!-- Footer -->
         <?php include __DIR__ . ('/../views/includes/footer.php'); ?>
-<?php
-    } else {
-        Helper::redirect_to(WEBSITE_URL . "views/404.php");
-    }
-    $stmt->close();
-} else {
-    Helper::redirect_to(WEBSITE_URL . "views/404.php");
-}
-
-$conn->close();
-?>
-
 </body>
 
 </html>
