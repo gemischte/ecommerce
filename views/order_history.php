@@ -6,12 +6,11 @@ use App\Utils\Helper;
 use App\Utils\Lang;
 use App\Utils\Logger;
 
-$user_id = $_SESSION['user_id'];
+$user_id = $_SESSION['user_id'] ?? null;
 if (!$user_id) {
-    Helper::redirect_to("login.php");
+    Helper::redirect_to(WEBSITE_URL . "views/login.php");
 }
 
-$user_id = $_SESSION['user_id'];
 $sql = "SELECT 
 pd.product_name,
 pd.product_images,
@@ -63,9 +62,9 @@ while ($row = $result->fetch_assoc()) {
         'cat_name' => $row['cat_name']
     ];
 }
-?>
 
-<?php include __DIR__ . '/../views/includes/header.php'; ?>
+require_once __DIR__ . '/../views/includes/header.php';
+?>
 
 <body class="bg-white">
 

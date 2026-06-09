@@ -1,7 +1,6 @@
 <?php
 
 require_once __DIR__ . '/../core/init.php';
-require_once __DIR__ . '/../views/includes/header.php';
 
 use App\Security\Csrf;
 use App\Services\CartService;
@@ -26,6 +25,8 @@ if (isset($_POST['remove_from_cart'])) {
 if (isset($_POST['delete_quantity'])) {
     $CartService->delete_cart_qty($_POST['product_id'], $_POST['quantity']);
 }
+
+require_once __DIR__ . '/../views/includes/header.php';
 ?>
 
 <title>Cart</title>

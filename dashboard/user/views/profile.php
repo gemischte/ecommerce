@@ -7,7 +7,9 @@ use App\Utils\Alert;
 use App\Utils\Helper;
 use App\Utils\Lang;
 
-$user_id = $_SESSION['user_id'];
+$row = [];
+
+$user_id = $_SESSION['user_id'] ?? null;
 if (!$user_id) {
     Helper::redirect_to(WEBSITE_URL . "views/login.php");
 }
@@ -17,9 +19,7 @@ if (isset($_SESSION['Swalfire'])) {
     unset($_SESSION['Swalfire']);
 }
 
-if (isset($_SESSION['user_id'])) {
-    $user_id = $_SESSION['user_id'];
-    $profiles = "SELECT 
+$profiles = "SELECT 
     up.first_name AS f_name, 
     up.last_name AS l_name,
     up.calling_code AS call_code,
@@ -33,13 +33,12 @@ if (isset($_SESSION['user_id'])) {
     FROM user_profiles up
     JOIN user_accounts ua ON up.user_id = ua.user_id
     WHERE up.user_id = ?";
-
+    
     $stmt = $conn->prepare($profiles);
     $stmt->bind_param("s", $user_id);
     $stmt->execute();
     $result = $stmt->get_result();
-    $row = $result->fetch_assoc();
-}
+    $row = $result->fetch_assoc() ?? [];
 
 ?>
 
