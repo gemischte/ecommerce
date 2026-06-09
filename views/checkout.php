@@ -1,7 +1,6 @@
 <?php
 
 require_once __DIR__ . '/../core/init.php';
-require_once __DIR__ . '/../views/includes/header.php';
 
 use App\Security\Csrf;
 use App\Utils\Alert;
@@ -15,6 +14,8 @@ $CartService = new CartService($conn);
 
 //all country list
 $countries = Helper::all_countries($conn);
+
+$row = [];
 
 if (isset($_POST['remove_from_cart'])) {
 
@@ -104,6 +105,7 @@ if (isset($_POST['checkout'])) {
     }
 }
 
+require_once __DIR__ . '/../views/includes/header.php';
 ?>
 
 <title>Checkout form</title>
